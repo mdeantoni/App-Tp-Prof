@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,9 +46,16 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            updateData();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateData() {
+        TextView textView = (TextView) findViewById(R.id.text_view);
+        FetchTestDataTask dataTask = new FetchTestDataTask(textView);
+        dataTask.execute();
     }
 }
