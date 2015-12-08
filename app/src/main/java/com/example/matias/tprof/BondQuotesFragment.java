@@ -1,5 +1,6 @@
 package com.example.matias.tprof;
 
+
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,46 +16,40 @@ import android.widget.ListView;
 import com.example.matias.tprof.data.QuotesContract;
 
 
-public class StockQuotesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class BondQuotesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final int BONDS_LOADER = 1;
 
-    private static final int STOCKS_LOADER = 0;
-
-    private static final String[] STOCK_QUOTE_COLUMNS = {
-            QuotesContract.StockEntry._ID,
-            QuotesContract.StockEntry.COLUMN_FULLNAME,
-            QuotesContract.StockEntry.COLUMN_SYMBOL,
+    private static final String[] BOND_QUOTE_COLUMNS = {
+            QuotesContract.BondEntry._ID,
+            QuotesContract.BondEntry.COLUMN_FULLNAME,
+            QuotesContract.BondEntry.COLUMN_SYMBOL,
     };
 
-    static final int COL_STOCK_QUOTE_ID = 0;
+    static final int COL_BOND_QUOTE_ID = 0;
     static final int COL_FULLNAME = 1;
     static final int COL_SYMBOL = 2;
 
-    private StockQuotesAdapter mQuotesAdapter;
+    private BondQuotesAdapter mQuotesAdapter;
 
-    public StockQuotesFragment() {
+    public BondQuotesFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        String sortOrder = QuotesContract.StockEntry.COLUMN_FULLNAME + " ASC";
-        Uri stocksUri = QuotesContract.StockEntry.CONTENT_URI;
+        String sortOrder = QuotesContract.BondEntry.COLUMN_FULLNAME + " ASC";
+        Uri bondsUri = QuotesContract.BondEntry.CONTENT_URI;
 
-        Cursor cur = getActivity().getContentResolver().query(stocksUri,
+        Cursor cur = getActivity().getContentResolver().query(bondsUri,
                 null, null, null, sortOrder);
 
-        mQuotesAdapter = new StockQuotesAdapter(getActivity(), cur, 0);
+        mQuotesAdapter = new BondQuotesAdapter(getActivity(), cur, 0);
 
-        View rootView = inflater.inflate(R.layout.fragment_stock_quotes, container, false);
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_stock_quotes);
+        View rootView = inflater.inflate(R.layout.fragment_bond_quotes, container, false);
+        ListView listView = (ListView) rootView.findViewById(R.id.listview_bond_quotes);
         listView.setAdapter(mQuotesAdapter);
 
         return rootView;
@@ -63,7 +58,7 @@ public class StockQuotesFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(STOCKS_LOADER, null, this);
+        getLoaderManager().initLoader(BONDS_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -74,18 +69,18 @@ public class StockQuotesFragment extends Fragment implements LoaderManager.Loade
     }
 
     private void updateQuotes() {
-        FetchStockDataTask fetchTestDataTask = new FetchStockDataTask(getContext());
+        FetchBondDataTask fetchTestDataTask = new FetchBondDataTask(getContext());
         fetchTestDataTask.execute();
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String sortOrder = QuotesContract.StockEntry.COLUMN_FULLNAME + " ASC";
-        Uri stocksUri = QuotesContract.StockEntry.CONTENT_URI;
+        String sortOrder = QuotesContract.BondEntry.COLUMN_FULLNAME + " ASC";
+        Uri stocksUri = QuotesContract.BondEntry.CONTENT_URI;
 
         return new CursorLoader(getActivity(),
                 stocksUri,
-                STOCK_QUOTE_COLUMNS,
+                BOND_QUOTE_COLUMNS,
                 null,
                 null,
                 sortOrder);
@@ -100,4 +95,5 @@ public class StockQuotesFragment extends Fragment implements LoaderManager.Loade
     public void onLoaderReset(Loader<Cursor> loader) {
         mQuotesAdapter.swapCursor(null);
     }
+
 }

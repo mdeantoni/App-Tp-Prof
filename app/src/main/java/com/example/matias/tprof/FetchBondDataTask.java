@@ -1,13 +1,11 @@
 package com.example.matias.tprof;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.example.matias.tprof.data.QuotesContract;
 
@@ -24,21 +22,15 @@ import java.net.URL;
 import java.util.Vector;
 
 /**
- * Created by Mati on 11/28/2015.
+ * Created by Mati on 12/8/2015.
  */
-public class FetchDataTask extends AsyncTask<String, Void, Void> {
-
-    //private ArrayAdapter<String> mQuotesAdapter;
+public class FetchBondDataTask extends AsyncTask<String, Void, Void> {
 
     private final Context mContext;
 
-    private final String LOG_TAG = FetchDataTask.class.getSimpleName();
+    private final String LOG_TAG = FetchBondDataTask.class.getSimpleName();
 
-//    public FetchDataTask(ArrayAdapter<String> adapter) {
-//        this.mQuotesAdapter = adapter;
-//    }
-
-    public FetchDataTask(Context context) {
+    public FetchBondDataTask(Context context) {
         mContext = context;
     }
 
@@ -58,8 +50,8 @@ public class FetchDataTask extends AsyncTask<String, Void, Void> {
             // Possible parameters are avaiable at OWM's forecast API page, at
             // http://openweathermap.org/API#forecast
             final String BASE_URL =
-                    "http://10.0.2.2:50914/api/quotes";
-           // "http://192.168.0.17:50914/api/quotes";
+                    "http://10.0.2.2:50914/api/bondquotes";
+            // "http://192.168.0.17:50914/api/bondquotes";
 
             Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                     .build();
@@ -139,30 +131,30 @@ public class FetchDataTask extends AsyncTask<String, Void, Void> {
             fullName = quote.getString(QUOTE_NAME);
             symbol = quote.getString(SYMBOL_NAME);
 
-            ContentValues weatherValues = new ContentValues();
+            ContentValues quoteValues = new ContentValues();
 
-            weatherValues.put(QuotesContract.StockEntry.COLUMN_SYMBOL, symbol);
-            weatherValues.put(QuotesContract.StockEntry.COLUMN_FULLNAME, fullName);
-            cVVector.add(weatherValues);
+            quoteValues.put(QuotesContract.BondEntry.COLUMN_SYMBOL, symbol);
+            quoteValues.put(QuotesContract.BondEntry.COLUMN_FULLNAME, fullName);
+            cVVector.add(quoteValues);
         }
 
-        Cursor stockCursor = mContext.getContentResolver().query(
-                QuotesContract.StockEntry.CONTENT_URI,
-                new String[]{QuotesContract.StockEntry._ID},
+        Cursor bondCursor = mContext.getContentResolver().query(
+                QuotesContract.BondEntry.CONTENT_URI,
+                new String[]{QuotesContract.BondEntry._ID},
                 null,
                 null,
                 null);
 
-        if (!stockCursor.moveToFirst()) {
+        if (!bondCursor.moveToFirst()) {
             int inserted = 0;
             // add to database if there werent any stocks!
             if ( cVVector.size() > 0 ) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
-                inserted = mContext.getContentResolver().bulkInsert(QuotesContract.StockEntry.CONTENT_URI, cvArray);
+                inserted = mContext.getContentResolver().bulkInsert(QuotesContract.BondEntry.CONTENT_URI, cvArray);
             }
 
-            Log.d(LOG_TAG, "FetchDataTask Complete. " + inserted + " Inserted");
+            Log.d(LOG_TAG, "FetchBondDataTask Complete. " + inserted + " Inserted");
         }
     }
 }

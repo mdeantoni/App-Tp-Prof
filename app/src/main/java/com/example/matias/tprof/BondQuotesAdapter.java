@@ -11,8 +11,8 @@ import android.widget.TextView;
 /**
  * Created by Mati on 12/8/2015.
  */
-public class QuotesAdapter extends CursorAdapter  {
-    public QuotesAdapter(Context context, Cursor c, int flags) {
+public class BondQuotesAdapter extends CursorAdapter {
+    public BondQuotesAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
@@ -25,6 +25,6 @@ public class QuotesAdapter extends CursorAdapter  {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView tv = (TextView)view;
-        tv.setText(cursor.getString(StockQuotesFragment.COL_FULLNAME));
+        tv.setText(cursor.getString(BondQuotesFragment.COL_FULLNAME));
     }
 }
