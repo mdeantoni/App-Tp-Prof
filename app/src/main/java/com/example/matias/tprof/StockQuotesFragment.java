@@ -1,8 +1,10 @@
 package com.example.matias.tprof;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,7 +99,7 @@ public class StockQuotesFragment extends Fragment {
                         getActivity(), // The current context (this activity)
                         R.layout.list_item_quote, // The name of the layout ID.
                         R.id.list_item_quote_textview, // The ID of the textview to populate.
-                        quotes);
+                        new ArrayList<String>());
 
         View rootView = inflater.inflate(R.layout.fragment_stock_quotes, container, false);
 
@@ -107,6 +109,17 @@ public class StockQuotesFragment extends Fragment {
 
         return rootView;
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateQuotes();
+    }
+
+    private void updateQuotes() {
+        FetchTestDataTask fetchTestDataTask = new FetchTestDataTask(mQuotesAdapter);
+        fetchTestDataTask.execute();
     }
 
 //    // TODO: Rename method, update argument and hook method into UI event

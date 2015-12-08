@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,16 +21,18 @@ import java.net.URL;
 /**
  * Created by Mati on 11/28/2015.
  */
-public class FetchTestDataTask  extends AsyncTask<String, Void, String> {
+public class FetchTestDataTask  extends AsyncTask<String, Void, String[]> {
 
-    private TextView widget;
+    private ArrayAdapter<String> mQuotesAdapter;
 
-    public FetchTestDataTask(TextView textView) {
-        widget = textView;
+    private final String LOG_TAG = FetchTestDataTask.class.getSimpleName();
+
+    public FetchTestDataTask(ArrayAdapter<String> adapter) {
+        this.mQuotesAdapter = adapter;
     }
 
     @Override
-    protected String doInBackground(String... params) {
+    protected String[] doInBackground(String... params) {
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
         HttpURLConnection urlConnection = null;
@@ -44,7 +47,7 @@ public class FetchTestDataTask  extends AsyncTask<String, Void, String> {
             // Possible parameters are avaiable at OWM's forecast API page, at
             // http://openweathermap.org/API#forecast
             final String BASE_URL =
-                    "http://10.0.2.2:50914/api/values/5";
+                    "http://10.0.2.2:50914/api/quotes";
 
             Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                     .build();
@@ -82,7 +85,7 @@ public class FetchTestDataTask  extends AsyncTask<String, Void, String> {
             }
             testData = buffer.toString();
         } catch (IOException e) {
-            Log.e("Some log", "Error ", e);
+            Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping
             // to parse it.
             return null;
@@ -94,14 +97,13 @@ public class FetchTestDataTask  extends AsyncTask<String, Void, String> {
                 try {
                     reader.close();
                 } catch (final IOException e) {
-                    Log.e("Some log", "Error closing stream", e);
+                    Log.e(LOG_TAG, "Error closing stream", e);
                 }
             }
         }
 
         try {
-            JSONObject testJson = new JSONObject(testData);
-            return testJson.toString();
+            return getQuotesFromJson(testData);
         } catch (JSONException e) {
             Log.e("Some log", e.getMessage(), e);
             e.printStackTrace();
@@ -110,10 +112,28 @@ public class FetchTestDataTask  extends AsyncTask<String, Void, String> {
         return null;
     }
 
+    private String[] getQuotesFromJson(String quotesJson) throws  JSONException{
+        final String QUOTE_NAME = "FullName";
+
+        JSONArray quotesArray = new JSONArray(quotesJson);
+        String[] resultStrs = new String[quotesArray.length()];
+
+        for(int i = 0; i < quotesArray.length(); i++) {
+            JSONObject quote = quotesArray.getJSONObject(i);
+            resultStrs[i] = quote.getString(QUOTE_NAME);
+        }
+
+        return resultStrs;
+    }
+
     @Override
-    protected void onPostExecute(String result) {
-        if (result != null && widget != null) {
-            widget.setText(result);
+    protected void onPostExecute(String[] result) {
+        if (result != null) {
+            mQuotesAdapter.clear();
+            for(String quoteStr : result) {
+                mQuotesAdapter.add(quoteStr);
+            }
+            // New data is back from the server.  Hooray!
         }
     }
 }
