@@ -1,9 +1,15 @@
 package com.example.matias.tprof;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+
+import com.example.matias.tprof.data.QuotesContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,22 +21,29 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Vector;
 
 /**
  * Created by Mati on 11/28/2015.
  */
-public class FetchDataTask extends AsyncTask<String, Void, String[]> {
+public class FetchDataTask extends AsyncTask<String, Void, Void> {
 
-    private ArrayAdapter<String> mQuotesAdapter;
+    //private ArrayAdapter<String> mQuotesAdapter;
+
+    private final Context mContext;
 
     private final String LOG_TAG = FetchDataTask.class.getSimpleName();
 
-    public FetchDataTask(ArrayAdapter<String> adapter) {
-        this.mQuotesAdapter = adapter;
+//    public FetchDataTask(ArrayAdapter<String> adapter) {
+//        this.mQuotesAdapter = adapter;
+//    }
+
+    public FetchDataTask(Context context) {
+        mContext = context;
     }
 
     @Override
-    protected String[] doInBackground(String... params) {
+    protected Void doInBackground(String... params) {
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
         HttpURLConnection urlConnection = null;
@@ -46,6 +59,7 @@ public class FetchDataTask extends AsyncTask<String, Void, String[]> {
             // http://openweathermap.org/API#forecast
             final String BASE_URL =
                     "http://10.0.2.2:50914/api/quotes";
+           // "http://192.168.0.17:50914/api/quotes";
 
             Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                     .build();
@@ -100,8 +114,8 @@ public class FetchDataTask extends AsyncTask<String, Void, String[]> {
             }
         }
 
-        try {
-            return getQuotesFromJson(testData);
+        try { //OJO CON ESTO QUE EN EL EJEMPLO ESTA AL REVES EL ORDEN CON EL CIERRE DE CONNECTION
+            getQuotesFromJson(testData);
         } catch (JSONException e) {
             Log.e("Some log", e.getMessage(), e);
             e.printStackTrace();
@@ -110,28 +124,45 @@ public class FetchDataTask extends AsyncTask<String, Void, String[]> {
         return null;
     }
 
-    private String[] getQuotesFromJson(String quotesJson) throws  JSONException{
+    private void getQuotesFromJson(String quotesJson) throws  JSONException{
         final String QUOTE_NAME = "FullName";
+        final String SYMBOL_NAME = "TickerSymbol";
 
         JSONArray quotesArray = new JSONArray(quotesJson);
-        String[] resultStrs = new String[quotesArray.length()];
+        Vector<ContentValues> cVVector = new Vector<ContentValues>(quotesArray.length());
 
         for(int i = 0; i < quotesArray.length(); i++) {
+            String symbol;
+            String fullName;
+
             JSONObject quote = quotesArray.getJSONObject(i);
-            resultStrs[i] = quote.getString(QUOTE_NAME);
+            fullName = quote.getString(QUOTE_NAME);
+            symbol = quote.getString(SYMBOL_NAME);
+
+            ContentValues weatherValues = new ContentValues();
+
+            weatherValues.put(QuotesContract.StockEntry.COLUMN_SYMBOL, symbol);
+            weatherValues.put(QuotesContract.StockEntry.COLUMN_FULLNAME, fullName);
+            cVVector.add(weatherValues);
         }
 
-        return resultStrs;
-    }
+        Cursor stockCursor = mContext.getContentResolver().query(
+                QuotesContract.StockEntry.CONTENT_URI,
+                new String[]{QuotesContract.StockEntry._ID},
+                null,
+                null,
+                null);
 
-    @Override
-    protected void onPostExecute(String[] result) {
-        if (result != null) {
-            mQuotesAdapter.clear();
-            for(String quoteStr : result) {
-                mQuotesAdapter.add(quoteStr);
+        if (!stockCursor.moveToFirst()) {
+            int inserted = 0;
+            // add to database if there werent any stocks!
+            if ( cVVector.size() > 0 ) {
+                ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                cVVector.toArray(cvArray);
+                inserted = mContext.getContentResolver().bulkInsert(QuotesContract.StockEntry.CONTENT_URI, cvArray);
             }
-            // New data is back from the server.  Hooray!
+
+            Log.d(LOG_TAG, "FetchDataTask Complete. " + inserted + " Inserted");
         }
     }
 }

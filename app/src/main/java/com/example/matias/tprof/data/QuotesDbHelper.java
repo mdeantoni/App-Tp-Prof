@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -25,15 +25,15 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_STOCKS_TABLE = "CREATE TABLE " + QuotesContract.StockEntry.TABLE_NAME + " (" +
                 QuotesContract.StockEntry._ID + " INTEGER PRIMARY KEY," +
                 QuotesContract.StockEntry.COLUMN_FULLNAME + " TEXT NOT NULL, " +
-                QuotesContract.StockEntry.COLUMN_SYMBOL + " TEXT NOT NULL, " +
+                QuotesContract.StockEntry.COLUMN_SYMBOL + " TEXT NOT NULL " +
                 " );";
 
         final String SQL_CREATE_BONDS_TABLE = "CREATE TABLE " + QuotesContract.BondEntry.TABLE_NAME + " (" +
                 QuotesContract.BondEntry._ID + " INTEGER PRIMARY KEY," +
 
                 // the ID of the location entry associated with this weather data
-                QuotesContract.BondEntry.COLUMN_SYMBOL +  " TEXT NOT NULL, " +
                 QuotesContract.BondEntry.COLUMN_FULLNAME +  " TEXT NOT NULL, " +
+                QuotesContract.BondEntry.COLUMN_SYMBOL +  " TEXT NOT NULL " +
                 " );";
 
         sqLiteDatabase.execSQL(SQL_CREATE_STOCKS_TABLE);
