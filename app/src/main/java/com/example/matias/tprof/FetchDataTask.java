@@ -1,11 +1,9 @@
 package com.example.matias.tprof;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,13 +19,13 @@ import java.net.URL;
 /**
  * Created by Mati on 11/28/2015.
  */
-public class FetchTestDataTask  extends AsyncTask<String, Void, String[]> {
+public class FetchDataTask extends AsyncTask<String, Void, String[]> {
 
     private ArrayAdapter<String> mQuotesAdapter;
 
-    private final String LOG_TAG = FetchTestDataTask.class.getSimpleName();
+    private final String LOG_TAG = FetchDataTask.class.getSimpleName();
 
-    public FetchTestDataTask(ArrayAdapter<String> adapter) {
+    public FetchDataTask(ArrayAdapter<String> adapter) {
         this.mQuotesAdapter = adapter;
     }
 

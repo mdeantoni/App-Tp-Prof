@@ -1,10 +1,6 @@
 package com.example.matias.tprof;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -74,23 +68,6 @@ public class StockQuotesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Create some dummy data for the ListView.  Here's a sample weekly forecast
-        String[] data = {
-                "Petrobras",
-                "Tenaris",
-                "Banco Frances",
-                "Galicia",
-                "Banco Macro",
-                "Comercial del Plata",
-                "Aluar",
-                "Mirgor",
-                "Pampa Energia",
-                "Telecom",
-                "Edenor",
-                "Siderar"
-        };
-        List<String> quotes = new ArrayList<String>(Arrays.asList(data));
-
         // Now that we have some dummy forecast data, create an ArrayAdapter.
         // The ArrayAdapter will take data from a source (like our dummy forecast) and
         // use it to populate the ListView it's attached to.
@@ -118,7 +95,7 @@ public class StockQuotesFragment extends Fragment {
     }
 
     private void updateQuotes() {
-        FetchTestDataTask fetchTestDataTask = new FetchTestDataTask(mQuotesAdapter);
+        FetchDataTask fetchTestDataTask = new FetchDataTask(mQuotesAdapter);
         fetchTestDataTask.execute();
     }
 
