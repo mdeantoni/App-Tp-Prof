@@ -7,6 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -23,11 +29,13 @@ public class StockQuotesFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private ArrayAdapter<String> mQuotesAdapter;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+ //   private OnFragmentInteractionListener mListener;
 
     public StockQuotesFragment() {
         // Required empty public constructor
@@ -63,46 +71,80 @@ public class StockQuotesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_stock_quotes, container, false);
+
+        // Create some dummy data for the ListView.  Here's a sample weekly forecast
+        String[] data = {
+                "Petrobras",
+                "Tenaris",
+                "Banco Frances",
+                "Galicia",
+                "Banco Macro",
+                "Comercial del Plata",
+                "Aluar",
+                "Mirgor",
+                "Pampa Energia",
+                "Telecom",
+                "Edenor",
+                "Siderar"
+        };
+        List<String> quotes = new ArrayList<String>(Arrays.asList(data));
+
+        // Now that we have some dummy forecast data, create an ArrayAdapter.
+        // The ArrayAdapter will take data from a source (like our dummy forecast) and
+        // use it to populate the ListView it's attached to.
+        mQuotesAdapter =
+                new ArrayAdapter<String>(
+                        getActivity(), // The current context (this activity)
+                        R.layout.list_item_quote, // The name of the layout ID.
+                        R.id.list_item_quote_textview, // The ID of the textview to populate.
+                        quotes);
+
+        View rootView = inflater.inflate(R.layout.fragment_stock_quotes, container, false);
+
+        // Get a reference to the ListView, and attach this adapter to it.
+        ListView listView = (ListView) rootView.findViewById(R.id.listview_quotes);
+        listView.setAdapter(mQuotesAdapter);
+
+        return rootView;
+
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+//    // TODO: Rename method, update argument and hook method into UI event
+//    public void onButtonPressed(Uri uri) {
+//        if (mListener != null) {
+//            mListener.onFragmentInteraction(uri);
+//        }
+//    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        if (context instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        mListener = null;
+//    }
+//
+//    /**
+//     * This interface must be implemented by activities that contain this
+//     * fragment to allow an interaction in this fragment to be communicated
+//     * to the activity and potentially other fragments contained in that
+//     * activity.
+//     * <p/>
+//     * See the Android Training lesson <a href=
+//     * "http://developer.android.com/training/basics/fragments/communicating.html"
+//     * >Communicating with Other Fragments</a> for more information.
+//     */
+//    public interface OnFragmentInteractionListener {
+//        // TODO: Update argument type and name
+//        void onFragmentInteraction(Uri uri);
+//    }
 }

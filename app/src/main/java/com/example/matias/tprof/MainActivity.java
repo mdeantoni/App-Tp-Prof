@@ -18,15 +18,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new StockQuotesFragment())
+                    .commit();
+        }
     }
 
     @Override
@@ -46,16 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            updateData();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void updateData() {
-        TextView textView = (TextView) findViewById(R.id.text_view);
-        FetchTestDataTask dataTask = new FetchTestDataTask(textView);
-        dataTask.execute();
     }
 }
