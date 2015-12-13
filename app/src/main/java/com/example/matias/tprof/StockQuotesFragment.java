@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.matias.tprof.data.QuotesContract;
+import com.example.matias.tprof.sync.AppSyncAdapter;
 
 
 public class StockQuotesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -74,8 +75,9 @@ public class StockQuotesFragment extends Fragment implements LoaderManager.Loade
     }
 
     private void updateQuotes() {
-        FetchStockDataTask fetchTestDataTask = new FetchStockDataTask(getContext());
-        fetchTestDataTask.execute();
+        AppSyncAdapter.syncImmediately(getActivity());
+        //FetchStockDataTask fetchTestDataTask = new FetchStockDataTask(getContext());
+        //fetchTestDataTask.execute();
     }
 
     @Override

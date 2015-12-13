@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.matias.tprof.data.QuotesContract;
+import com.example.matias.tprof.sync.AppSyncAdapter;
 
 
 public class BondQuotesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -69,8 +70,9 @@ public class BondQuotesFragment extends Fragment implements LoaderManager.Loader
     }
 
     private void updateQuotes() {
-        FetchBondDataTask fetchTestDataTask = new FetchBondDataTask(getContext());
-        fetchTestDataTask.execute();
+        AppSyncAdapter.syncImmediately(getActivity());
+       // FetchBondDataTask fetchTestDataTask = new FetchBondDataTask(getContext());
+        //fetchTestDataTask.execute();
     }
 
     @Override
