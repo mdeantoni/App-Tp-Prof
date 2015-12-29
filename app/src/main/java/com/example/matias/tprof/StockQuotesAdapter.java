@@ -24,7 +24,14 @@ public class StockQuotesAdapter extends CursorAdapter  {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView tv = (TextView)view;
-        tv.setText(cursor.getString(StockQuotesFragment.COL_FULLNAME));
+        TextView quote = (TextView) view.findViewById(R.id.list_item_quote_textview);
+        TextView change = (TextView) view.findViewById(R.id.list_item_changes_textview);
+        TextView price = (TextView) view.findViewById(R.id.list_item_lastprice_textview);
+        TextView date = (TextView) view.findViewById(R.id.list_item_datetime_textview);
+
+        quote.setText(cursor.getString(StockQuotesFragment.COL_FULLNAME));
+        change.setText(cursor.getString(StockQuotesFragment.COL_LAST_CHANGE));
+        price.setText(cursor.getString(StockQuotesFragment.COL_CURRENCY) + cursor.getString(StockQuotesFragment.COL_LAST_PRICE));
+        date.setText(cursor.getString(StockQuotesFragment.COL_LAST_TRADE_DATE));
     }
 }

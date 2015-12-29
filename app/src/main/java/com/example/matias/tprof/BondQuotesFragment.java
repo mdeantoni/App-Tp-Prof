@@ -22,14 +22,26 @@ public class BondQuotesFragment extends Fragment implements LoaderManager.Loader
     private static final int BONDS_LOADER = 1;
 
     private static final String[] BOND_QUOTE_COLUMNS = {
-            QuotesContract.BondEntry._ID,
+            QuotesContract.BondEntry.TABLE_NAME + "." + QuotesContract.BondEntry._ID,
             QuotesContract.BondEntry.COLUMN_FULLNAME,
             QuotesContract.BondEntry.COLUMN_SYMBOL,
+            QuotesContract.BondQuotesEntry.TABLE_NAME + "." + QuotesContract.BondQuotesEntry._ID,
+            QuotesContract.BondQuotesEntry.COLUMN_LAST_TRADE_PRICE,
+            QuotesContract.BondQuotesEntry.COLUMN_LAST_TRADE_DATE,
+            QuotesContract.BondQuotesEntry.COLUMN_LAST_CHANGE,
+            QuotesContract.BondQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE,
+            QuotesContract.BondQuotesEntry.COLUMN_CURRENCY,
     };
 
-    static final int COL_BOND_QUOTE_ID = 0;
+    static final int COL_BOND_ID = 0;
     static final int COL_FULLNAME = 1;
     static final int COL_SYMBOL = 2;
+    static final int COL_BOND_QUOTE_ID = 3;
+    static final int COL_LAST_PRICE = 4;
+    static final int COL_LAST_TRADE_DATE = 5;
+    static final int COL_LAST_CHANGE = 6;
+    static final int COL_LAST_CHANGE_PERCENTAGE = 7;
+    static final int COL_CURRENCY = 8;
 
     private BondQuotesAdapter mQuotesAdapter;
 
@@ -42,7 +54,7 @@ public class BondQuotesFragment extends Fragment implements LoaderManager.Loader
                              Bundle savedInstanceState) {
 
         String sortOrder = QuotesContract.BondEntry.COLUMN_FULLNAME + " ASC";
-        Uri bondsUri = QuotesContract.BondEntry.CONTENT_URI;
+        Uri bondsUri = QuotesContract.BondQuotesEntry.CONTENT_URI;
 
         Cursor cur = getActivity().getContentResolver().query(bondsUri,
                 null, null, null, sortOrder);
@@ -78,7 +90,7 @@ public class BondQuotesFragment extends Fragment implements LoaderManager.Loader
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String sortOrder = QuotesContract.BondEntry.COLUMN_FULLNAME + " ASC";
-        Uri stocksUri = QuotesContract.BondEntry.CONTENT_URI;
+        Uri stocksUri = QuotesContract.BondQuotesEntry.CONTENT_URI;
 
         return new CursorLoader(getActivity(),
                 stocksUri,

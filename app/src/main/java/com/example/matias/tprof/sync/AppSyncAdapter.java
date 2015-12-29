@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
@@ -61,7 +62,7 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
             // Possible parameters are avaiable at OWM's forecast API page, at
             // http://openweathermap.org/API#forecast
             final String BASE_URL =
-                 //   "http://10.0.2.2:50914/api/sync";
+                  //  "http://10.0.2.2:50914/api/sync";
              "http://192.168.0.17:50914/api/sync";
 
             Uri builtUri = Uri.parse(BASE_URL).buildUpon()
@@ -140,82 +141,151 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
         final String QUOTE_NAME = "FullName";
         final String SYMBOL_NAME = "TickerSymbol";
 
+        final String LAST_QUOTE = "LastQuote";
+        final String LAST_TRADED_PRICE = "LastTradedPrice";
+        final String CURRENCY = "Currency";
+        final String LAST_CHANGE_IN_PRICE_PERCENTAGE = "LastChangeInPricePercentage";
+        final String LAST_CHANGE_IN_PRICE = "LastChangeInPrice";
+        final String LAST_TRADE_DATE = "LastTradeDate";
+
         Vector<ContentValues> cVVector = new Vector<ContentValues>(quotesArray.length());
 
         for (int i = 0; i < quotesArray.length(); i++) {
             String symbol;
             String fullName;
+            long stockId;
+            JSONObject lastQuote;
 
             JSONObject quote = quotesArray.getJSONObject(i);
             fullName = quote.getString(QUOTE_NAME);
             symbol = quote.getString(SYMBOL_NAME);
+            lastQuote = quote.getJSONObject(LAST_QUOTE);
 
-            ContentValues weatherValues = new ContentValues();
+            Cursor stockCursor = getContext().getContentResolver().query(
+                    QuotesContract.StockEntry.CONTENT_URI,
+                    new String[]{QuotesContract.StockEntry._ID},
+                    QuotesContract.StockEntry.COLUMN_SYMBOL + " = ?",
+                    new String[]{ symbol },
+                    null);
 
-            weatherValues.put(QuotesContract.StockEntry.COLUMN_SYMBOL, symbol);
-            weatherValues.put(QuotesContract.StockEntry.COLUMN_FULLNAME, fullName);
-            cVVector.add(weatherValues);
+            if (stockCursor.moveToFirst()) {
+                int stockIdIndex = stockCursor.getColumnIndex(QuotesContract.StockEntry._ID);
+                stockId = stockCursor.getInt(stockIdIndex);
+            }
+            else{
+                ContentValues stockValues = new ContentValues();
+                stockValues.put(QuotesContract.StockEntry.COLUMN_SYMBOL, symbol);
+                stockValues.put(QuotesContract.StockEntry.COLUMN_FULLNAME, fullName);
+
+                Uri insertedUri = getContext().getContentResolver().insert(
+                        QuotesContract.StockEntry.CONTENT_URI,
+                        stockValues
+                );
+
+                stockId = ContentUris.parseId(insertedUri);
+            }
+
+            ContentValues stockQuoteValues = new ContentValues();
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_STOCK_ID, stockId);
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_CURRENCY, lastQuote.getString(CURRENCY));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_LAST_CHANGE, lastQuote.getDouble(LAST_CHANGE_IN_PRICE));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE, lastQuote.getDouble(LAST_CHANGE_IN_PRICE_PERCENTAGE));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_LAST_TRADE_DATE, lastQuote.getString(LAST_TRADE_DATE));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_LAST_TRADE_PRICE, lastQuote.getDouble(LAST_TRADED_PRICE));
+
+            cVVector.add(stockQuoteValues);
         }
 
-        Cursor stockCursor = getContext().getContentResolver().query(
-                QuotesContract.StockEntry.CONTENT_URI,
-                new String[]{QuotesContract.StockEntry._ID},
-                null,
-                null,
-                null);
-
-        if (!stockCursor.moveToFirst()) {
             int inserted = 0;
-            // add to database if there werent any stocks!
             if (cVVector.size() > 0) {
+                //Delete old quotes, we just keep the fresh ones
+                getContext().getContentResolver().delete(QuotesContract.StockQuotesEntry.CONTENT_URI,
+                        null,
+                        null);
+
+                //Insert the new ones.
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
-                inserted = getContext().getContentResolver().bulkInsert(QuotesContract.StockEntry.CONTENT_URI, cvArray);
+                inserted = getContext().getContentResolver().bulkInsert(QuotesContract.StockQuotesEntry.CONTENT_URI, cvArray);
             }
 
             Log.d(LOG_TAG, "FetchStockDataTask Complete. " + inserted + " Inserted");
-        }
+
     }
 
     private void getBondQuotesFromJson(JSONArray quotesArray) throws JSONException {
         final String QUOTE_NAME = "FullName";
         final String SYMBOL_NAME = "TickerSymbol";
 
+        final String LAST_QUOTE = "LastQuote";
+        final String LAST_TRADED_PRICE = "LastTradedPrice";
+        final String CURRENCY = "Currency";
+        final String LAST_CHANGE_IN_PRICE_PERCENTAGE = "LastChangeInPricePercentage";
+        final String LAST_CHANGE_IN_PRICE = "LastChangeInPrice";
+        final String LAST_TRADE_DATE = "LastTradeDate";
+
         Vector<ContentValues> cVVector = new Vector<ContentValues>(quotesArray.length());
 
         for (int i = 0; i < quotesArray.length(); i++) {
             String symbol;
             String fullName;
+            long bondId;
+            JSONObject lastQuote;
 
             JSONObject quote = quotesArray.getJSONObject(i);
             fullName = quote.getString(QUOTE_NAME);
             symbol = quote.getString(SYMBOL_NAME);
+            lastQuote = quote.getJSONObject(LAST_QUOTE);
 
-            ContentValues quoteValues = new ContentValues();
+            Cursor bondCursor = getContext().getContentResolver().query(
+                    QuotesContract.BondEntry.CONTENT_URI,
+                    new String[]{QuotesContract.BondEntry._ID},
+                    QuotesContract.BondEntry.COLUMN_SYMBOL + " = ?",
+                    new String[]{ symbol },
+                    null);
 
-            quoteValues.put(QuotesContract.BondEntry.COLUMN_SYMBOL, symbol);
-            quoteValues.put(QuotesContract.BondEntry.COLUMN_FULLNAME, fullName);
-            cVVector.add(quoteValues);
-        }
+            if (bondCursor.moveToFirst()) {
+                int bondIdIndex = bondCursor.getColumnIndex(QuotesContract.BondEntry._ID);
+                bondId = bondCursor.getInt(bondIdIndex);
+            }
+            else{
+                ContentValues bondValues = new ContentValues();
+                bondValues.put(QuotesContract.BondEntry.COLUMN_SYMBOL, symbol);
+                bondValues.put(QuotesContract.BondEntry.COLUMN_FULLNAME, fullName);
 
-        Cursor bondCursor = getContext().getContentResolver().query(
-                QuotesContract.BondEntry.CONTENT_URI,
-                new String[]{QuotesContract.BondEntry._ID},
-                null,
-                null,
-                null);
+                Uri insertedUri = getContext().getContentResolver().insert(
+                        QuotesContract.BondEntry.CONTENT_URI,
+                        bondValues
+                );
 
-        if (!bondCursor.moveToFirst()) {
-            int inserted = 0;
-            // add to database if there werent any stocks!
-            if (cVVector.size() > 0) {
-                ContentValues[] cvArray = new ContentValues[cVVector.size()];
-                cVVector.toArray(cvArray);
-                inserted = getContext().getContentResolver().bulkInsert(QuotesContract.BondEntry.CONTENT_URI, cvArray);
+                bondId = ContentUris.parseId(insertedUri);
             }
 
-            Log.d(LOG_TAG, "FetchBondDataTask Complete. " + inserted + " Inserted");
+            ContentValues bondQuoteValues = new ContentValues();
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_BOND_ID, bondId);
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_CURRENCY, lastQuote.getString(CURRENCY));
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_LAST_CHANGE, lastQuote.getDouble(LAST_CHANGE_IN_PRICE));
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE, lastQuote.getDouble(LAST_CHANGE_IN_PRICE_PERCENTAGE));
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_LAST_TRADE_DATE, lastQuote.getString(LAST_TRADE_DATE));
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_LAST_TRADE_PRICE, lastQuote.getDouble(LAST_TRADED_PRICE));
+
+            cVVector.add(bondQuoteValues);
         }
+
+        int inserted = 0;
+        if (cVVector.size() > 0) {
+            //Delete old quotes, we just keep the fresh ones
+            getContext().getContentResolver().delete(QuotesContract.BondQuotesEntry.CONTENT_URI,
+                    null,
+                    null);
+
+            //Insert the new ones.
+            ContentValues[] cvArray = new ContentValues[cVVector.size()];
+            cVVector.toArray(cvArray);
+            inserted = getContext().getContentResolver().bulkInsert(QuotesContract.BondQuotesEntry.CONTENT_URI, cvArray);
+        }
+
+        Log.d(LOG_TAG, "FetchBondDataTask Complete. " + inserted + " Inserted");
     }
 
     /**
