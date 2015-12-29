@@ -62,7 +62,7 @@ public class StockQuotesFragment extends Fragment implements LoaderManager.Loade
         Uri stocksUri = QuotesContract.StockQuotesEntry.CONTENT_URI;
 
         Cursor cur = getActivity().getContentResolver().query(stocksUri,
-                null, null, null, sortOrder);
+                STOCK_QUOTE_COLUMNS, null, null, sortOrder);
 
         mQuotesAdapter = new StockQuotesAdapter(getActivity(), cur, 0);
 

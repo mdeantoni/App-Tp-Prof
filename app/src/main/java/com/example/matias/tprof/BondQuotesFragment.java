@@ -57,7 +57,7 @@ public class BondQuotesFragment extends Fragment implements LoaderManager.Loader
         Uri bondsUri = QuotesContract.BondQuotesEntry.CONTENT_URI;
 
         Cursor cur = getActivity().getContentResolver().query(bondsUri,
-                null, null, null, sortOrder);
+                BOND_QUOTE_COLUMNS, null, null, sortOrder);
 
         mQuotesAdapter = new BondQuotesAdapter(getActivity(), cur, 0);
 
