@@ -10,6 +10,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.matias.tprof.data.QuotesContract;
@@ -18,6 +19,10 @@ import com.example.matias.tprof.sync.AppSyncAdapter;
 
 public class StockQuotesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
+
+        public interface OnStockQuoteSelectedListener {
+            public void onStockQuoteSelected();
+        }
 
     private static final int STOCKS_LOADER = 0;
 
@@ -70,6 +75,18 @@ public class StockQuotesFragment extends Fragment implements LoaderManager.Loade
         ListView listView = (ListView) rootView.findViewById(R.id.listview_stock_quotes);
         listView.setAdapter(mQuotesAdapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                if (cursor != null) {
+                      ((OnStockQuoteSelectedListener) getActivity())
+                            .onStockQuoteSelected();
+                }
+            }
+        });
+
         return rootView;
 
     }
@@ -83,7 +100,6 @@ public class StockQuotesFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onStart() {
         super.onStart();
-        updateQuotes();
     }
 
     private void updateQuotes() {

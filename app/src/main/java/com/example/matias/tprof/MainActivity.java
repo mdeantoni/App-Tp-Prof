@@ -1,5 +1,6 @@
 package com.example.matias.tprof;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,18 +16,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.matias.tprof.detail.DetailActivity;
+import com.example.matias.tprof.sync.AppSyncAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BondQuotesFragment.OnBondQuoteSelectedListener,
+                                                               StockQuotesFragment.OnStockQuoteSelectedListener {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private static boolean appIsSynced = false; //ESTO ESTA MAL Y HAY QUE CAMBIARLO SI O SI!!!!!
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -67,5 +72,28 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBondQuoteSelected() {
+        Intent bondQuoteIntent = new Intent(this, DetailActivity.class)
+                .putExtra(Intent.EXTRA_TEXT,"BONO");
+        startActivity(bondQuoteIntent);
+    }
+
+    @Override
+    public void onStockQuoteSelected() {
+        Intent stockQuoteIntent = new Intent(this, DetailActivity.class)
+                .putExtra(Intent.EXTRA_TEXT,"ACCION");
+        startActivity(stockQuoteIntent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(!appIsSynced) {
+            AppSyncAdapter.syncImmediately(this);
+            appIsSynced = true;
+        }
     }
 }

@@ -7,5 +7,6 @@
 
     <string name="sync_account_type">tprof.example.com</string>
     <string name="content_authority">com.example.matias.tprof</string>
+    <string name="title_activity_detail">DetailActivity</string>
 
 </resources>

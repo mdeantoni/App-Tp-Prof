@@ -11,6 +11,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.matias.tprof.data.QuotesContract;
@@ -18,6 +19,10 @@ import com.example.matias.tprof.sync.AppSyncAdapter;
 
 
 public class BondQuotesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    public interface OnBondQuoteSelectedListener {
+        public void onBondQuoteSelected();
+    }
 
     private static final int BONDS_LOADER = 1;
 
@@ -65,6 +70,18 @@ public class BondQuotesFragment extends Fragment implements LoaderManager.Loader
         ListView listView = (ListView) rootView.findViewById(R.id.listview_bond_quotes);
         listView.setAdapter(mQuotesAdapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                if (cursor != null) {
+                    ((OnBondQuoteSelectedListener) getActivity())
+                            .onBondQuoteSelected();
+                }
+            }
+        });
+
         return rootView;
 
     }
@@ -78,7 +95,6 @@ public class BondQuotesFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onStart() {
         super.onStart();
-        updateQuotes();
     }
 
     private void updateQuotes() {
