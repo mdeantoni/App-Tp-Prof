@@ -25,14 +25,19 @@ public class DetailActivity extends AppCompatActivity {
         if(savedInstanceState == null){
             Intent intent = getIntent();
             Fragment fragment = null;
+            Bundle arguments = new Bundle();
             if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
                 if(intent.getStringExtra(Intent.EXTRA_TEXT).equals("ACCION")){
+                    arguments.putParcelable(StockDetailFragment.DETAIL_URI, getIntent().getData());
                     fragment = new StockDetailFragment();
                 }
                 else{
+                    arguments.putParcelable(BondDetailFragment.DETAIL_URI, getIntent().getData());
                     fragment = new BondDetailFragment();
                 }
             }
+
+            fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.detail_fragment_container, fragment)
                     .commit();

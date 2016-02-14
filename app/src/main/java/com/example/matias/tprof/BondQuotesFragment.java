@@ -21,7 +21,7 @@ import com.example.matias.tprof.sync.AppSyncAdapter;
 public class BondQuotesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public interface OnBondQuoteSelectedListener {
-        public void onBondQuoteSelected();
+        public void onBondQuoteSelected(Uri bondQuoteUri);
     }
 
     private static final int BONDS_LOADER = 1;
@@ -77,7 +77,7 @@ public class BondQuotesFragment extends Fragment implements LoaderManager.Loader
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (cursor != null) {
                     ((OnBondQuoteSelectedListener) getActivity())
-                            .onBondQuoteSelected();
+                            .onBondQuoteSelected(QuotesContract.BondQuotesEntry.buildBondQuoteUri(cursor.getInt(COL_BOND_QUOTE_ID)));
                 }
             }
         });

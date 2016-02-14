@@ -22,6 +22,8 @@ public class QuotesProvider extends ContentProvider {
     static final int STOCK_QUOTE = 150;
     static final int BOND = 200;
     static final int BOND_QUOTE = 250;
+    static final int BOND_DETAIL = 270;
+    static final int STOCK_DETAIL = 290;
 
     private static final SQLiteQueryBuilder sStockQuotesQueryBuilder;
     private static final SQLiteQueryBuilder sBondQuotesQueryBuilder;
@@ -56,6 +58,8 @@ public class QuotesProvider extends ContentProvider {
         matcher.addURI(authority, QuotesContract.PATH_STOCKS, STOCK);
         matcher.addURI(authority, QuotesContract.PATH_STOCK_QUOTES, STOCK_QUOTE);
         matcher.addURI(authority, QuotesContract.PATH_BOND_QUOTES, BOND_QUOTE);
+        matcher.addURI(authority, QuotesContract.PATH_STOCK_QUOTES + "/#", STOCK_DETAIL);
+        matcher.addURI(authority, QuotesContract.PATH_BOND_QUOTES+ "/#", BOND_DETAIL);
         return matcher;
     }
 
@@ -114,6 +118,30 @@ public class QuotesProvider extends ContentProvider {
                         sortOrder);
                 break;
             }
+            case STOCK_DETAIL: {
+                String stockDetailId = QuotesContract.StockQuotesEntry.getDetailIdFrom(uri);
+                retCursor = sStockQuotesQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                        projection,
+                        QuotesContract.StockQuotesEntry.TABLE_NAME +
+                                "." + QuotesContract.StockQuotesEntry._ID + " = ?",
+                        new String[]{stockDetailId},
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
+            case BOND_DETAIL: {
+                String bondDetailUri = QuotesContract.BondQuotesEntry.getDetailIdFrom(uri);
+                retCursor = sBondQuotesQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                        projection,
+                        QuotesContract.BondQuotesEntry.TABLE_NAME +
+                                "." + QuotesContract.BondQuotesEntry._ID + " = ?",
+                        new String[]{bondDetailUri},
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -136,6 +164,10 @@ public class QuotesProvider extends ContentProvider {
                 return QuotesContract.StockQuotesEntry.CONTENT_TYPE;
             case BOND_QUOTE:
                 return QuotesContract.BondQuotesEntry.CONTENT_TYPE;
+            case STOCK_DETAIL:
+                return QuotesContract.StockQuotesEntry.CONTENT_ITEM_TYPE;
+            case BOND_DETAIL:
+                return QuotesContract.BondQuotesEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

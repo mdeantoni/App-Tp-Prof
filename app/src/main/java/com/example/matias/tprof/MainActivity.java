@@ -1,6 +1,7 @@
 package com.example.matias.tprof;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -75,15 +76,17 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
     }
 
     @Override
-    public void onBondQuoteSelected() {
+    public void onBondQuoteSelected(Uri bondDetailURi) {
         Intent bondQuoteIntent = new Intent(this, DetailActivity.class)
+                .setData(bondDetailURi)
                 .putExtra(Intent.EXTRA_TEXT,"BONO");
         startActivity(bondQuoteIntent);
     }
 
     @Override
-    public void onStockQuoteSelected() {
+    public void onStockQuoteSelected(Uri stockDetailUri) {
         Intent stockQuoteIntent = new Intent(this, DetailActivity.class)
+                .setData(stockDetailUri)
                 .putExtra(Intent.EXTRA_TEXT,"ACCION");
         startActivity(stockQuoteIntent);
     }

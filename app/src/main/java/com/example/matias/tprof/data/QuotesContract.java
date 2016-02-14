@@ -84,6 +84,10 @@ public class QuotesContract {
         public static Uri buildStockQuoteUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
+
+        public static String getDetailIdFrom(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
     }
 
     public static final class BondQuotesEntry implements BaseColumns {
@@ -106,6 +110,10 @@ public class QuotesContract {
 
         public static Uri buildBondQuoteUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static String getDetailIdFrom(Uri uri) {
+            return uri.getPathSegments().get(1);
         }
     }
 }

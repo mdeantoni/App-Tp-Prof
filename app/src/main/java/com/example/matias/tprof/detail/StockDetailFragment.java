@@ -1,24 +1,136 @@
 package com.example.matias.tprof.detail;
 
+import android.database.Cursor;
+import android.graphics.Color;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.matias.tprof.R;
+import com.example.matias.tprof.StockQuotesFragment;
+import com.example.matias.tprof.data.QuotesContract;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class StockDetailFragment extends Fragment {
+public class StockDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    static final String DETAIL_URI = "STOCK_DETAIL_URI";
+
+    private static final int STOCK_DETAIL_LOADER = 3;
+
+    private Uri mUri;
+
+    // This has to change when details table and columns are implemented.
+
+    private static final String[] STOCK_QUOTE_COLUMNS = {
+            QuotesContract.StockEntry.TABLE_NAME + "." + QuotesContract.StockEntry._ID,
+            QuotesContract.StockEntry.COLUMN_FULLNAME,
+            QuotesContract.StockEntry.COLUMN_SYMBOL,
+            QuotesContract.StockQuotesEntry.TABLE_NAME + "." + QuotesContract.StockQuotesEntry._ID,
+            QuotesContract.StockQuotesEntry.COLUMN_LAST_TRADE_PRICE,
+            QuotesContract.StockQuotesEntry.COLUMN_LAST_TRADE_DATE,
+            QuotesContract.StockQuotesEntry.COLUMN_LAST_CHANGE,
+            QuotesContract.StockQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE,
+            QuotesContract.StockQuotesEntry.COLUMN_CURRENCY,
+    };
+
+    static final int COL_STOCK_ID = 0;
+    static final int COL_FULLNAME = 1;
+    static final int COL_SYMBOL = 2;
+    static final int COL_STOCK_QUOTE_ID = 3;
+    static final int COL_LAST_PRICE = 4;
+    static final int COL_LAST_TRADE_DATE = 5;
+    static final int COL_LAST_CHANGE = 6;
+    static final int COL_LAST_CHANGE_PERCENTAGE = 7;
+    static final int COL_CURRENCY = 8;
 
     public StockDetailFragment() {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(STOCK_DETAIL_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mUri = arguments.getParcelable(StockDetailFragment.DETAIL_URI);
+        }
+
         return inflater.inflate(R.layout.fragment_stock_detail, container, false);
     }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        if ( null != mUri ) {
+            // Now create and return a CursorLoader that will take care of
+            // creating a Cursor for the data being displayed.
+            return new CursorLoader(
+                    getActivity(),
+                    mUri,
+                    STOCK_QUOTE_COLUMNS,
+                    null,
+                    null,
+                    null
+            );
+        }
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (cursor != null && cursor.moveToFirst()) {
+
+            Date quoteDate = null;
+            SimpleDateFormat inputFormat =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm dd/MM");
+            String date = cursor.getString(StockDetailFragment.COL_LAST_TRADE_DATE);
+            String changeText = cursor.getString(StockDetailFragment.COL_LAST_CHANGE) + " "
+                    + "(" + cursor.getString(StockDetailFragment.COL_LAST_CHANGE_PERCENTAGE) + "%)";
+
+            try {
+                quoteDate = inputFormat.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+            TextView quote = (TextView) getView().findViewById(R.id.stock_detail_ticker);
+            TextView change = (TextView) getView().findViewById(R.id.stock_detail_lastchange);
+            TextView price = (TextView) getView().findViewById(R.id.stock_detail_price);
+            TextView datetv = (TextView) getView().findViewById(R.id.stock_detail_datetime);
+
+            if(cursor.getDouble(StockDetailFragment.COL_LAST_CHANGE) > 0){
+                change.setTextColor(Color.GREEN);
+                changeText = "+" + changeText;
+            }else{
+                change.setTextColor(Color.RED);
+            }
+
+            toolbar.setTitle(cursor.getString(StockDetailFragment.COL_FULLNAME));
+            quote.setText(cursor.getString(StockDetailFragment.COL_SYMBOL));
+            change.setText(changeText);
+            price.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_LAST_PRICE));
+            datetv.setText(outputFormat.format(quoteDate));
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) { }
 }
