@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
     }
 
     @Override
-    public void onStockQuoteSelected(Uri stockDetailUri) {
+         public void onStockQuoteSelected(Uri stockDetailUri) {
         Intent stockQuoteIntent = new Intent(this, DetailActivity.class)
                 .setData(stockDetailUri)
                 .putExtra(Intent.EXTRA_TEXT,"ACCION");

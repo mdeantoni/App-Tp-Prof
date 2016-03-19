@@ -17,9 +17,14 @@ import android.widget.TextView;
 import com.example.matias.tprof.R;
 import com.example.matias.tprof.StockQuotesFragment;
 import com.example.matias.tprof.data.QuotesContract;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -74,7 +79,9 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
             mUri = arguments.getParcelable(StockDetailFragment.DETAIL_URI);
         }
 
-        return inflater.inflate(R.layout.fragment_stock_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_stock_detail, container, false);
+
+        return rootView;
     }
 
     @Override
@@ -128,6 +135,45 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
             change.setText(changeText);
             price.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_LAST_PRICE));
             datetv.setText(outputFormat.format(quoteDate));
+
+
+            //Charting
+            LineChart lineChart = (LineChart) getView().findViewById(R.id.stock_detail_chart);
+            // creating list of entry
+            ArrayList<Entry> entries = new ArrayList<>();
+            entries.add(new Entry(4f, 0));
+            entries.add(new Entry(8f, 1));
+            entries.add(new Entry(6f, 2));
+            entries.add(new Entry(2f, 3));
+            entries.add(new Entry(18f, 4));
+            entries.add(new Entry(9f, 5));
+            entries.add(new Entry(9f, 15));
+            LineDataSet dataset = new LineDataSet(entries, "# of Calls");
+            ArrayList<String> labels = new ArrayList<String>();
+            labels.add("January");
+            labels.add("January");
+            labels.add("January");
+            labels.add("February");
+            labels.add("February");
+            labels.add("February");
+            labels.add("March");
+            labels.add("March");
+            labels.add("March");
+            labels.add("April");
+            labels.add("April");
+            labels.add("April");
+            labels.add("May");
+            labels.add("May");
+            labels.add("May");
+            labels.add("June");
+            labels.add("June");
+            labels.add("June");
+            LineData data = new LineData(labels, dataset);
+            lineChart.getXAxis().setLabelsToSkip(1);
+
+            lineChart.setData(data); // set the data and list of lables into chart
+
+
         }
     }
 

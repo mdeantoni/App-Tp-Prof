@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 10;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -68,10 +68,34 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 QuotesContract.BondEntry.TABLE_NAME + " (" + QuotesContract.BondEntry._ID + ") " +
                 " );";
 
+        final String SQL_CREATE_STOCK_INTRADAY_PRICE_TABLE = "CREATE TABLE " + QuotesContract.StockIntradayPriceEntry.TABLE_NAME + " (" +
+                QuotesContract.StockIntradayPriceEntry._ID + " INTEGER PRIMARY KEY," +
+
+                QuotesContract.StockIntradayPriceEntry.COLUMN_TRADE_PRICE +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.StockIntradayPriceEntry.COLUMN_TRADE_TIME +  " DATETIME NOT NULL, " +
+                QuotesContract.StockIntradayPriceEntry.COLUMN_STOCK_ID +  " INT NOT NULL, " +
+
+                " FOREIGN KEY (" + QuotesContract.StockIntradayPriceEntry.COLUMN_STOCK_ID + ") REFERENCES " +
+                QuotesContract.StockEntry.TABLE_NAME + " (" + QuotesContract.StockEntry._ID + ") " +
+                " );";
+
+        final String SQL_CREATE_BOND_INTRADAY_PRICE_TABLE = "CREATE TABLE " + QuotesContract.BondIntradayPriceEntry.TABLE_NAME + " (" +
+                QuotesContract.BondIntradayPriceEntry._ID + " INTEGER PRIMARY KEY," +
+
+                QuotesContract.BondIntradayPriceEntry.COLUMN_TRADE_PRICE +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.BondIntradayPriceEntry.COLUMN_TRADE_TIME +  " DATETIME NOT NULL, " +
+                QuotesContract.BondIntradayPriceEntry.COLUMN_BOND_ID +  " INT NOT NULL, " +
+
+                " FOREIGN KEY (" + QuotesContract.BondIntradayPriceEntry.COLUMN_BOND_ID + ") REFERENCES " +
+                QuotesContract.BondEntry.TABLE_NAME + " (" + QuotesContract.BondEntry._ID + ") " +
+                " );";
+
         sqLiteDatabase.execSQL(SQL_CREATE_STOCKS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_BONDS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_STOCK_QUOTES_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_BOND_QUOTES_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_BOND_INTRADAY_PRICE_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_STOCK_INTRADAY_PRICE_TABLE);
     }
 
     @Override
@@ -80,6 +104,8 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.BondEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.StockQuotesEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.BondQuotesEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.StockIntradayPriceEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.BondIntradayPriceEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

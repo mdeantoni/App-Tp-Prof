@@ -140,13 +140,16 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
     private void getStockQuotesFromJson(JSONArray quotesArray) throws JSONException {
         final String QUOTE_NAME = "FullName";
         final String SYMBOL_NAME = "TickerSymbol";
-
+        final String INTRADAY_PRICES = "IntradayPrices";
+        final String INTRADAY_PRICE_DATE = "DateTime";
+        final String INTRADAY_PRICE_PRICE = "Price";
         final String LAST_QUOTE = "LastQuote";
         final String LAST_TRADED_PRICE = "LastTradedPrice";
         final String CURRENCY = "Currency";
         final String LAST_CHANGE_IN_PRICE_PERCENTAGE = "LastChangeInPricePercentage";
         final String LAST_CHANGE_IN_PRICE = "LastChangeInPrice";
         final String LAST_TRADE_DATE = "LastTradeDate";
+
 
         Vector<ContentValues> cVVector = new Vector<ContentValues>(quotesArray.length());
 
@@ -155,8 +158,10 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
             String fullName;
             long stockId;
             JSONObject lastQuote;
+            JSONArray intradayPrices;
 
             JSONObject quote = quotesArray.getJSONObject(i);
+            intradayPrices = quote.getJSONArray(INTRADAY_PRICES);
             fullName = quote.getString(QUOTE_NAME);
             symbol = quote.getString(SYMBOL_NAME);
             lastQuote = quote.getJSONObject(LAST_QUOTE);
@@ -194,6 +199,39 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
             stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_LAST_TRADE_PRICE, lastQuote.getDouble(LAST_TRADED_PRICE));
 
             cVVector.add(stockQuoteValues);
+
+            Vector<ContentValues> intPricevector = new Vector<ContentValues>(intradayPrices.length());
+            for (int priceIndex = 0; priceIndex < intradayPrices.length(); priceIndex++) {
+                String time;
+                Double price;
+
+                JSONObject priceObject = intradayPrices.getJSONObject(priceIndex);
+                time = priceObject.getString(INTRADAY_PRICE_DATE);
+                price = priceObject.getDouble(INTRADAY_PRICE_PRICE);
+
+                ContentValues intradayPriceValue = new ContentValues();
+                intradayPriceValue.put(QuotesContract.StockIntradayPriceEntry.COLUMN_STOCK_ID, stockId);
+                intradayPriceValue.put(QuotesContract.StockIntradayPriceEntry.COLUMN_TRADE_PRICE, price);
+                intradayPriceValue.put(QuotesContract.StockIntradayPriceEntry.COLUMN_TRADE_TIME, time);
+
+                intPricevector.add(intradayPriceValue);
+            }
+
+            int insertedIntraday = 0;
+            if (intPricevector.size() > 0) {
+                //Delete old intraday, we just keep the fresh ones
+                getContext().getContentResolver().delete(QuotesContract.StockIntradayPriceEntry.CONTENT_URI,
+                        QuotesContract.StockIntradayPriceEntry.COLUMN_STOCK_ID + " = ?",
+                        new String[] { Long.toString(stockId) });
+
+                //Insert the new ones.
+                ContentValues[] cvArray = new ContentValues[intPricevector.size()];
+                intPricevector.toArray(cvArray);
+                insertedIntraday = getContext().getContentResolver().bulkInsert(QuotesContract.StockIntradayPriceEntry.CONTENT_URI, cvArray);
+            }
+
+            Log.d(LOG_TAG, "Intraday prices insertion for stock " + stockId  + " done. " +insertedIntraday + " Inserted");
+
         }
 
             int inserted = 0;

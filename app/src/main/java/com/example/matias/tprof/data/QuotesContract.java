@@ -24,6 +24,10 @@ public class QuotesContract {
     public static final String PATH_BONDS = "bonds";
     public static final String PATH_STOCK_QUOTES = "stock_quotes";
     public static final String PATH_BOND_QUOTES = "bond_quotes";
+    public static final String PATH_STOCK_INTRADAY_PRICES = "stock_intraday_prices";
+    public static final String PATH_BOND_INTRADAY_PRICES = "bond_intraday_prices";
+    public static final String PATH_STOCK_DETAILS = "stock_details";
+    public static final String PATH_BOND_DETAILS = "bond_details";
 
     public static final class StockEntry implements BaseColumns {
 
@@ -113,6 +117,54 @@ public class QuotesContract {
         }
 
         public static String getDetailIdFrom(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+    }
+
+    public static final class StockIntradayPriceEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_STOCK_INTRADAY_PRICES).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_STOCK_INTRADAY_PRICES;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_STOCK_INTRADAY_PRICES;
+
+        public static final String TABLE_NAME = "Stock_Intraday_Price";
+        public static final String COLUMN_TRADE_PRICE = "TradePrice";
+        public static final String COLUMN_TRADE_TIME = "TradeTime";
+        public static final String COLUMN_STOCK_ID = "StockId";
+
+        public static Uri buildStockIntradayPriceUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static String getStockIdFrom(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+    }
+
+    public static final class BondIntradayPriceEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_BOND_INTRADAY_PRICES).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_BOND_INTRADAY_PRICES;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_BOND_INTRADAY_PRICES;
+
+        public static final String TABLE_NAME = "Bonds_Intraday_Price";
+        public static final String COLUMN_TRADE_PRICE = "TradePrice";
+        public static final String COLUMN_TRADE_TIME = "TradeTime";
+        public static final String COLUMN_BOND_ID = "BondId";
+
+        public static Uri buildBondIntradayPriceUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static String getBondIdFrom(Uri uri) {
             return uri.getPathSegments().get(1);
         }
     }
