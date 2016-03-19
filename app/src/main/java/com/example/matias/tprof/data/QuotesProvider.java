@@ -130,8 +130,8 @@ public class QuotesProvider extends ContentProvider {
                 String stockDetailId = QuotesContract.StockQuotesEntry.getDetailIdFrom(uri);
                 retCursor = sStockQuotesQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                         projection,
-                        QuotesContract.StockEntry.TABLE_NAME +
-                                "." + QuotesContract.StockEntry._ID + " = ?",
+                        QuotesContract.StockQuotesEntry.TABLE_NAME +
+                                "." + QuotesContract.StockQuotesEntry._ID + " = ?",
                         new String[]{stockDetailId},
                         null,
                         null,
@@ -142,8 +142,8 @@ public class QuotesProvider extends ContentProvider {
                 String bondDetailUri = QuotesContract.BondQuotesEntry.getDetailIdFrom(uri);
                 retCursor = sBondQuotesQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                         projection,
-                        QuotesContract.BondEntry.TABLE_NAME +
-                                "." + QuotesContract.BondEntry._ID + " = ?",
+                        QuotesContract.BondQuotesEntry.TABLE_NAME +
+                                "." + QuotesContract.BondQuotesEntry._ID + " = ?",
                         new String[]{bondDetailUri},
                         null,
                         null,

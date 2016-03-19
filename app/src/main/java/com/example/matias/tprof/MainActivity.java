@@ -76,18 +76,20 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
     }
 
     @Override
-    public void onBondQuoteSelected(Uri bondDetailURi) {
+    public void onBondQuoteSelected(Uri bondDetailURi,int bondId) {
         Intent bondQuoteIntent = new Intent(this, DetailActivity.class)
                 .setData(bondDetailURi)
-                .putExtra(Intent.EXTRA_TEXT,"BONO");
+                .putExtra(Intent.EXTRA_TEXT,"BONO")
+                .putExtra("com.example.matias.tprof.Identifier",bondId);
         startActivity(bondQuoteIntent);
     }
 
     @Override
-         public void onStockQuoteSelected(Uri stockDetailUri) {
+         public void onStockQuoteSelected(Uri stockDetailUri,int stockId) {
         Intent stockQuoteIntent = new Intent(this, DetailActivity.class)
                 .setData(stockDetailUri)
-                .putExtra(Intent.EXTRA_TEXT,"ACCION");
+                .putExtra(Intent.EXTRA_TEXT, "ACCION")
+                .putExtra("com.example.matias.tprof.Identifier",stockId);
         startActivity(stockQuoteIntent);
     }
 

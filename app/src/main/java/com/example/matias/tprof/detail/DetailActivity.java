@@ -29,10 +29,12 @@ public class DetailActivity extends AppCompatActivity {
             if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
                 if(intent.getStringExtra(Intent.EXTRA_TEXT).equals("ACCION")){
                     arguments.putParcelable(StockDetailFragment.DETAIL_URI, getIntent().getData());
+                    arguments.putInt(StockDetailFragment.STOCK_ID, intent.getIntExtra("com.example.matias.tprof.Identifier",0));
                     fragment = new StockDetailFragment();
                 }
                 else{
                     arguments.putParcelable(BondDetailFragment.DETAIL_URI, getIntent().getData());
+                    arguments.putInt(BondDetailFragment.BOND_ID, intent.getIntExtra("com.example.matias.tprof.Identifier", 0));
                     fragment = new BondDetailFragment();
                 }
             }

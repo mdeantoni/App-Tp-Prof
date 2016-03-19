@@ -62,8 +62,8 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
             // Possible parameters are avaiable at OWM's forecast API page, at
             // http://openweathermap.org/API#forecast
             final String BASE_URL =
-                    "http://10.0.2.2:50914/api/sync";
-            // "http://192.168.0.17:50914/api/sync";
+                //    "http://10.0.2.2:50914/api/sync";
+             "http://192.168.0.17:50914/api/sync";
 
             Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                     .build();
@@ -261,6 +261,9 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
         final String LAST_CHANGE_IN_PRICE_PERCENTAGE = "LastChangeInPricePercentage";
         final String LAST_CHANGE_IN_PRICE = "LastChangeInPrice";
         final String LAST_TRADE_DATE = "LastTradeDate";
+        final String INTRADAY_PRICES = "IntradayPrices";
+        final String INTRADAY_PRICE_DATE = "DateTime";
+        final String INTRADAY_PRICE_PRICE = "Price";
 
         Vector<ContentValues> cVVector = new Vector<ContentValues>(quotesArray.length());
 
@@ -269,8 +272,10 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
             String fullName;
             long bondId;
             JSONObject lastQuote;
+            JSONArray intradayPrices;
 
             JSONObject quote = quotesArray.getJSONObject(i);
+            intradayPrices = quote.getJSONArray(INTRADAY_PRICES);
             fullName = quote.getString(QUOTE_NAME);
             symbol = quote.getString(SYMBOL_NAME);
             lastQuote = quote.getJSONObject(LAST_QUOTE);
@@ -308,6 +313,38 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
             bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_LAST_TRADE_PRICE, lastQuote.getDouble(LAST_TRADED_PRICE));
 
             cVVector.add(bondQuoteValues);
+
+            Vector<ContentValues> intPricevector = new Vector<ContentValues>(intradayPrices.length());
+            for (int priceIndex = 0; priceIndex < intradayPrices.length(); priceIndex++) {
+                String time;
+                Double price;
+
+                JSONObject priceObject = intradayPrices.getJSONObject(priceIndex);
+                time = priceObject.getString(INTRADAY_PRICE_DATE);
+                price = priceObject.getDouble(INTRADAY_PRICE_PRICE);
+
+                ContentValues intradayPriceValue = new ContentValues();
+                intradayPriceValue.put(QuotesContract.BondIntradayPriceEntry.COLUMN_BOND_ID, bondId);
+                intradayPriceValue.put(QuotesContract.BondIntradayPriceEntry.COLUMN_TRADE_PRICE, price);
+                intradayPriceValue.put(QuotesContract.BondIntradayPriceEntry.COLUMN_TRADE_TIME, time);
+
+                intPricevector.add(intradayPriceValue);
+            }
+
+            int insertedIntraday = 0;
+            if (intPricevector.size() > 0) {
+                //Delete old intraday, we just keep the fresh ones
+                getContext().getContentResolver().delete(QuotesContract.BondIntradayPriceEntry.CONTENT_URI,
+                        QuotesContract.BondIntradayPriceEntry.COLUMN_BOND_ID + " = ?",
+                        new String[] { Long.toString(bondId) });
+
+                //Insert the new ones.
+                ContentValues[] cvArray = new ContentValues[intPricevector.size()];
+                intPricevector.toArray(cvArray);
+                insertedIntraday = getContext().getContentResolver().bulkInsert(QuotesContract.BondIntradayPriceEntry.CONTENT_URI, cvArray);
+            }
+
+            Log.d(LOG_TAG, "Intraday prices insertion for bond " + bondId  + " done. " +insertedIntraday + " Inserted");
         }
 
         int inserted = 0;
