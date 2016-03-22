@@ -61,5 +61,147 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Maximo"
+                android:id="@+id/textView" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="13.21123123"
+                android:id="@+id/textView2" />
+
+            <Space
+                android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_height="20px" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Minimo"
+                android:id="@+id/textView3" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="11.71212"
+                android:id="@+id/textView4" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="1dp"
+                android:background="#888888" />
+            <Space
+                android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_height="1px" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="1dp"
+                android:background="#888888" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Cierre"
+                android:id="@+id/textView5" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="10.5"
+                android:id="@+id/textView6" />
+
+            <Space
+                android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_height="20px" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Apertura"
+                android:id="@+id/textView7" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="12.9"
+                android:id="@+id/textView8" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="1dp"
+                android:background="#888888" />
+            <Space
+                android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_height="1px" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="1dp"
+                android:background="#888888" />
+
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>
 
