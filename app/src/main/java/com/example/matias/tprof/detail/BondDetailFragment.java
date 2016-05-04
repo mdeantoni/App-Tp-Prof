@@ -208,7 +208,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                         e.printStackTrace();
                     }
 
-                    entries.add(new Entry(cursor.getFloat(COL_INT_TRADE_PRICE), cursor.getPosition() - 1));
+                    entries.add(new Entry(cursor.getFloat(COL_INT_TRADE_PRICE), cursor.getPosition()));
                     labels.add(outputFormat.format(quoteDate));
                 }
                 LineDataSet dataset = new LineDataSet(entries, "Precio");

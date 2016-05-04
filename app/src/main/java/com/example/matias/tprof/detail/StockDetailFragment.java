@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.matias.tprof.R;
@@ -40,7 +41,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
     private static final int STOCK_DETAIL_LOADER = 3;
     private static final int STOCK_INTRADAY_LOADER = 5;
 
-
+    private LineData intradayData;
     private Uri mUri;
     private int stockId;
 
@@ -101,7 +102,13 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
 
         View rootView = inflater.inflate(R.layout.fragment_stock_detail, container, false);
 
-        LineChart lineChart = (LineChart) rootView.findViewById(R.id.stock_detail_chart);
+        Button buttonDay = (Button) rootView.findViewById(R.id.button_stock_detail_day);
+        Button buttonWeek = (Button) rootView.findViewById(R.id.button_stock_detail_week);
+        Button buttonMonth = (Button) rootView.findViewById(R.id.button_stock_detail_month);
+        Button button6Month = (Button) rootView.findViewById(R.id.button_stock_detail_sixmonth);
+        Button buttonYear = (Button) rootView.findViewById(R.id.button_stock_detail_year);
+
+        final LineChart lineChart = (LineChart) rootView.findViewById(R.id.stock_detail_chart);
         lineChart.getAxisRight().setEnabled(false);
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getAxisLeft().setDrawAxisLine(false);
@@ -112,6 +119,60 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
         lineChart.setAutoScaleMinMaxEnabled(true);
         lineChart.setDescription("");
         lineChart.setTouchEnabled(false);
+
+
+        buttonDay.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+                lineChart.setData(intradayData);
+                lineChart.invalidate();
+            }
+        });
+
+        buttonWeek.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+            }
+        });
+
+        buttonMonth.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+                ArrayList<Entry> entries = new ArrayList<>();
+                entries.add(new Entry(4f, 0));
+                entries.add(new Entry(8f, 1));
+                entries.add(new Entry(6f, 2));
+                entries.add(new Entry(2f, 3));
+                entries.add(new Entry(18f, 4));
+                entries.add(new Entry(9f, 5));
+
+                LineDataSet dataset = new LineDataSet(entries, "# of Calls");
+
+                ArrayList<String> labels = new ArrayList<String>();
+                labels.add("January");
+                labels.add("February");
+                labels.add("March");
+                labels.add("April");
+                labels.add("May");
+                labels.add("June");
+
+                LineData data = new LineData(labels, dataset);
+                lineChart.setData(data); // set the data and list of lables into chart
+                lineChart.invalidate();
+            }
+        });
+
+        button6Month.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+            }
+        });
+
+        buttonYear.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+            }
+        });
 
         return rootView;
     }
@@ -204,19 +265,19 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                             e.printStackTrace();
                         }
 
-                        entries.add(new Entry(cursor.getFloat(COL_INT_TRADE_PRICE), cursor.getPosition() - 1));
+                        entries.add(new Entry(cursor.getFloat(COL_INT_TRADE_PRICE), cursor.getPosition()));
                         labels.add(outputFormat.format(quoteDate));
                     }
                     LineDataSet dataset = new LineDataSet(entries, "Precio");
-                    LineData data = new LineData(labels, dataset);
+                    intradayData = new LineData(labels, dataset);
                     dataset.setDrawFilled(true);
                     dataset.setColor(Color.GRAY);
                     dataset.setFillAlpha(30);
                     dataset.setFillColor(Color.GRAY);
                     dataset.setDrawCircles(false);
                     dataset.setDrawHighlightIndicators(false);
-                    data.setDrawValues(false);
-                    lineChart.setData(data);
+                    intradayData.setDrawValues(false);
+                    lineChart.setData(intradayData);
                     lineChart.invalidate();
                     break;
 

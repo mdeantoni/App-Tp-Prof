@@ -62,9 +62,58 @@
     </LinearLayout>
 
     <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1D"
+            android:id="@+id/button_stock_detail_day"
+            android:layout_weight="1" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1S"
+            android:id="@+id/button_stock_detail_week"
+            android:layout_weight="1" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1M"
+            android:id="@+id/button_stock_detail_month"
+            android:layout_weight="1" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="6M"
+            android:id="@+id/button_stock_detail_sixmonth"
+            android:layout_weight="1" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1Y"
+            android:id="@+id/button_stock_detail_year"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
 
         <LinearLayout
             android:orientation="horizontal"
