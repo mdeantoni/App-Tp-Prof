@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -90,12 +90,22 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 QuotesContract.BondEntry.TABLE_NAME + " (" + QuotesContract.BondEntry._ID + ") " +
                 " );";
 
+        final String SQL_CREATE_HISTORICAL_QUOTE_TABLE = "CREATE TABLE " + QuotesContract.HistoricalQuoteEntry.TABLE_NAME + " (" +
+                QuotesContract.HistoricalQuoteEntry._ID + " INTEGER PRIMARY KEY," +
+
+                QuotesContract.HistoricalQuoteEntry.COLUMN_TICKER_SYMBOL +  " TEXT NOT NULL " +
+                QuotesContract.HistoricalQuoteEntry.COLUMN_VOLUME +  " INT NOT NULL, " +
+                QuotesContract.HistoricalQuoteEntry.COLUMN_CLOSE_PRICE +   " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.HistoricalQuoteEntry.COLUMN_DATE + " DATETIME NOT NULL, " +
+                " );";
+
         sqLiteDatabase.execSQL(SQL_CREATE_STOCKS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_BONDS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_STOCK_QUOTES_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_BOND_QUOTES_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_BOND_INTRADAY_PRICE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_STOCK_INTRADAY_PRICE_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_HISTORICAL_QUOTE_TABLE);
     }
 
     @Override
@@ -106,6 +116,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.BondQuotesEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.StockIntradayPriceEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.BondIntradayPriceEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.HistoricalQuoteEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

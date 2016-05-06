@@ -28,6 +28,7 @@ public class QuotesProvider extends ContentProvider {
     static final int STOCK_INTRADAY_FOR_STOCK = 330;
     static final int BOND_INTRADAY = 350;
     static final int STOCK_INTRADAY = 370;
+    static final int HISTORICAL_QUOTE = 390;
 
     private static final SQLiteQueryBuilder sStockQuotesQueryBuilder;
     private static final SQLiteQueryBuilder sBondQuotesQueryBuilder;
@@ -68,6 +69,7 @@ public class QuotesProvider extends ContentProvider {
         matcher.addURI(authority, QuotesContract.PATH_BOND_INTRADAY_PRICES, BOND_INTRADAY);
         matcher.addURI(authority, QuotesContract.PATH_STOCK_INTRADAY_PRICES + "/#", STOCK_INTRADAY_FOR_STOCK);
         matcher.addURI(authority, QuotesContract.PATH_BOND_INTRADAY_PRICES+ "/#", BOND_INTRADAY_FOR_BOND);
+        matcher.addURI(authority, QuotesContract.PATH_HISTORICAL_QUOTES, HISTORICAL_QUOTE);
         return matcher;
     }
 
@@ -202,6 +204,18 @@ public class QuotesProvider extends ContentProvider {
                 );
                 break;
             }
+            case HISTORICAL_QUOTE: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        QuotesContract.HistoricalQuoteEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -236,6 +250,8 @@ public class QuotesProvider extends ContentProvider {
                 return QuotesContract.StockIntradayPriceEntry.CONTENT_TYPE;
             case BOND_INTRADAY_FOR_BOND:
                 return QuotesContract.BondIntradayPriceEntry.CONTENT_TYPE;
+            case HISTORICAL_QUOTE:
+                return QuotesContract.HistoricalQuoteEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -297,6 +313,14 @@ public class QuotesProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
+            case HISTORICAL_QUOTE: {
+                long _id = db.insert(QuotesContract.HistoricalQuoteEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = QuotesContract.HistoricalQuoteEntry.buildHistoricalQuoteUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -335,6 +359,10 @@ public class QuotesProvider extends ContentProvider {
             case BOND_INTRADAY:
                 rowsDeleted = db.delete(
                         QuotesContract.BondIntradayPriceEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case HISTORICAL_QUOTE:
+                rowsDeleted = db.delete(
+                        QuotesContract.HistoricalQuoteEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -375,6 +403,10 @@ public class QuotesProvider extends ContentProvider {
                 break;
             case BOND_INTRADAY:
                 rowsUpdated = db.update(QuotesContract.BondIntradayPriceEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+                break;
+            case HISTORICAL_QUOTE:
+                rowsUpdated = db.update(QuotesContract.HistoricalQuoteEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             default:
@@ -472,6 +504,21 @@ public class QuotesProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values) {
                         long _id = db.insert(QuotesContract.BondIntradayPriceEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            case HISTORICAL_QUOTE:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(QuotesContract.HistoricalQuoteEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }

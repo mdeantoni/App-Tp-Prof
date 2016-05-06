@@ -28,6 +28,7 @@ public class QuotesContract {
     public static final String PATH_BOND_INTRADAY_PRICES = "bond_intraday_prices";
     public static final String PATH_STOCK_DETAILS = "stock_details";
     public static final String PATH_BOND_DETAILS = "bond_details";
+    public static final String PATH_HISTORICAL_QUOTES = "historical_quotes";
 
     public static final class StockEntry implements BaseColumns {
 
@@ -166,6 +167,27 @@ public class QuotesContract {
 
         public static String getBondIdFrom(Uri uri) {
             return uri.getPathSegments().get(1);
+        }
+    }
+
+    public static final class HistoricalQuoteEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_HISTORICAL_QUOTES).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_HISTORICAL_QUOTES;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_HISTORICAL_QUOTES;
+
+        public static final String TABLE_NAME = "Historical_Quotes";
+        public static final String COLUMN_TICKER_SYMBOL = "TickerSymbol";
+        public static final String COLUMN_CLOSE_PRICE = "ClosePrice";
+        public static final String COLUMN_VOLUME = "Volume";
+        public static final String COLUMN_DATE = "Date";
+
+        public static Uri buildHistoricalQuoteUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
 }
