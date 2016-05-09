@@ -21,7 +21,7 @@ public class StockQuotesFragment extends Fragment implements LoaderManager.Loade
 
 
         public interface OnStockQuoteSelectedListener {
-            public void onStockQuoteSelected(Uri stockDetailUri, int StockId);
+            public void onStockQuoteSelected(Uri stockDetailUri, int StockId, String symbol);
         }
 
     private static final int STOCKS_LOADER = 0;
@@ -83,7 +83,7 @@ public class StockQuotesFragment extends Fragment implements LoaderManager.Loade
                 if (cursor != null) {
                       ((OnStockQuoteSelectedListener) getActivity())
                             .onStockQuoteSelected(QuotesContract.StockQuotesEntry.buildStockQuoteUri(cursor.getInt(COL_STOCK_QUOTE_ID)),
-                                    cursor.getInt(COL_STOCK_ID));
+                                    cursor.getInt(COL_STOCK_ID),cursor.getString(COL_SYMBOL));
                 }
             }
         });

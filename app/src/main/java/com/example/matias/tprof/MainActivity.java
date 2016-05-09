@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.matias.tprof.detail.DetailActivity;
 import com.example.matias.tprof.sync.AppSyncAdapter;
+import com.example.matias.tprof.task.FetchHistoricalQuotesTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,20 +77,25 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
     }
 
     @Override
-    public void onBondQuoteSelected(Uri bondDetailURi,int bondId) {
+    public void onBondQuoteSelected(Uri bondDetailURi,int bondId, String symbol) {
         Intent bondQuoteIntent = new Intent(this, DetailActivity.class)
                 .setData(bondDetailURi)
-                .putExtra(Intent.EXTRA_TEXT,"BONO")
-                .putExtra("com.example.matias.tprof.Identifier",bondId);
+                .putExtra(Intent.EXTRA_TEXT, "BONO")
+                .putExtra("com.example.matias.tprof.Identifier",bondId)
+                .putExtra("com.example.matias.tprof.Symbol", symbol);
         startActivity(bondQuoteIntent);
     }
 
     @Override
-         public void onStockQuoteSelected(Uri stockDetailUri,int stockId) {
+         public void onStockQuoteSelected(Uri stockDetailUri,int stockId, String symbol) {
         Intent stockQuoteIntent = new Intent(this, DetailActivity.class)
                 .setData(stockDetailUri)
                 .putExtra(Intent.EXTRA_TEXT, "ACCION")
-                .putExtra("com.example.matias.tprof.Identifier",stockId);
+                .putExtra("com.example.matias.tprof.Identifier",stockId)
+                .putExtra("com.example.matias.tprof.Symbol", symbol);
+        FetchHistoricalQuotesTask getHistoricalTask = new FetchHistoricalQuotesTask(this);
+        getHistoricalTask.execute(symbol);
+
         startActivity(stockQuoteIntent);
     }
 

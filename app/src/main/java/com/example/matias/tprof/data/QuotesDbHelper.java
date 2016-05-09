@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -93,10 +93,10 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_HISTORICAL_QUOTE_TABLE = "CREATE TABLE " + QuotesContract.HistoricalQuoteEntry.TABLE_NAME + " (" +
                 QuotesContract.HistoricalQuoteEntry._ID + " INTEGER PRIMARY KEY," +
 
-                QuotesContract.HistoricalQuoteEntry.COLUMN_TICKER_SYMBOL +  " TEXT NOT NULL " +
+                QuotesContract.HistoricalQuoteEntry.COLUMN_TICKER_SYMBOL +  " TEXT NOT NULL, " +
                 QuotesContract.HistoricalQuoteEntry.COLUMN_VOLUME +  " INT NOT NULL, " +
                 QuotesContract.HistoricalQuoteEntry.COLUMN_CLOSE_PRICE +   " DECIMAL(6,2) NOT NULL, " +
-                QuotesContract.HistoricalQuoteEntry.COLUMN_DATE + " DATETIME NOT NULL, " +
+                QuotesContract.HistoricalQuoteEntry.COLUMN_DATE + " DATETIME NOT NULL " +
                 " );";
 
         sqLiteDatabase.execSQL(SQL_CREATE_STOCKS_TABLE);

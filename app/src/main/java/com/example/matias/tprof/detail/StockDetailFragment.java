@@ -37,13 +37,17 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
 
     static final String DETAIL_URI = "STOCK_DETAIL_URI";
     static final String STOCK_ID = "STOCK_ID";
+    static final String SYMBOL = "SYMBOL";
 
     private static final int STOCK_DETAIL_LOADER = 3;
     private static final int STOCK_INTRADAY_LOADER = 5;
+    private static final int STOCK_HISTORIC_LOADER = 7;
 
     private LineData intradayData;
+    private LineData historicalData;
     private Uri mUri;
     private int stockId;
+    private String tickerSymbol;
 
     // This has to change when details table and columns are implemented.
 
@@ -66,6 +70,13 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
             QuotesContract.StockIntradayPriceEntry.COLUMN_TRADE_PRICE,
     };
 
+    private static final String[] STOCK_HISTORICAL_QUOTES_COLUMNS = {
+            QuotesContract.HistoricalQuoteEntry._ID,
+            QuotesContract.HistoricalQuoteEntry.COLUMN_VOLUME,
+            QuotesContract.HistoricalQuoteEntry.COLUMN_DATE,
+            QuotesContract.HistoricalQuoteEntry.COLUMN_CLOSE_PRICE,
+    };
+
     static final int COL_STOCK_ID = 0;
     static final int COL_FULLNAME = 1;
     static final int COL_SYMBOL = 2;
@@ -81,6 +92,11 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
     static final int COL_INT_TRADE_TIME = 2;
     static final int COL_INT_TRADE_PRICE = 3;
 
+    static final int HIST_COL_ID = 0;
+    static final int HIST_COL_VOL = 1;
+    static final int HIST_COL_DATE = 2;
+    static final int HIST_COL_CLOSE_PRICE = 3;
+
     public StockDetailFragment() {
     }
 
@@ -88,6 +104,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
     public void onActivityCreated(Bundle savedInstanceState) {
         getLoaderManager().initLoader(STOCK_DETAIL_LOADER, null, this);
         getLoaderManager().initLoader(STOCK_INTRADAY_LOADER, null, this);
+        getLoaderManager().initLoader(STOCK_HISTORIC_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -98,6 +115,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
         if (arguments != null) {
             mUri = arguments.getParcelable(StockDetailFragment.DETAIL_URI);
             stockId = arguments.getInt(StockDetailFragment.STOCK_ID);
+            tickerSymbol = arguments.getString(StockDetailFragment.SYMBOL);
         }
 
         View rootView = inflater.inflate(R.layout.fragment_stock_detail, container, false);
@@ -116,61 +134,54 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
         lineChart.getXAxis().setDrawGridLines(false);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         lineChart.getLegend().setEnabled(false);
-        lineChart.setAutoScaleMinMaxEnabled(true);
+        //lineChart.setAutoScaleMinMaxEnabled(true);
         lineChart.setDescription("");
         lineChart.setTouchEnabled(false);
 
 
         buttonDay.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Do something in response to button click
                 lineChart.setData(intradayData);
+                lineChart.fitScreen();
                 lineChart.invalidate();
             }
         });
 
         buttonWeek.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Do something in response to button click
+                lineChart.setData(historicalData);
+                lineChart.setVisibleXRangeMaximum(5);
+                lineChart.setVisibleXRangeMinimum(5);
+                lineChart.moveViewToX(0);
+                lineChart.invalidate();
             }
         });
 
         buttonMonth.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Do something in response to button click
-                ArrayList<Entry> entries = new ArrayList<>();
-                entries.add(new Entry(4f, 0));
-                entries.add(new Entry(8f, 1));
-                entries.add(new Entry(6f, 2));
-                entries.add(new Entry(2f, 3));
-                entries.add(new Entry(18f, 4));
-                entries.add(new Entry(9f, 5));
-
-                LineDataSet dataset = new LineDataSet(entries, "# of Calls");
-
-                ArrayList<String> labels = new ArrayList<String>();
-                labels.add("January");
-                labels.add("February");
-                labels.add("March");
-                labels.add("April");
-                labels.add("May");
-                labels.add("June");
-
-                LineData data = new LineData(labels, dataset);
-                lineChart.setData(data); // set the data and list of lables into chart
-                lineChart.invalidate();
+                  lineChart.setData(historicalData);
+                lineChart.setVisibleXRangeMaximum(20);
+                lineChart.setVisibleXRangeMinimum(20);
+                  lineChart.moveViewToX(0);
+                  lineChart.invalidate();
             }
         });
 
         button6Month.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Do something in response to button click
+                lineChart.setData(historicalData);
+                lineChart.setVisibleXRangeMaximum(120);
+                lineChart.setVisibleXRangeMinimum(120);
+                lineChart.moveViewToX(0);
+                lineChart.invalidate();
             }
         });
 
         buttonYear.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Do something in response to button click
+                lineChart.setData(historicalData);
+                lineChart.fitScreen();
+                lineChart.invalidate();
             }
         });
 
@@ -205,6 +216,18 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                     null
             );
         }
+        if(id == StockDetailFragment.STOCK_HISTORIC_LOADER){
+            return new CursorLoader(
+                    getActivity(),
+                    QuotesContract.HistoricalQuoteEntry.CONTENT_URI,
+                    STOCK_HISTORICAL_QUOTES_COLUMNS,
+                    QuotesContract.HistoricalQuoteEntry.TABLE_NAME + "." +
+                            QuotesContract.HistoricalQuoteEntry.COLUMN_TICKER_SYMBOL + "= ?",
+                    new String[]{this.tickerSymbol},
+                    null
+            );
+        }
+
         return null;
     }
 
@@ -279,6 +302,38 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                     intradayData.setDrawValues(false);
                     lineChart.setData(intradayData);
                     lineChart.invalidate();
+                    break;
+
+                case STOCK_HISTORIC_LOADER:
+
+                    ArrayList<Entry> historicalEntries = new ArrayList<>();
+                    ArrayList<String> historicalLabels = new ArrayList<String>();
+                    SimpleDateFormat inputFormatHistorical = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    SimpleDateFormat outputFormatHistorical = new SimpleDateFormat("dd-MM");
+
+                    while (cursor.moveToNext()) {
+                        Date quoteDate = null;
+
+                        Log.d("HistoricalQuote ", "Close Price " + cursor.getString(HIST_COL_CLOSE_PRICE) + " "
+                                + "Date " + cursor.getString(HIST_COL_DATE));
+                        try {
+                            quoteDate = inputFormatHistorical.parse(cursor.getString(HIST_COL_DATE));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        historicalEntries.add(new Entry(cursor.getFloat(COL_INT_TRADE_PRICE), cursor.getPosition()));
+                        historicalLabels.add(outputFormatHistorical.format(quoteDate));
+                    }
+                    LineDataSet historicalDataSet = new LineDataSet(historicalEntries, "Precio");
+                    historicalData = new LineData(historicalLabels, historicalDataSet);
+                    historicalDataSet.setDrawFilled(true);
+                    historicalDataSet.setColor(Color.GRAY);
+                    historicalDataSet.setFillAlpha(30);
+                    historicalDataSet.setFillColor(Color.GRAY);
+                    historicalDataSet.setDrawCircles(false);
+                    historicalDataSet.setDrawHighlightIndicators(false);
+                    historicalData.setDrawValues(false);
                     break;
 
                 default:

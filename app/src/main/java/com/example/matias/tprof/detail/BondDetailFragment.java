@@ -36,6 +36,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
 
     static final String DETAIL_URI = "BOND_DETAIL_URI";
     static final String BOND_ID = "BOND_ID";
+    static final String SYMBOL = "SYMBOL";
 
     private static final int BOND_DETAIL_LOADER = 4;
     private static final int BOND_INTRADAY_LOADER = 6;
@@ -76,6 +77,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
 
     private Uri mUri;
     private int bondId;
+    private String tickerSymbol;
 
 
     public BondDetailFragment() {
@@ -97,6 +99,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
         if (arguments != null) {
             mUri = arguments.getParcelable(BondDetailFragment.DETAIL_URI);
             bondId = arguments.getInt(BondDetailFragment.BOND_ID);
+            tickerSymbol = arguments.getString(BondDetailFragment.SYMBOL);
         }
 
         // Inflate the layout for this fragment
