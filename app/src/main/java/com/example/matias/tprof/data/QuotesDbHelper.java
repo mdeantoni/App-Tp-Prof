@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -45,6 +45,18 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 QuotesContract.StockQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE +  " DECIMAL(6,2) NOT NULL, " +
                 QuotesContract.StockQuotesEntry.COLUMN_LAST_TRADE_DATE +  " DATETIME NOT NULL, " +
                 QuotesContract.StockQuotesEntry.COLUMN_LAST_TRADE_PRICE +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.StockQuotesEntry.COLUMN_DAYS_LOW +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.StockQuotesEntry.COLUMN_DAYS_HIGH +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.StockQuotesEntry.COLUMN_YEAR_HIGH +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.StockQuotesEntry.COLUMN_YEAR_LOW +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.StockQuotesEntry.COLUMN_VOLUME +  " INTEGER NOT NULL, " +
+                QuotesContract.StockQuotesEntry.COLUMN_AVG_VOLUME +  " INTEGER DEFAULT NULL, " +
+                QuotesContract.StockQuotesEntry.COLUMN_OPEN +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.StockQuotesEntry.COLUMN_PREVIOUS_CLOSE +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.StockQuotesEntry.COLUMN_MKT_CAP +  " TEXT , " +
+                QuotesContract.StockQuotesEntry.COLUMN_PRICE_SALES +  " TEXT, " +
+                QuotesContract.StockQuotesEntry.COLUMN_PRICE_EARNINGS +  " TEXT, " +
+                QuotesContract.StockQuotesEntry.COLUMN_PRICE_BOOK +  " TEXT, " +
                 QuotesContract.StockQuotesEntry.COLUMN_STOCK_ID +  " INT NOT NULL, " +
 
                 // Set up the location column as a foreign key to location table.
@@ -61,6 +73,14 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 QuotesContract.BondQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE +  " DECIMAL(6,2) NOT NULL, " +
                 QuotesContract.BondQuotesEntry.COLUMN_LAST_TRADE_DATE +  " DATETIME NOT NULL, " +
                 QuotesContract.BondQuotesEntry.COLUMN_LAST_TRADE_PRICE +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.BondQuotesEntry.COLUMN_DAYS_LOW +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.BondQuotesEntry.COLUMN_DAYS_HIGH +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.BondQuotesEntry.COLUMN_YEAR_HIGH +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.BondQuotesEntry.COLUMN_YEAR_LOW +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.BondQuotesEntry.COLUMN_VOLUME +  " INTEGER NOT NULL, " +
+                QuotesContract.BondQuotesEntry.COLUMN_AVG_VOLUME +  " INTEGER DEFAULT NULL, " +
+                QuotesContract.BondQuotesEntry.COLUMN_OPEN +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.BondQuotesEntry.COLUMN_PREVIOUS_CLOSE +  " DECIMAL(6,2) NOT NULL, " +
                 QuotesContract.BondQuotesEntry.COLUMN_BOND_ID +  " INT NOT NULL, " +
 
                 // Set up the location column as a foreign key to location table.

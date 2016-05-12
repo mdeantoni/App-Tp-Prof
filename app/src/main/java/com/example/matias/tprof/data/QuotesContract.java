@@ -84,6 +84,18 @@ public class QuotesContract {
         public static final String COLUMN_LAST_CHANGE_PERCENTAGE = "LastChangeInPricePercentage";
         public static final String COLUMN_LAST_CHANGE = "LastChangeInPrice";
         public static final String COLUMN_LAST_TRADE_DATE = "LastTradeDate";
+        public static final String COLUMN_DAYS_LOW ="DaysLow";
+        public static final String COLUMN_DAYS_HIGH = "DaysHigh";
+        public static final String COLUMN_YEAR_LOW= "YearLow";
+        public static final String COLUMN_YEAR_HIGH = "YearHigh";
+        public static final String COLUMN_PREVIOUS_CLOSE = "PreviousClose";
+        public static final String COLUMN_OPEN = "Open";
+        public static final String COLUMN_VOLUME = "Volume";
+        public static final String COLUMN_AVG_VOLUME = "AverageDailyVolume";
+        public static final String COLUMN_MKT_CAP= "MarketCapitalization";
+        public static final String COLUMN_PRICE_SALES = "PriceOverSales";
+        public static final String COLUMN_PRICE_BOOK = "PriceOverBookValue";
+        public static final String COLUMN_PRICE_EARNINGS=  "PriceEarningsRatio";
         public static final String COLUMN_STOCK_ID = "StockId";
 
         public static Uri buildStockQuoteUri(long id) {
@@ -111,6 +123,14 @@ public class QuotesContract {
         public static final String COLUMN_LAST_CHANGE_PERCENTAGE = "LastChangeInPricePercentage";
         public static final String COLUMN_LAST_CHANGE = "LastChangeInPrice";
         public static final String COLUMN_LAST_TRADE_DATE = "LastTradeDate";
+        public static final String COLUMN_DAYS_LOW ="DaysLow";
+        public static final String COLUMN_DAYS_HIGH = "DaysHigh";
+        public static final String COLUMN_YEAR_LOW= "YearLow";
+        public static final String COLUMN_YEAR_HIGH = "YearHigh";
+        public static final String COLUMN_PREVIOUS_CLOSE = "PreviousClose";
+        public static final String COLUMN_OPEN = "Open";
+        public static final String COLUMN_VOLUME = "Volume";
+        public static final String COLUMN_AVG_VOLUME = "AverageDailyVolume";
         public static final String COLUMN_BOND_ID = "BondId";
 
         public static Uri buildBondQuoteUri(long id) {

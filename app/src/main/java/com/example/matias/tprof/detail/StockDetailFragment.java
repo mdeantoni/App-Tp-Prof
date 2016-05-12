@@ -127,7 +127,9 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
         Button buttonYear = (Button) rootView.findViewById(R.id.button_stock_detail_year);
 
         final LineChart lineChart = (LineChart) rootView.findViewById(R.id.stock_detail_chart);
-        lineChart.getAxisRight().setEnabled(false);
+        lineChart.getAxisRight().setEnabled(true);
+        lineChart.getAxisRight().setDrawGridLines(false);
+        lineChart.getAxisLeft().setEnabled(false);
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getAxisLeft().setDrawAxisLine(false);
         lineChart.getAxisLeft().setStartAtZero(false);
@@ -224,7 +226,8 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                     QuotesContract.HistoricalQuoteEntry.TABLE_NAME + "." +
                             QuotesContract.HistoricalQuoteEntry.COLUMN_TICKER_SYMBOL + "= ?",
                     new String[]{this.tickerSymbol},
-                    null
+                    QuotesContract.HistoricalQuoteEntry.TABLE_NAME + "." +
+                            QuotesContract.HistoricalQuoteEntry.COLUMN_DATE + " ASC"
             );
         }
 

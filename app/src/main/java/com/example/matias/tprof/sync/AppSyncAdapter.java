@@ -149,6 +149,18 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
         final String LAST_CHANGE_IN_PRICE_PERCENTAGE = "LastChangeInPricePercentage";
         final String LAST_CHANGE_IN_PRICE = "LastChangeInPrice";
         final String LAST_TRADE_DATE = "LastTradeDate";
+        final String DAYS_LOW ="DaysLow";
+        final String DAYS_HIGH = "DaysHigh";
+        final String YEAR_LOW= "YearLow";
+        final String YEAR_HIGH = "YearHigh";
+        final String PREVIOUS_CLOSE = "PreviousClose";
+        final String OPEN = "Open";
+        final String VOLUME = "Volume";
+        final String AVG_VOLUME = "AverageDailyVolume";
+        final String MKT_CAP= "MarketCapitalization";
+        final String PRICE_SALES = "PriceOverSales";
+        final String PRICE_BOOK = "PriceOverBookValue";
+        final String PRICE_EARNINGS=  "PriceEarningsRatio";
 
 
         Vector<ContentValues> cVVector = new Vector<ContentValues>(quotesArray.length());
@@ -197,7 +209,18 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
             stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE, lastQuote.getDouble(LAST_CHANGE_IN_PRICE_PERCENTAGE));
             stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_LAST_TRADE_DATE, lastQuote.getString(LAST_TRADE_DATE));
             stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_LAST_TRADE_PRICE, lastQuote.getDouble(LAST_TRADED_PRICE));
-
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_DAYS_HIGH, lastQuote.getDouble(DAYS_HIGH));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_DAYS_LOW, lastQuote.getDouble(DAYS_LOW));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_YEAR_HIGH, lastQuote.getDouble(YEAR_HIGH));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_YEAR_LOW, lastQuote.getDouble(YEAR_LOW));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_OPEN, lastQuote.getDouble(OPEN));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_PREVIOUS_CLOSE, lastQuote.getDouble(PREVIOUS_CLOSE));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_VOLUME, lastQuote.getInt(VOLUME));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_AVG_VOLUME, lastQuote.getString(AVG_VOLUME));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_MKT_CAP, lastQuote.getString(MKT_CAP));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_PRICE_EARNINGS, lastQuote.getString(PRICE_EARNINGS));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_PRICE_SALES, lastQuote.getString(PRICE_SALES));
+            stockQuoteValues.put(QuotesContract.StockQuotesEntry.COLUMN_PRICE_BOOK, lastQuote.getString(PRICE_BOOK));
             cVVector.add(stockQuoteValues);
 
             Vector<ContentValues> intPricevector = new Vector<ContentValues>(intradayPrices.length());
@@ -264,6 +287,14 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
         final String INTRADAY_PRICES = "IntradayPrices";
         final String INTRADAY_PRICE_DATE = "DateTime";
         final String INTRADAY_PRICE_PRICE = "Price";
+        final String DAYS_LOW ="DaysLow";
+        final String DAYS_HIGH = "DaysHigh";
+        final String YEAR_LOW= "YearLow";
+        final String YEAR_HIGH = "YearHigh";
+        final String PREVIOUS_CLOSE = "PreviousClose";
+        final String OPEN = "Open";
+        final String VOLUME = "Volume";
+        final String AVG_VOLUME = "AverageDailyVolume";
 
         Vector<ContentValues> cVVector = new Vector<ContentValues>(quotesArray.length());
 
@@ -311,7 +342,14 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
             bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE, lastQuote.getDouble(LAST_CHANGE_IN_PRICE_PERCENTAGE));
             bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_LAST_TRADE_DATE, lastQuote.getString(LAST_TRADE_DATE));
             bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_LAST_TRADE_PRICE, lastQuote.getDouble(LAST_TRADED_PRICE));
-
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_DAYS_HIGH, lastQuote.getDouble(DAYS_HIGH));
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_DAYS_LOW, lastQuote.getDouble(DAYS_LOW));
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_YEAR_HIGH, lastQuote.getDouble(YEAR_HIGH));
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_YEAR_LOW, lastQuote.getDouble(YEAR_LOW));
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_OPEN, lastQuote.getDouble(OPEN));
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_PREVIOUS_CLOSE, lastQuote.getDouble(PREVIOUS_CLOSE));
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_VOLUME, lastQuote.getInt(VOLUME));
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_AVG_VOLUME, lastQuote.getString(AVG_VOLUME));
             cVVector.add(bondQuoteValues);
 
             Vector<ContentValues> intPricevector = new Vector<ContentValues>(intradayPrices.length());

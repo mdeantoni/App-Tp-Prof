@@ -106,7 +106,9 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
         View rootView = inflater.inflate(R.layout.fragment_bond_detail, container, false);
 
         LineChart lineChart = (LineChart) rootView.findViewById(R.id.bond_detail_chart);
-        lineChart.getAxisRight().setEnabled(false);
+        lineChart.getAxisRight().setEnabled(true);
+        lineChart.getAxisRight().setDrawGridLines(false);
+        lineChart.getAxisLeft().setEnabled(false);
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getAxisLeft().setDrawAxisLine(false);
         lineChart.getAxisLeft().setStartAtZero(false);
