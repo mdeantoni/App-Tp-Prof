@@ -61,6 +61,18 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
             QuotesContract.StockQuotesEntry.COLUMN_LAST_CHANGE,
             QuotesContract.StockQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE,
             QuotesContract.StockQuotesEntry.COLUMN_CURRENCY,
+            QuotesContract.StockQuotesEntry.COLUMN_DAYS_LOW,
+            QuotesContract.StockQuotesEntry.COLUMN_DAYS_HIGH,
+            QuotesContract.StockQuotesEntry.COLUMN_YEAR_LOW,
+            QuotesContract.StockQuotesEntry.COLUMN_YEAR_HIGH,
+            QuotesContract.StockQuotesEntry.COLUMN_PREVIOUS_CLOSE,
+            QuotesContract.StockQuotesEntry.COLUMN_OPEN,
+            QuotesContract.StockQuotesEntry.COLUMN_VOLUME,
+            QuotesContract.StockQuotesEntry.COLUMN_AVG_VOLUME,
+            QuotesContract.StockQuotesEntry.COLUMN_MKT_CAP,
+            QuotesContract.StockQuotesEntry.COLUMN_PRICE_SALES,
+            QuotesContract.StockQuotesEntry.COLUMN_PRICE_BOOK,
+            QuotesContract.StockQuotesEntry.COLUMN_PRICE_EARNINGS
     };
 
     private static final String[] STOCK_INTRADAY_PRICE_COLUMNS = {
@@ -86,6 +98,18 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
     static final int COL_LAST_CHANGE = 6;
     static final int COL_LAST_CHANGE_PERCENTAGE = 7;
     static final int COL_CURRENCY = 8;
+    static final int COL_DAYS_LOW =9;
+    static final int COL_DAYS_HIGH = 10;
+    static final int COL_YEAR_LOW= 11;
+    static final int COL_YEAR_HIGH = 12;
+    static final int COL_PREVIOUS_CLOSE = 13;
+    static final int COL_OPEN = 14;
+    static final int COL_VOLUME = 15;
+    static final int COL_AVG_VOLUME = 16;
+    static final int COL_MKT_CAP= 17;
+    static final int COL_PRICE_SALES = 18;
+    static final int COL_PRICE_BOOK = 19;
+    static final int COL_PRICE_EARNINGS=  20;
 
     static final int COL_INT_ID = 0;
     static final int COL_INT_STOCK_ID = 1;
@@ -257,6 +281,21 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                         TextView price = (TextView) getView().findViewById(R.id.stock_detail_price);
                         TextView datetv = (TextView) getView().findViewById(R.id.stock_detail_datetime);
 
+                        TextView dayMinTv = (TextView) getView().findViewById(R.id.stock_detail_min_day);
+                        TextView dayMaxTv = (TextView) getView().findViewById(R.id.stock_detail_max_day);
+                        TextView yearMinTv = (TextView) getView().findViewById(R.id.stock_detail_low_year);
+                        TextView yearMaxTv = (TextView) getView().findViewById(R.id.stock_detail_max_year);
+                        TextView volumeTv = (TextView) getView().findViewById(R.id.stock_detail_volume);
+                        TextView avgVolumeTv = (TextView) getView().findViewById(R.id.stock_detail_avg_volume);
+                        TextView lastCloseTv = (TextView) getView().findViewById(R.id.stock_detail_last_close);
+                        TextView openPriceTv = (TextView) getView().findViewById(R.id.stock_detail_open_price);
+                        TextView changeTv = (TextView) getView().findViewById(R.id.stock_detail_change);
+                        TextView changePercentTv = (TextView) getView().findViewById(R.id.stock_detail_change_percentage);
+                        TextView marketCapTv = (TextView) getView().findViewById(R.id.stock_detail_market_cap);
+                        TextView priceBookTv = (TextView) getView().findViewById(R.id.stock_detail_price_book);
+                        TextView priceSalesTv = (TextView) getView().findViewById(R.id.stock_detail_price_sales);
+                        TextView priceEarningsTv = (TextView) getView().findViewById(R.id.stock_detail_price_earnings);
+
                         if (cursor.getDouble(StockDetailFragment.COL_LAST_CHANGE) > 0) {
                             change.setTextColor(Color.GREEN);
                             changeText = "+" + changeText;
@@ -268,6 +307,21 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                         quote.setText(cursor.getString(StockDetailFragment.COL_SYMBOL));
                         change.setText(changeText);
                         price.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_LAST_PRICE));
+                        dayMinTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_DAYS_LOW));
+                        dayMaxTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_DAYS_HIGH));
+                        yearMinTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_YEAR_LOW));
+                        yearMaxTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_YEAR_HIGH));
+                        volumeTv.setText( cursor.getString(StockDetailFragment.COL_VOLUME));
+                        avgVolumeTv.setText( cursor.getString(StockDetailFragment.COL_AVG_VOLUME));
+                        lastCloseTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_PREVIOUS_CLOSE));
+                        openPriceTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_OPEN));
+                        changeTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_LAST_CHANGE));
+                        changePercentTv.setText(cursor.getString(StockDetailFragment.COL_LAST_CHANGE_PERCENTAGE));
+                        marketCapTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_MKT_CAP));
+                        priceBookTv.setText(cursor.getString(StockDetailFragment.COL_PRICE_BOOK));
+                        priceSalesTv.setText(cursor.getString(StockDetailFragment.COL_PRICE_SALES));
+                        priceEarningsTv.setText( cursor.getString(StockDetailFragment.COL_PRICE_EARNINGS));
+
                         datetv.setText(outputFormat.format(quoteDate));
                     }
                     break;
