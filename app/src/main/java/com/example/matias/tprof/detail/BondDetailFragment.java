@@ -51,6 +51,14 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
             QuotesContract.BondQuotesEntry.COLUMN_LAST_CHANGE,
             QuotesContract.BondQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE,
             QuotesContract.BondQuotesEntry.COLUMN_CURRENCY,
+            QuotesContract.BondQuotesEntry.COLUMN_DAYS_LOW,
+            QuotesContract.BondQuotesEntry.COLUMN_DAYS_HIGH,
+            QuotesContract.BondQuotesEntry.COLUMN_YEAR_LOW,
+            QuotesContract.BondQuotesEntry.COLUMN_YEAR_HIGH,
+            QuotesContract.BondQuotesEntry.COLUMN_PREVIOUS_CLOSE,
+            QuotesContract.BondQuotesEntry.COLUMN_OPEN,
+            QuotesContract.BondQuotesEntry.COLUMN_VOLUME,
+            QuotesContract.BondQuotesEntry.COLUMN_AVG_VOLUME,
     };
 
     private static final String[] BOND_INTRADAY_PRICE_COLUMNS = {
@@ -69,6 +77,14 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
     static final int COL_LAST_CHANGE = 6;
     static final int COL_LAST_CHANGE_PERCENTAGE = 7;
     static final int COL_CURRENCY = 8;
+    static final int COL_DAYS_LOW =9;
+    static final int COL_DAYS_HIGH = 10;
+    static final int COL_YEAR_LOW= 11;
+    static final int COL_YEAR_HIGH = 12;
+    static final int COL_PREVIOUS_CLOSE = 13;
+    static final int COL_OPEN = 14;
+    static final int COL_VOLUME = 15;
+    static final int COL_AVG_VOLUME = 16;
 
     static final int COL_INT_ID = 0;
     static final int COL_INT_BOND_ID = 1;
@@ -177,6 +193,16 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                     TextView change = (TextView) getView().findViewById(R.id.bond_detail_lastchange);
                     TextView price = (TextView) getView().findViewById(R.id.bond_detail_price);
                     TextView datetv = (TextView) getView().findViewById(R.id.bond_detail_datetime);
+                    TextView dayMinTv = (TextView) getView().findViewById(R.id.bond_detail_min_day);
+                    TextView dayMaxTv = (TextView) getView().findViewById(R.id.bond_detail_max_day);
+                    TextView yearMinTv = (TextView) getView().findViewById(R.id.bond_detail_low_year);
+                    TextView yearMaxTv = (TextView) getView().findViewById(R.id.bond_detail_max_year);
+                    TextView volumeTv = (TextView) getView().findViewById(R.id.bond_detail_volume);
+                    TextView avgVolumeTv = (TextView) getView().findViewById(R.id.bond_detail_avg_volume);
+                    TextView lastCloseTv = (TextView) getView().findViewById(R.id.bond_detail_last_close);
+                    TextView openPriceTv = (TextView) getView().findViewById(R.id.bond_detail_open_price);
+                    TextView changeTv = (TextView) getView().findViewById(R.id.bond_detail_change);
+                    TextView changePercentTv = (TextView) getView().findViewById(R.id.bond_detail_change_percentage);
 
                     if (cursor.getDouble(BondDetailFragment.COL_LAST_CHANGE) > 0) {
                         change.setTextColor(Color.GREEN);
@@ -190,6 +216,16 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                     change.setText(changeText);
                     price.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_LAST_PRICE));
                     datetv.setText(outputFormat.format(quoteDate));
+                    dayMinTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_DAYS_LOW));
+                    dayMaxTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_DAYS_HIGH));
+                    yearMinTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_YEAR_LOW));
+                    yearMaxTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_YEAR_HIGH));
+                    volumeTv.setText( cursor.getString(BondDetailFragment.COL_VOLUME));
+                    avgVolumeTv.setText(cursor.getString(BondDetailFragment.COL_AVG_VOLUME));
+                    lastCloseTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_PREVIOUS_CLOSE));
+                    openPriceTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_OPEN));
+                    changeTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_LAST_CHANGE));
+                    changePercentTv.setText(cursor.getString(BondDetailFragment.COL_LAST_CHANGE_PERCENTAGE));
                 }
                 break;
 

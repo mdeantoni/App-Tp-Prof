@@ -82,11 +82,11 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="13.21123123"
-                android:id="@+id/textView2" />
+                android:id="@+id/bond_detail_min_day" />
 
             <Space
                 android:layout_width="0px"
@@ -103,11 +103,11 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="11.71212"
-                android:id="@+id/textView4" />
+                android:id="@+id/bond_detail_max_day" />
         </LinearLayout>
 
         <LinearLayout
@@ -150,11 +150,11 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="10.5"
-                android:id="@+id/textView6" />
+                android:id="@+id/bond_detail_last_close" />
 
             <Space
                 android:layout_width="0px"
@@ -171,11 +171,11 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="12.9"
-                android:id="@+id/textView8" />
+                android:id="@+id/bond_detail_open_price" />
         </LinearLayout>
 
         <LinearLayout
@@ -218,11 +218,11 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="10.5"
-                android:id="@+id/textView10" />
+                android:id="@+id/bond_detail_max_year" />
 
             <Space
                 android:layout_width="0px"
@@ -239,11 +239,11 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="12.9"
-                android:id="@+id/textView12" />
+                android:id="@+id/bond_detail_low_year" />
         </LinearLayout>
 
         <LinearLayout
@@ -286,11 +286,11 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="10510"
-                android:id="@+id/textView14" />
+                android:id="@+id/bond_detail_volume" />
 
             <Space
                 android:layout_width="0px"
@@ -307,11 +307,11 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="400000"
-                android:id="@+id/textView16" />
+                android:id="@+id/bond_detail_avg_volume" />
         </LinearLayout>
 
         <LinearLayout
@@ -354,11 +354,11 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="10.5"
-                android:id="@+id/textView18" />
+                android:text="0123456"
+                android:id="@+id/bond_detail_change_percentage" />
 
             <Space
                 android:layout_width="0px"
@@ -375,11 +375,11 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="12.9"
-                android:id="@+id/textView20" />
+                android:id="@+id/bond_detail_change" />
         </LinearLayout>
 
         <LinearLayout

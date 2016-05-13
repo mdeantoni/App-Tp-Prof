@@ -152,11 +152,13 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
 
         final LineChart lineChart = (LineChart) rootView.findViewById(R.id.stock_detail_chart);
         lineChart.getAxisRight().setEnabled(true);
-        lineChart.getAxisRight().setDrawGridLines(false);
         lineChart.getAxisLeft().setEnabled(false);
-        lineChart.getAxisLeft().setDrawGridLines(false);
-        lineChart.getAxisLeft().setDrawAxisLine(false);
+        lineChart.getAxisRight().setDrawGridLines(false);
+        lineChart .getAxisRight().setDrawAxisLine(false);
+       // lineChart.getAxisLeft().setDrawGridLines(false);
+        //lineChart .getAxisLeft().setDrawAxisLine(false);
         lineChart.getAxisLeft().setStartAtZero(false);
+        lineChart.getAxisRight().setStartAtZero(false);
         lineChart.getXAxis().setDrawGridLines(false);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         lineChart.getLegend().setEnabled(false);
@@ -239,7 +241,8 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                     QuotesContract.StockIntradayPriceEntry.TABLE_NAME + "." +
                             QuotesContract.StockIntradayPriceEntry.COLUMN_STOCK_ID + "= ?",
                     new String[]{Integer.toString(stockId)},
-                    null
+                    QuotesContract.StockIntradayPriceEntry.TABLE_NAME + "." +
+                            QuotesContract.StockIntradayPriceEntry.COLUMN_TRADE_TIME + " ASC"
             );
         }
         if(id == StockDetailFragment.STOCK_HISTORIC_LOADER){
@@ -358,6 +361,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                     dataset.setDrawHighlightIndicators(false);
                     intradayData.setDrawValues(false);
                     lineChart.setData(intradayData);
+                    lineChart.fitScreen();
                     lineChart.invalidate();
                     break;
 
