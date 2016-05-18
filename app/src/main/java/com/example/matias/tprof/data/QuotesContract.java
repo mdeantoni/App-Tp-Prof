@@ -131,6 +131,8 @@ public class QuotesContract {
         public static final String COLUMN_OPEN = "Open";
         public static final String COLUMN_VOLUME = "Volume";
         public static final String COLUMN_AVG_VOLUME = "AverageDailyVolume";
+        public static final String COLUMN_IIR = "IRR";
+        public static final String COLUMN_PARITY = "Parity";
         public static final String COLUMN_BOND_ID = "BondId";
 
         public static Uri buildBondQuoteUri(long id) {

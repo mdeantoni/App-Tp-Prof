@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 15;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -81,6 +81,8 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 QuotesContract.BondQuotesEntry.COLUMN_AVG_VOLUME +  " INTEGER DEFAULT NULL, " +
                 QuotesContract.BondQuotesEntry.COLUMN_OPEN +  " DECIMAL(6,2) NOT NULL, " +
                 QuotesContract.BondQuotesEntry.COLUMN_PREVIOUS_CLOSE +  " DECIMAL(6,2) NOT NULL, " +
+                QuotesContract.BondQuotesEntry.COLUMN_IIR +  " TEXT, " +
+                QuotesContract.BondQuotesEntry.COLUMN_PARITY +  " TEXT, " +
                 QuotesContract.BondQuotesEntry.COLUMN_BOND_ID +  " INT NOT NULL, " +
 
                 // Set up the location column as a foreign key to location table.

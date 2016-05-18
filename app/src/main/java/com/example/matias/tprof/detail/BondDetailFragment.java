@@ -59,6 +59,8 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
             QuotesContract.BondQuotesEntry.COLUMN_OPEN,
             QuotesContract.BondQuotesEntry.COLUMN_VOLUME,
             QuotesContract.BondQuotesEntry.COLUMN_AVG_VOLUME,
+            QuotesContract.BondQuotesEntry.COLUMN_IIR,
+            QuotesContract.BondQuotesEntry.COLUMN_PARITY
     };
 
     private static final String[] BOND_INTRADAY_PRICE_COLUMNS = {
@@ -85,6 +87,8 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
     static final int COL_OPEN = 14;
     static final int COL_VOLUME = 15;
     static final int COL_AVG_VOLUME = 16;
+    static final int COL_IIR = 17;
+    static final int COL_PARITY = 18;
 
     static final int COL_INT_ID = 0;
     static final int COL_INT_BOND_ID = 1;
@@ -203,6 +207,8 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                     TextView openPriceTv = (TextView) getView().findViewById(R.id.bond_detail_open_price);
                     TextView changeTv = (TextView) getView().findViewById(R.id.bond_detail_change);
                     TextView changePercentTv = (TextView) getView().findViewById(R.id.bond_detail_change_percentage);
+                    TextView bondIIRTv = (TextView) getView().findViewById(R.id.bond_detail_iir);
+                    TextView bondParityTv = (TextView) getView().findViewById(R.id.bond_detail_parity);
 
                     if (cursor.getDouble(BondDetailFragment.COL_LAST_CHANGE) > 0) {
                         change.setTextColor(Color.GREEN);
@@ -225,6 +231,8 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                     lastCloseTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_PREVIOUS_CLOSE));
                     openPriceTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_OPEN));
                     changeTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_LAST_CHANGE));
+                    bondIIRTv.setText( cursor.getString(BondDetailFragment.COL_IIR));
+                    bondParityTv.setText(cursor.getString(BondDetailFragment.COL_PARITY));
                     changePercentTv.setText(cursor.getString(BondDetailFragment.COL_LAST_CHANGE_PERCENTAGE));
                 }
                 break;

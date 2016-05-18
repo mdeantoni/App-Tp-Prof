@@ -406,6 +406,74 @@
                 android:background="#888888" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="TIR"
+                android:id="@+id/textView20" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="11.6%"
+                android:id="@+id/bond_detail_iir" />
+
+            <Space
+                android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_height="20px" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Paridad"
+                android:id="@+id/textView21" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="95%"
+                android:id="@+id/bond_detail_parity" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="1dp"
+                android:background="#888888" />
+            <Space
+                android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_height="1px" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="1dp"
+                android:background="#888888" />
+
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

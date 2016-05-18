@@ -294,6 +294,8 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
         final String PREVIOUS_CLOSE = "PreviousClose";
         final String OPEN = "Open";
         final String VOLUME = "Volume";
+        final String IRR = "IRR";
+        final String PARITY = "Parity";
         final String AVG_VOLUME = "AverageDailyVolume";
 
         Vector<ContentValues> cVVector = new Vector<ContentValues>(quotesArray.length());
@@ -350,6 +352,8 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
             bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_PREVIOUS_CLOSE, lastQuote.getDouble(PREVIOUS_CLOSE));
             bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_VOLUME, lastQuote.getInt(VOLUME));
             bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_AVG_VOLUME, lastQuote.getString(AVG_VOLUME));
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_IIR, lastQuote.getString(IRR));
+            bondQuoteValues.put(QuotesContract.BondQuotesEntry.COLUMN_PARITY, lastQuote.getString(PARITY));
             cVVector.add(bondQuoteValues);
 
             Vector<ContentValues> intPricevector = new Vector<ContentValues>(intradayPrices.length());
