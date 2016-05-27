@@ -52,6 +52,7 @@ public class FetchHistoricalQuotesTask extends AsyncTask<String,Void,Void> {
             //"http://192.168.0.17:50914/api/sync";
             final String HISTORICAL_QUOTES_URL =
                     "http://10.0.2.2:50914/api/historicalquotes?";
+            //"http://192.168.0.17:50914/api/historicalquotes?";
             final String QUERY_PARAM = "tickerSymbol";
 
             Uri builtUri = Uri.parse(HISTORICAL_QUOTES_URL).buildUpon()

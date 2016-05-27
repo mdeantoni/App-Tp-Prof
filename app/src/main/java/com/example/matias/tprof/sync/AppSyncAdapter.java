@@ -63,7 +63,7 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
             // http://openweathermap.org/API#forecast
             final String BASE_URL =
                     "http://10.0.2.2:50914/api/sync";
-             //"http://192.168.0.17:50914/api/sync";
+            // "http://192.168.0.17:50914/api/sync";
 
             Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                     .build();

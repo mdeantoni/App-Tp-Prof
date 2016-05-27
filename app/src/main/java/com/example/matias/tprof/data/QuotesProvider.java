@@ -1,5 +1,6 @@
 package com.example.matias.tprof.data;
 
+import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -9,6 +10,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import java.util.HashMap;
+
 /**
  * Created by Mati on 12/8/2015.
  */
@@ -17,6 +20,7 @@ public class QuotesProvider extends ContentProvider {
     // The URI Matcher used by this content provider.
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private QuotesDbHelper mOpenHelper;
+    private HashMap<String, String> mAliasMap;
 
     static final int STOCK = 100;
     static final int STOCK_QUOTE = 150;
@@ -29,13 +33,16 @@ public class QuotesProvider extends ContentProvider {
     static final int BOND_INTRADAY = 350;
     static final int STOCK_INTRADAY = 370;
     static final int HISTORICAL_QUOTE = 390;
+    static final int SUGGESTIONS_ASSET = 490;
 
     private static final SQLiteQueryBuilder sStockQuotesQueryBuilder;
     private static final SQLiteQueryBuilder sBondQuotesQueryBuilder;
+    private static final SQLiteQueryBuilder suggestionQueryBuilder;
 
     static{
         sStockQuotesQueryBuilder = new SQLiteQueryBuilder();
         sBondQuotesQueryBuilder = new SQLiteQueryBuilder();
+        suggestionQueryBuilder = new SQLiteQueryBuilder();
 
         sStockQuotesQueryBuilder.setTables(
                 QuotesContract.StockEntry.TABLE_NAME + " INNER JOIN " +
@@ -70,12 +77,17 @@ public class QuotesProvider extends ContentProvider {
         matcher.addURI(authority, QuotesContract.PATH_STOCK_INTRADAY_PRICES + "/#", STOCK_INTRADAY_FOR_STOCK);
         matcher.addURI(authority, QuotesContract.PATH_BOND_INTRADAY_PRICES+ "/#", BOND_INTRADAY_FOR_BOND);
         matcher.addURI(authority, QuotesContract.PATH_HISTORICAL_QUOTES, HISTORICAL_QUOTE);
+        matcher.addURI(authority, SearchManager.SUGGEST_URI_PATH_QUERY+ "/*", SUGGESTIONS_ASSET);
         return matcher;
     }
 
     @Override
     public boolean onCreate() {
         mOpenHelper = new QuotesDbHelper(getContext());
+        mAliasMap = new HashMap<String, String>();
+        mAliasMap.put("_ID",  QuotesContract.StockEntry._ID + " as " + "_id" );
+        mAliasMap.put(SearchManager.SUGGEST_COLUMN_TEXT_1, QuotesContract.StockEntry.COLUMN_FULLNAME + " as " + SearchManager.SUGGEST_COLUMN_TEXT_1);
+        suggestionQueryBuilder.setProjectionMap(mAliasMap);
         return true;
     }
 
@@ -216,6 +228,35 @@ public class QuotesProvider extends ContentProvider {
                 );
                 break;
             }
+            case SUGGESTIONS_ASSET: {
+                suggestionQueryBuilder.setTables(QuotesContract.StockEntry.TABLE_NAME);
+                String query = uri.getLastPathSegment().toLowerCase();
+                if(query != null && !query.isEmpty()){
+                    query = "%"+query + "%";
+                    retCursor = suggestionQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                            new String[] { "_ID",
+                                    SearchManager.SUGGEST_COLUMN_TEXT_1},
+                            QuotesContract.StockEntry.TABLE_NAME +
+                                    "." + QuotesContract.StockEntry.COLUMN_FULLNAME + " like ?",
+                            new String[]{query},
+                            null,
+                            null,
+                            sortOrder
+                    );
+                }else {
+
+                    retCursor = suggestionQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                            new String[]{"_ID",
+                                    SearchManager.SUGGEST_COLUMN_TEXT_1},
+                            selection,
+                            selectionArgs,
+                            null,
+                            null,
+                            sortOrder
+                    );
+                }
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -252,6 +293,9 @@ public class QuotesProvider extends ContentProvider {
                 return QuotesContract.BondIntradayPriceEntry.CONTENT_TYPE;
             case HISTORICAL_QUOTE:
                 return QuotesContract.HistoricalQuoteEntry.CONTENT_TYPE;
+            case SUGGESTIONS_ASSET: {
+                return QuotesContract.StockEntry.CONTENT_TYPE;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
