@@ -249,6 +249,7 @@ public class QuotesContract {
         public static final String COLUMN_LAST_CHANGE = "LastChangeInPrice";
         public static final String COLUMN_LAST_TRADE_DATE = "LastTradeDate";
         public static final String COLUMN_LAST_TRADE_PRICE = "LastTradedPrice";
+        public static final String COLUMN_CURRENCY = "Currency";
         public static final String COLUMN_TYPE = "Type";
         public static final String COLUMN_Id = "Id";
     }

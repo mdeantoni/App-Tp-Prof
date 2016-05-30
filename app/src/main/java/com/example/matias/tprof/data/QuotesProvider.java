@@ -35,6 +35,8 @@ public class QuotesProvider extends ContentProvider {
     static final int HISTORICAL_QUOTE = 390;
     static final int ALL_SUGGESTIONS_ASSET = 490;
     static final int SUGGESTIONS_ASSET = 510;
+    static final int SEARCH_RESULTS = 530;
+
 
     private static final SQLiteQueryBuilder sStockQuotesQueryBuilder;
     private static final SQLiteQueryBuilder sBondQuotesQueryBuilder;
@@ -80,6 +82,7 @@ public class QuotesProvider extends ContentProvider {
         matcher.addURI(authority, QuotesContract.PATH_HISTORICAL_QUOTES, HISTORICAL_QUOTE);
         matcher.addURI(authority, SearchManager.SUGGEST_URI_PATH_QUERY , ALL_SUGGESTIONS_ASSET);
         matcher.addURI(authority, SearchManager.SUGGEST_URI_PATH_QUERY+ "/*", SUGGESTIONS_ASSET);
+        matcher.addURI(authority, QuotesContract.PATH_SEARCH_RESULTS, SEARCH_RESULTS);
         return matcher;
     }
 
@@ -258,6 +261,18 @@ public class QuotesProvider extends ContentProvider {
                             null,
                             sortOrder
                     );
+                break;
+            }
+            case SEARCH_RESULTS: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        QuotesContract.SearchResultsEntry.VIEW_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             }
             default:

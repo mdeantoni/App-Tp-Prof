@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 19;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -145,6 +145,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 QuotesContract.StockQuotesEntry.COLUMN_LAST_TRADE_PRICE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_TRADE_PRICE + "," +
                 QuotesContract.StockQuotesEntry.COLUMN_LAST_CHANGE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_CHANGE + "," +
                 QuotesContract.StockQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_CHANGE_PERCENTAGE + "," +
+                QuotesContract.StockQuotesEntry.COLUMN_CURRENCY + " AS " + QuotesContract.SearchResultsEntry.COLUMN_CURRENCY + "," +
                 "'Stock'  AS " + QuotesContract.SearchResultsEntry.COLUMN_TYPE  +
                 " FROM " + QuotesContract.StockEntry.TABLE_NAME + " INNER JOIN "+ QuotesContract.StockQuotesEntry.TABLE_NAME + " ON " +
                 QuotesContract.StockQuotesEntry.TABLE_NAME + "." + QuotesContract.StockQuotesEntry.COLUMN_STOCK_ID +
@@ -158,6 +159,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 QuotesContract.BondQuotesEntry.COLUMN_LAST_TRADE_PRICE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_TRADE_PRICE + "," +
                 QuotesContract.BondQuotesEntry.COLUMN_LAST_CHANGE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_CHANGE + "," +
                 QuotesContract.BondQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_CHANGE_PERCENTAGE + "," +
+                QuotesContract.BondQuotesEntry.COLUMN_CURRENCY + " AS " + QuotesContract.SearchResultsEntry.COLUMN_CURRENCY + "," +
                 "'Bond'  AS " + QuotesContract.SuggestionViewEntry.COLUMN_TYPE +
                 " FROM " + QuotesContract.BondEntry.TABLE_NAME + " INNER JOIN "+ QuotesContract.BondQuotesEntry.TABLE_NAME + " ON " +
                 QuotesContract.BondQuotesEntry.TABLE_NAME + "." + QuotesContract.BondQuotesEntry.COLUMN_BOND_ID +
