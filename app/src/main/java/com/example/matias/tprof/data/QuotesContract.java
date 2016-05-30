@@ -29,6 +29,8 @@ public class QuotesContract {
     public static final String PATH_STOCK_DETAILS = "stock_details";
     public static final String PATH_BOND_DETAILS = "bond_details";
     public static final String PATH_HISTORICAL_QUOTES = "historical_quotes";
+    public static final String PATH_SUGGESTIONS = "suggestions";
+    public static final String PATH_SEARCH_RESULTS = "search_results";
 
     public static final class StockEntry implements BaseColumns {
 
@@ -211,5 +213,43 @@ public class QuotesContract {
         public static Uri buildHistoricalQuoteUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
+    }
+
+    public static final class SuggestionViewEntry {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_SUGGESTIONS).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SUGGESTIONS;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SUGGESTIONS;
+
+        public static final String VIEW_NAME = "SuggestionsView";
+        public static final String COLUMN_SYMBOL = "Ticker_Symbol";
+        public static final String COLUMN_FULLNAME = "Fullname";
+        public static final String COLUMN_TYPE = "Type";
+        public static final String COLUMN_Id = "Id";
+    }
+
+    public static final class SearchResultsEntry {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_SEARCH_RESULTS).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SEARCH_RESULTS;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SEARCH_RESULTS;
+
+        public static final String VIEW_NAME = "SearchResultsView";
+        public static final String COLUMN_SYMBOL = "Ticker_Symbol";
+        public static final String COLUMN_FULLNAME = "Fullname";
+        public static final String COLUMN_LAST_CHANGE_PERCENTAGE = "LastChangeInPricePercentage";
+        public static final String COLUMN_LAST_CHANGE = "LastChangeInPrice";
+        public static final String COLUMN_LAST_TRADE_DATE = "LastTradeDate";
+        public static final String COLUMN_LAST_TRADE_PRICE = "LastTradedPrice";
+        public static final String COLUMN_TYPE = "Type";
+        public static final String COLUMN_Id = "Id";
     }
 }

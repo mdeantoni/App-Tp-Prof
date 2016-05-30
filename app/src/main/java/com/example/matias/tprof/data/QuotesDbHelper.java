@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 18;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -121,6 +121,48 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 QuotesContract.HistoricalQuoteEntry.COLUMN_DATE + " DATETIME NOT NULL " +
                 " );";
 
+        final String SQL_CREATE_SUGGESTIONS_VIEW = "CREATE VIEW " + QuotesContract.SuggestionViewEntry.VIEW_NAME + " AS " +
+                "SELECT " +
+                QuotesContract.StockEntry._ID + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_Id + "," +
+                QuotesContract.StockEntry.COLUMN_FULLNAME + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_FULLNAME + "," +
+                QuotesContract.StockEntry.COLUMN_SYMBOL + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_SYMBOL + "," +
+                "'Stock'  AS " + QuotesContract.SuggestionViewEntry.COLUMN_TYPE  +
+                " FROM " + QuotesContract.StockEntry.TABLE_NAME +
+                " UNION " +
+                "SELECT " +
+                QuotesContract.BondEntry._ID + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_Id + "," +
+                QuotesContract.BondEntry.COLUMN_FULLNAME + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_FULLNAME + "," +
+                QuotesContract.BondEntry.COLUMN_SYMBOL + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_SYMBOL + "," +
+                "'Bond'  AS " + QuotesContract.SuggestionViewEntry.COLUMN_TYPE +
+                 " FROM " + QuotesContract.BondEntry.TABLE_NAME;
+
+        final String SQL_CREATE_SEARCH_RESULTS_VIEW = "CREATE VIEW " + QuotesContract.SearchResultsEntry.VIEW_NAME + " AS " +
+                "SELECT " +
+                QuotesContract.StockEntry.TABLE_NAME + "." + QuotesContract.StockEntry._ID + " AS " + QuotesContract.SearchResultsEntry.COLUMN_Id + "," +
+                QuotesContract.StockEntry.COLUMN_FULLNAME + " AS " + QuotesContract.SearchResultsEntry.COLUMN_FULLNAME + "," +
+                QuotesContract.StockEntry.COLUMN_SYMBOL + " AS " + QuotesContract.SearchResultsEntry.COLUMN_SYMBOL + "," +
+                QuotesContract.StockQuotesEntry.COLUMN_LAST_TRADE_DATE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_TRADE_DATE + "," +
+                QuotesContract.StockQuotesEntry.COLUMN_LAST_TRADE_PRICE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_TRADE_PRICE + "," +
+                QuotesContract.StockQuotesEntry.COLUMN_LAST_CHANGE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_CHANGE + "," +
+                QuotesContract.StockQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_CHANGE_PERCENTAGE + "," +
+                "'Stock'  AS " + QuotesContract.SearchResultsEntry.COLUMN_TYPE  +
+                " FROM " + QuotesContract.StockEntry.TABLE_NAME + " INNER JOIN "+ QuotesContract.StockQuotesEntry.TABLE_NAME + " ON " +
+                QuotesContract.StockQuotesEntry.TABLE_NAME + "." + QuotesContract.StockQuotesEntry.COLUMN_STOCK_ID +
+                "=" + QuotesContract.StockEntry.TABLE_NAME + "." + QuotesContract.StockEntry._ID +
+                " UNION " +
+                "SELECT " +
+                QuotesContract.BondEntry.TABLE_NAME + "." +QuotesContract.BondEntry._ID + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_Id + "," +
+                QuotesContract.BondEntry.COLUMN_FULLNAME + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_FULLNAME + "," +
+                QuotesContract.BondEntry.COLUMN_SYMBOL + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_SYMBOL + "," +
+                QuotesContract.BondQuotesEntry.COLUMN_LAST_TRADE_DATE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_TRADE_DATE + "," +
+                QuotesContract.BondQuotesEntry.COLUMN_LAST_TRADE_PRICE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_TRADE_PRICE + "," +
+                QuotesContract.BondQuotesEntry.COLUMN_LAST_CHANGE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_CHANGE + "," +
+                QuotesContract.BondQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_CHANGE_PERCENTAGE + "," +
+                "'Bond'  AS " + QuotesContract.SuggestionViewEntry.COLUMN_TYPE +
+                " FROM " + QuotesContract.BondEntry.TABLE_NAME + " INNER JOIN "+ QuotesContract.BondQuotesEntry.TABLE_NAME + " ON " +
+                QuotesContract.BondQuotesEntry.TABLE_NAME + "." + QuotesContract.BondQuotesEntry.COLUMN_BOND_ID +
+                "=" + QuotesContract.BondEntry.TABLE_NAME + "." + QuotesContract.BondEntry._ID ;
+
         sqLiteDatabase.execSQL(SQL_CREATE_STOCKS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_BONDS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_STOCK_QUOTES_TABLE);
@@ -128,6 +170,8 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_CREATE_BOND_INTRADAY_PRICE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_STOCK_INTRADAY_PRICE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_HISTORICAL_QUOTE_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_SUGGESTIONS_VIEW);
+        sqLiteDatabase.execSQL(SQL_CREATE_SEARCH_RESULTS_VIEW);
     }
 
     @Override
@@ -139,6 +183,8 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.StockIntradayPriceEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.BondIntradayPriceEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.HistoricalQuoteEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + QuotesContract.SuggestionViewEntry.VIEW_NAME);
+        sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + QuotesContract.SearchResultsEntry.VIEW_NAME);
         onCreate(sqLiteDatabase);
     }
 }

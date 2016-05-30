@@ -33,7 +33,8 @@ public class QuotesProvider extends ContentProvider {
     static final int BOND_INTRADAY = 350;
     static final int STOCK_INTRADAY = 370;
     static final int HISTORICAL_QUOTE = 390;
-    static final int SUGGESTIONS_ASSET = 490;
+    static final int ALL_SUGGESTIONS_ASSET = 490;
+    static final int SUGGESTIONS_ASSET = 510;
 
     private static final SQLiteQueryBuilder sStockQuotesQueryBuilder;
     private static final SQLiteQueryBuilder sBondQuotesQueryBuilder;
@@ -77,6 +78,7 @@ public class QuotesProvider extends ContentProvider {
         matcher.addURI(authority, QuotesContract.PATH_STOCK_INTRADAY_PRICES + "/#", STOCK_INTRADAY_FOR_STOCK);
         matcher.addURI(authority, QuotesContract.PATH_BOND_INTRADAY_PRICES+ "/#", BOND_INTRADAY_FOR_BOND);
         matcher.addURI(authority, QuotesContract.PATH_HISTORICAL_QUOTES, HISTORICAL_QUOTE);
+        matcher.addURI(authority, SearchManager.SUGGEST_URI_PATH_QUERY , ALL_SUGGESTIONS_ASSET);
         matcher.addURI(authority, SearchManager.SUGGEST_URI_PATH_QUERY+ "/*", SUGGESTIONS_ASSET);
         return matcher;
     }
@@ -85,8 +87,8 @@ public class QuotesProvider extends ContentProvider {
     public boolean onCreate() {
         mOpenHelper = new QuotesDbHelper(getContext());
         mAliasMap = new HashMap<String, String>();
-        mAliasMap.put("_ID",  QuotesContract.StockEntry._ID + " as " + "_id" );
-        mAliasMap.put(SearchManager.SUGGEST_COLUMN_TEXT_1, QuotesContract.StockEntry.COLUMN_FULLNAME + " as " + SearchManager.SUGGEST_COLUMN_TEXT_1);
+        mAliasMap.put("_ID",  QuotesContract.SuggestionViewEntry.COLUMN_Id + " as " + "_id" );
+        mAliasMap.put(SearchManager.SUGGEST_COLUMN_TEXT_1, QuotesContract.SuggestionViewEntry.COLUMN_FULLNAME + " as " + SearchManager.SUGGEST_COLUMN_TEXT_1);
         suggestionQueryBuilder.setProjectionMap(mAliasMap);
         return true;
     }
@@ -229,22 +231,24 @@ public class QuotesProvider extends ContentProvider {
                 break;
             }
             case SUGGESTIONS_ASSET: {
-                suggestionQueryBuilder.setTables(QuotesContract.StockEntry.TABLE_NAME);
+                suggestionQueryBuilder.setTables(QuotesContract.SuggestionViewEntry.VIEW_NAME);
                 String query = uri.getLastPathSegment().toLowerCase();
-                if(query != null && !query.isEmpty()){
-                    query = "%"+query + "%";
+                    query = "%" + query + "%";
                     retCursor = suggestionQueryBuilder.query(mOpenHelper.getReadableDatabase(),
-                            new String[] { "_ID",
+                            new String[]{"_ID",
                                     SearchManager.SUGGEST_COLUMN_TEXT_1},
-                            QuotesContract.StockEntry.TABLE_NAME +
-                                    "." + QuotesContract.StockEntry.COLUMN_FULLNAME + " like ?",
+                            QuotesContract.SuggestionViewEntry.VIEW_NAME +
+                                    "." + QuotesContract.SuggestionViewEntry.COLUMN_FULLNAME + " like ?",
                             new String[]{query},
                             null,
                             null,
                             sortOrder
                     );
-                }else {
 
+                    break;
+                }
+            case ALL_SUGGESTIONS_ASSET: {
+                suggestionQueryBuilder.setTables(QuotesContract.SuggestionViewEntry.VIEW_NAME);
                     retCursor = suggestionQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                             new String[]{"_ID",
                                     SearchManager.SUGGEST_COLUMN_TEXT_1},
@@ -254,7 +258,6 @@ public class QuotesProvider extends ContentProvider {
                             null,
                             sortOrder
                     );
-                }
                 break;
             }
             default:
@@ -294,7 +297,7 @@ public class QuotesProvider extends ContentProvider {
             case HISTORICAL_QUOTE:
                 return QuotesContract.HistoricalQuoteEntry.CONTENT_TYPE;
             case SUGGESTIONS_ASSET: {
-                return QuotesContract.StockEntry.CONTENT_TYPE;
+                return QuotesContract.SuggestionViewEntry.CONTENT_TYPE;
             }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
