@@ -13,6 +13,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -70,10 +71,14 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.search).getActionView();
+        MenuItem mMenuItem =  menu.findItem(R.id.search);
+        SearchView searchView = (SearchView)mMenuItem.getActionView();
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
+
+
+       //MenuItemCompat.collapseActionView(mMenuItem);
+        //searchView.clearFocus();
 
         return true;
     }
@@ -125,16 +130,4 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
         }
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        handleIntent(intent);
-    }
-
-    private void handleIntent(Intent intent) {
-
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            //use the query to search your data somehow
-        }
-    }
 }

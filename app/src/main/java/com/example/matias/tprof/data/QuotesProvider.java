@@ -92,6 +92,12 @@ public class QuotesProvider extends ContentProvider {
         mAliasMap = new HashMap<String, String>();
         mAliasMap.put("_ID",  QuotesContract.SuggestionViewEntry.COLUMN_Id + " as " + "_id" );
         mAliasMap.put(SearchManager.SUGGEST_COLUMN_TEXT_1, QuotesContract.SuggestionViewEntry.COLUMN_FULLNAME + " as " + SearchManager.SUGGEST_COLUMN_TEXT_1);
+        mAliasMap.put(SearchManager.SUGGEST_COLUMN_INTENT_DATA,
+                QuotesContract.SuggestionViewEntry.COLUMN_TYPE + "||" + "'-'" +"||" +
+                        QuotesContract.SuggestionViewEntry.COLUMN_QUOTE_ID + "||" + "'-'" +"||" +
+                        QuotesContract.SuggestionViewEntry.COLUMN_Id + "||" + "'-'" +"||" +
+                        QuotesContract.SuggestionViewEntry.COLUMN_SYMBOL +
+                " as " + SearchManager.SUGGEST_COLUMN_INTENT_DATA);
         suggestionQueryBuilder.setProjectionMap(mAliasMap);
         return true;
     }
@@ -239,7 +245,8 @@ public class QuotesProvider extends ContentProvider {
                     query = "%" + query + "%";
                     retCursor = suggestionQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                             new String[]{"_ID",
-                                    SearchManager.SUGGEST_COLUMN_TEXT_1},
+                                    SearchManager.SUGGEST_COLUMN_TEXT_1,
+                                    SearchManager.SUGGEST_COLUMN_INTENT_DATA},
                             QuotesContract.SuggestionViewEntry.VIEW_NAME +
                                     "." + QuotesContract.SuggestionViewEntry.COLUMN_FULLNAME + " like ?",
                             new String[]{query},
@@ -254,7 +261,8 @@ public class QuotesProvider extends ContentProvider {
                 suggestionQueryBuilder.setTables(QuotesContract.SuggestionViewEntry.VIEW_NAME);
                     retCursor = suggestionQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                             new String[]{"_ID",
-                                    SearchManager.SUGGEST_COLUMN_TEXT_1},
+                                    SearchManager.SUGGEST_COLUMN_TEXT_1,
+                                    SearchManager.SUGGEST_COLUMN_INTENT_DATA},
                             selection,
                             selectionArgs,
                             null,

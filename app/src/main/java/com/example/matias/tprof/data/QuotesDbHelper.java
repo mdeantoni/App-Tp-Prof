@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 19;
+    private static final int DATABASE_VERSION = 21;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -123,18 +123,24 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_SUGGESTIONS_VIEW = "CREATE VIEW " + QuotesContract.SuggestionViewEntry.VIEW_NAME + " AS " +
                 "SELECT " +
-                QuotesContract.StockEntry._ID + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_Id + "," +
+                QuotesContract.StockEntry.TABLE_NAME + "." +QuotesContract.StockEntry._ID + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_Id + "," +
                 QuotesContract.StockEntry.COLUMN_FULLNAME + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_FULLNAME + "," +
                 QuotesContract.StockEntry.COLUMN_SYMBOL + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_SYMBOL + "," +
+                QuotesContract.StockQuotesEntry.TABLE_NAME + "." +QuotesContract.StockQuotesEntry._ID + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_QUOTE_ID + "," +
                 "'Stock'  AS " + QuotesContract.SuggestionViewEntry.COLUMN_TYPE  +
-                " FROM " + QuotesContract.StockEntry.TABLE_NAME +
+                " FROM " + QuotesContract.StockEntry.TABLE_NAME + " INNER JOIN "+ QuotesContract.StockQuotesEntry.TABLE_NAME + " ON " +
+                QuotesContract.StockQuotesEntry.TABLE_NAME + "." + QuotesContract.StockQuotesEntry.COLUMN_STOCK_ID +
+                "=" + QuotesContract.StockEntry.TABLE_NAME + "." + QuotesContract.StockEntry._ID +
                 " UNION " +
                 "SELECT " +
-                QuotesContract.BondEntry._ID + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_Id + "," +
+                QuotesContract.BondEntry.TABLE_NAME + "." +QuotesContract.BondEntry._ID + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_Id + "," +
                 QuotesContract.BondEntry.COLUMN_FULLNAME + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_FULLNAME + "," +
                 QuotesContract.BondEntry.COLUMN_SYMBOL + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_SYMBOL + "," +
+                QuotesContract.BondQuotesEntry.TABLE_NAME + "." +QuotesContract.BondQuotesEntry._ID + " AS " + QuotesContract.SuggestionViewEntry.COLUMN_QUOTE_ID + "," +
                 "'Bond'  AS " + QuotesContract.SuggestionViewEntry.COLUMN_TYPE +
-                 " FROM " + QuotesContract.BondEntry.TABLE_NAME;
+                 " FROM " + QuotesContract.BondEntry.TABLE_NAME + " INNER JOIN "+ QuotesContract.BondQuotesEntry.TABLE_NAME + " ON " +
+                QuotesContract.BondQuotesEntry.TABLE_NAME + "." + QuotesContract.BondQuotesEntry.COLUMN_BOND_ID +
+                "=" + QuotesContract.BondEntry.TABLE_NAME + "." + QuotesContract.BondEntry._ID ;
 
         final String SQL_CREATE_SEARCH_RESULTS_VIEW = "CREATE VIEW " + QuotesContract.SearchResultsEntry.VIEW_NAME + " AS " +
                 "SELECT " +
@@ -146,6 +152,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 QuotesContract.StockQuotesEntry.COLUMN_LAST_CHANGE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_CHANGE + "," +
                 QuotesContract.StockQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_CHANGE_PERCENTAGE + "," +
                 QuotesContract.StockQuotesEntry.COLUMN_CURRENCY + " AS " + QuotesContract.SearchResultsEntry.COLUMN_CURRENCY + "," +
+                QuotesContract.StockQuotesEntry.TABLE_NAME + "." + QuotesContract.StockQuotesEntry._ID + " AS " + QuotesContract.SearchResultsEntry.COLUMN_QUOTE_ID + "," +
                 "'Stock'  AS " + QuotesContract.SearchResultsEntry.COLUMN_TYPE  +
                 " FROM " + QuotesContract.StockEntry.TABLE_NAME + " INNER JOIN "+ QuotesContract.StockQuotesEntry.TABLE_NAME + " ON " +
                 QuotesContract.StockQuotesEntry.TABLE_NAME + "." + QuotesContract.StockQuotesEntry.COLUMN_STOCK_ID +
@@ -160,6 +167,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 QuotesContract.BondQuotesEntry.COLUMN_LAST_CHANGE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_CHANGE + "," +
                 QuotesContract.BondQuotesEntry.COLUMN_LAST_CHANGE_PERCENTAGE + " AS " + QuotesContract.SearchResultsEntry.COLUMN_LAST_CHANGE_PERCENTAGE + "," +
                 QuotesContract.BondQuotesEntry.COLUMN_CURRENCY + " AS " + QuotesContract.SearchResultsEntry.COLUMN_CURRENCY + "," +
+                QuotesContract.BondQuotesEntry.TABLE_NAME + "." + QuotesContract.BondQuotesEntry._ID + " AS " + QuotesContract.SearchResultsEntry.COLUMN_QUOTE_ID + "," +
                 "'Bond'  AS " + QuotesContract.SuggestionViewEntry.COLUMN_TYPE +
                 " FROM " + QuotesContract.BondEntry.TABLE_NAME + " INNER JOIN "+ QuotesContract.BondQuotesEntry.TABLE_NAME + " ON " +
                 QuotesContract.BondQuotesEntry.TABLE_NAME + "." + QuotesContract.BondQuotesEntry.COLUMN_BOND_ID +

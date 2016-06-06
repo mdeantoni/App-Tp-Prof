@@ -230,6 +230,7 @@ public class QuotesContract {
         public static final String COLUMN_FULLNAME = "Fullname";
         public static final String COLUMN_TYPE = "Type";
         public static final String COLUMN_Id = "Id";
+        public static final String COLUMN_QUOTE_ID = "Quote_Id";
     }
 
     public static final class SearchResultsEntry {
@@ -252,5 +253,6 @@ public class QuotesContract {
         public static final String COLUMN_CURRENCY = "Currency";
         public static final String COLUMN_TYPE = "Type";
         public static final String COLUMN_Id = "Id";
+        public static final String COLUMN_QUOTE_ID = "Quote_Id";
     }
 }
