@@ -4,14 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.example.matias.tprof.BondQuotesFragment;
 import com.example.matias.tprof.R;
+import com.example.matias.tprof.StockQuotesFragment;
+import com.example.matias.tprof.ViewPagerAdapter;
 
 public class DetailActivity extends AppCompatActivity {
+
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +29,9 @@ public class DetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager_detail);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         if(savedInstanceState == null){
             Intent intent = getIntent();
@@ -42,9 +53,20 @@ public class DetailActivity extends AppCompatActivity {
             }
 
             fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.detail_fragment_container, fragment)
-                    .commit();
+
+
+          //  getSupportFragmentManager().beginTransaction()
+           //         .add(R.id.detail_fragment_container, fragment)
+            //        .commit();
+
+            adapter.addFragment(fragment, "Detalle");
+            adapter.addFragment(new NewsFragment(), "Noticias");
+            viewPager.setAdapter(adapter);
+
+            tabLayout = (TabLayout) findViewById(R.id.detail_tabs);
+            tabLayout.setupWithViewPager(viewPager);
+
+
         }
     }
 
