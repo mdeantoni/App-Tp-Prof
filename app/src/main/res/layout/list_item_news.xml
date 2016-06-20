@@ -8,8 +8,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/imageView"
-        android:src="@mipmap/ic_launcher"/>
+        android:id="@+id/icon_news" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -21,7 +20,7 @@
             android:layout_height="0dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Algo muy importante que paso en algun momento"
-            android:id="@+id/textView2"
+            android:id="@+id/headline_news"
             android:layout_weight="0.7" />
 
         <TextView
@@ -29,7 +28,7 @@
             android:layout_height="0dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Small Text"
-            android:id="@+id/textView4"
+            android:id="@+id/date_news"
             android:layout_weight="0.3" />
     </LinearLayout>
 </LinearLayout>

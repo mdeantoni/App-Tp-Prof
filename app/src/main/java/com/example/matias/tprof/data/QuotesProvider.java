@@ -36,7 +36,7 @@ public class QuotesProvider extends ContentProvider {
     static final int ALL_SUGGESTIONS_ASSET = 490;
     static final int SUGGESTIONS_ASSET = 510;
     static final int SEARCH_RESULTS = 530;
-
+    static final int NEWS = 550;
 
     private static final SQLiteQueryBuilder sStockQuotesQueryBuilder;
     private static final SQLiteQueryBuilder sBondQuotesQueryBuilder;
@@ -83,6 +83,7 @@ public class QuotesProvider extends ContentProvider {
         matcher.addURI(authority, SearchManager.SUGGEST_URI_PATH_QUERY , ALL_SUGGESTIONS_ASSET);
         matcher.addURI(authority, SearchManager.SUGGEST_URI_PATH_QUERY+ "/*", SUGGESTIONS_ASSET);
         matcher.addURI(authority, QuotesContract.PATH_SEARCH_RESULTS, SEARCH_RESULTS);
+        matcher.addURI(authority, QuotesContract.PATH_NEWS, NEWS);
         return matcher;
     }
 
@@ -283,6 +284,18 @@ public class QuotesProvider extends ContentProvider {
                 );
                 break;
             }
+            case NEWS: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        QuotesContract.NewsEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -321,6 +334,9 @@ public class QuotesProvider extends ContentProvider {
                 return QuotesContract.HistoricalQuoteEntry.CONTENT_TYPE;
             case SUGGESTIONS_ASSET: {
                 return QuotesContract.SuggestionViewEntry.CONTENT_TYPE;
+            }
+            case NEWS: {
+                return QuotesContract.NewsEntry.CONTENT_TYPE;
             }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -391,6 +407,14 @@ public class QuotesProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
+            case NEWS: {
+                long _id = db.insert(QuotesContract.NewsEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = QuotesContract.NewsEntry.buildNewsUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -433,6 +457,10 @@ public class QuotesProvider extends ContentProvider {
             case HISTORICAL_QUOTE:
                 rowsDeleted = db.delete(
                         QuotesContract.HistoricalQuoteEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case NEWS:
+                rowsDeleted = db.delete(
+                        QuotesContract.NewsEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -477,6 +505,10 @@ public class QuotesProvider extends ContentProvider {
                 break;
             case HISTORICAL_QUOTE:
                 rowsUpdated = db.update(QuotesContract.HistoricalQuoteEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+                break;
+            case NEWS:
+                rowsUpdated = db.update(QuotesContract.NewsEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             default:
@@ -589,6 +621,21 @@ public class QuotesProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values) {
                         long _id = db.insert(QuotesContract.HistoricalQuoteEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            case NEWS:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(QuotesContract.NewsEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }

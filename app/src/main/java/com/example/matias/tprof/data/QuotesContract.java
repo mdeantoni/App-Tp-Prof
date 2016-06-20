@@ -31,6 +31,7 @@ public class QuotesContract {
     public static final String PATH_HISTORICAL_QUOTES = "historical_quotes";
     public static final String PATH_SUGGESTIONS = "suggestions";
     public static final String PATH_SEARCH_RESULTS = "search_results";
+    public static final String PATH_NEWS = "news";
 
     public static final class StockEntry implements BaseColumns {
 
@@ -254,5 +255,27 @@ public class QuotesContract {
         public static final String COLUMN_TYPE = "Type";
         public static final String COLUMN_Id = "Id";
         public static final String COLUMN_QUOTE_ID = "Quote_Id";
+    }
+
+    public static final class NewsEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_NEWS).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_NEWS;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_NEWS;
+
+        public static final String TABLE_NAME = "News";
+        public static final String COLUMN_HEADLINE = "Headline";
+        public static final String COLUMN_URL = "Url";
+        public static final String COLUMN_SOURCE = "Source";
+        public static final String COLUMN_DATE = "Date";
+        public static final String COLUMN_TAGS = "TAGS";
+
+        public static Uri buildNewsUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
     }
 }

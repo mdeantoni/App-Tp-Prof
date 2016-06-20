@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 21;
+    private static final int DATABASE_VERSION = 22;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -173,6 +173,15 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 QuotesContract.BondQuotesEntry.TABLE_NAME + "." + QuotesContract.BondQuotesEntry.COLUMN_BOND_ID +
                 "=" + QuotesContract.BondEntry.TABLE_NAME + "." + QuotesContract.BondEntry._ID ;
 
+        final String SQL_CREATE_NEWS_TABLE = "CREATE TABLE " + QuotesContract.NewsEntry.TABLE_NAME + " (" +
+                QuotesContract.NewsEntry._ID + " INTEGER PRIMARY KEY," +
+                QuotesContract.NewsEntry.COLUMN_DATE +" DATETIME NOT NULL, " +
+                QuotesContract.NewsEntry.COLUMN_HEADLINE + " TEXT NOT NULL, " +
+                QuotesContract.NewsEntry.COLUMN_SOURCE + " TEXT NOT NULL, " +
+                QuotesContract.NewsEntry.COLUMN_TAGS + " TEXT NOT NULL, " +
+                QuotesContract.NewsEntry.COLUMN_URL + " TEXT NOT NULL " +
+                " );";
+
         sqLiteDatabase.execSQL(SQL_CREATE_STOCKS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_BONDS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_STOCK_QUOTES_TABLE);
@@ -182,6 +191,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_CREATE_HISTORICAL_QUOTE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_SUGGESTIONS_VIEW);
         sqLiteDatabase.execSQL(SQL_CREATE_SEARCH_RESULTS_VIEW);
+        sqLiteDatabase.execSQL(SQL_CREATE_NEWS_TABLE);
     }
 
     @Override
@@ -195,6 +205,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.HistoricalQuoteEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + QuotesContract.SuggestionViewEntry.VIEW_NAME);
         sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + QuotesContract.SearchResultsEntry.VIEW_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.NewsEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }
