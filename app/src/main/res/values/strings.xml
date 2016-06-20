@@ -12,5 +12,6 @@
     <string name="content_authority">com.example.matias.tprof</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_activity_search_results">SearchResultsActivity</string>
+    <string name="title_activity_web_view">WebViewActivity</string>
 
 </resources>

@@ -36,9 +36,9 @@ public class NewsAdapter extends CursorAdapter {
         SimpleDateFormat inputFormat =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM");
         String date = cursor.getString(NewsFragment.COL_DATE);
-        String source = cursor.getString(NewsFragment.COL_SOURCE);
+        String source = cursor.getString(NewsFragment.COL_SOURCE).replace("\"", "");
 
-        if(source == "LN"){
+        if(source.equals("LN")){
             icon = R.mipmap.ln_news;
         }else{
             icon = R.mipmap.yhoo_news;

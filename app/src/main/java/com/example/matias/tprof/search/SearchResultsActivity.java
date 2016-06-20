@@ -27,6 +27,7 @@ import com.example.matias.tprof.StockQuotesAdapter;
 import com.example.matias.tprof.data.QuotesContract;
 import com.example.matias.tprof.detail.DetailActivity;
 import com.example.matias.tprof.task.FetchHistoricalQuotesTask;
+import com.example.matias.tprof.task.FetchNewsTask;
 
 public class SearchResultsActivity extends AppCompatActivity {
 
@@ -178,8 +179,9 @@ public class SearchResultsActivity extends AppCompatActivity {
                         .putExtra("com.example.matias.tprof.Identifier",stockId)
                         .putExtra("com.example.matias.tprof.Symbol", symbol);
                 FetchHistoricalQuotesTask getHistoricalTask = new FetchHistoricalQuotesTask(this);
+                FetchNewsTask getNewsTask = new FetchNewsTask(this);
                 getHistoricalTask.execute(symbol);
-
+                getNewsTask.execute(symbol);
                 startActivity(stockQuoteIntent);
 
             }
@@ -193,6 +195,8 @@ public class SearchResultsActivity extends AppCompatActivity {
                         .putExtra(Intent.EXTRA_TEXT, "BONO")
                         .putExtra("com.example.matias.tprof.Identifier",bondId)
                         .putExtra("com.example.matias.tprof.Symbol", symbol);
+                FetchNewsTask getNewsTask = new FetchNewsTask(this);
+                getNewsTask.execute(symbol);
                 startActivity(bondQuoteIntent);
             }
         }

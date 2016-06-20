@@ -9,7 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.WebView;
 
 import com.example.matias.tprof.BondQuotesFragment;
 import com.example.matias.tprof.R;
@@ -29,7 +31,6 @@ public class DetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         viewPager = (ViewPager) findViewById(R.id.viewpager_detail);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -53,14 +54,15 @@ public class DetailActivity extends AppCompatActivity {
             }
 
             fragment.setArguments(arguments);
-
+            Fragment newsFragment = new NewsFragment();
+            newsFragment.setArguments(arguments);
 
           //  getSupportFragmentManager().beginTransaction()
            //         .add(R.id.detail_fragment_container, fragment)
             //        .commit();
 
             adapter.addFragment(fragment, "Detalle");
-            adapter.addFragment(new NewsFragment(), "Noticias");
+            adapter.addFragment(newsFragment, "Noticias");
             viewPager.setAdapter(adapter);
 
             tabLayout = (TabLayout) findViewById(R.id.detail_tabs);
@@ -69,5 +71,4 @@ public class DetailActivity extends AppCompatActivity {
 
         }
     }
-
 }

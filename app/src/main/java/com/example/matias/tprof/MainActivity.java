@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.example.matias.tprof.detail.DetailActivity;
 import com.example.matias.tprof.sync.AppSyncAdapter;
 import com.example.matias.tprof.task.FetchHistoricalQuotesTask;
+import com.example.matias.tprof.task.FetchNewsTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
                 .putExtra(Intent.EXTRA_TEXT, "BONO")
                 .putExtra("com.example.matias.tprof.Identifier",bondId)
                 .putExtra("com.example.matias.tprof.Symbol", symbol);
+        FetchNewsTask getNewsTask = new FetchNewsTask(this);
+        getNewsTask.execute(symbol);
         startActivity(bondQuoteIntent);
     }
 
@@ -116,8 +119,9 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
                 .putExtra("com.example.matias.tprof.Identifier",stockId)
                 .putExtra("com.example.matias.tprof.Symbol", symbol);
         FetchHistoricalQuotesTask getHistoricalTask = new FetchHistoricalQuotesTask(this);
+        FetchNewsTask getNewsTask = new FetchNewsTask(this);
         getHistoricalTask.execute(symbol);
-
+        getNewsTask.execute(symbol);
         startActivity(stockQuoteIntent);
     }
 
