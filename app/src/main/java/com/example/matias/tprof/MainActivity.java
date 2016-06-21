@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
                 .putExtra(Intent.EXTRA_TEXT, "BONO")
                 .putExtra("com.example.matias.tprof.Identifier",bondId)
                 .putExtra("com.example.matias.tprof.Symbol", symbol);
-        FetchNewsTask getNewsTask = new FetchNewsTask(this);
-        getNewsTask.execute(symbol);
+        //FetchNewsTask getNewsTask = new FetchNewsTask(this);
+        //getNewsTask.execute(symbol);
         startActivity(bondQuoteIntent);
     }
 
@@ -119,9 +119,9 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
                 .putExtra("com.example.matias.tprof.Identifier",stockId)
                 .putExtra("com.example.matias.tprof.Symbol", symbol);
         FetchHistoricalQuotesTask getHistoricalTask = new FetchHistoricalQuotesTask(this);
-        FetchNewsTask getNewsTask = new FetchNewsTask(this);
+        //FetchNewsTask getNewsTask = new FetchNewsTask(this);
         getHistoricalTask.execute(symbol);
-        getNewsTask.execute(symbol);
+        //getNewsTask.execute(symbol);
         startActivity(stockQuoteIntent);
     }
 

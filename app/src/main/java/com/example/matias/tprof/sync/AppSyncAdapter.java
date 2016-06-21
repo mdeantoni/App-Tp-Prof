@@ -135,6 +135,7 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
         JSONArray newsArray = dataObject.getJSONArray("News");
         JSONArray stocksArray = quotesObject.getJSONArray("Stocks");
         JSONArray bondsArray = quotesObject.getJSONArray("Bonds");
+        this.getNewsFromJson(newsArray);
         this.getStockQuotesFromJson(stocksArray);
         this.getBondQuotesFromJson(bondsArray);
     }
@@ -405,6 +406,46 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
         }
 
         Log.d(LOG_TAG, "FetchBondDataTask Complete. " + inserted + " Inserted");
+    }
+
+    public void getNewsFromJson(JSONArray newsArray) throws JSONException {
+        final String URL = "URL";
+        final String HEADLINE = "Headline";
+        final String SOURCE = "Source";
+        final String DATE = "Date";
+        final String TAGSSTRING = "TagsAsString";
+
+        Vector<ContentValues> cVVector = new Vector<ContentValues>(newsArray.length());
+
+        for (int newsIndex = 0; newsIndex < newsArray.length(); newsIndex++) {
+
+            JSONObject quoteObject = newsArray.getJSONObject(newsIndex);
+
+            ContentValues newsQuoteValue = new ContentValues();
+            newsQuoteValue.put(QuotesContract.NewsEntry.COLUMN_HEADLINE, quoteObject.getString(HEADLINE));
+            newsQuoteValue.put(QuotesContract.NewsEntry.COLUMN_DATE, quoteObject.getString(DATE));
+            newsQuoteValue.put(QuotesContract.NewsEntry.COLUMN_TAGS, quoteObject.getString(TAGSSTRING));
+            newsQuoteValue.put(QuotesContract.NewsEntry.COLUMN_SOURCE, quoteObject.getString(SOURCE));
+            newsQuoteValue.put(QuotesContract.NewsEntry.COLUMN_URL, quoteObject.getString(URL));
+
+            cVVector.add(newsQuoteValue);
+        }
+
+        int insertedNews = 0;
+        if (cVVector.size() > 0) {
+            //Delete old news, we just keep the fresh ones
+            getContext().getContentResolver().delete(QuotesContract.NewsEntry.CONTENT_URI,
+                    null,
+                    null);
+
+            //Insert the new ones.
+            ContentValues[] cvArray = new ContentValues[cVVector.size()];
+            cVVector.toArray(cvArray);
+            insertedNews = getContext().getContentResolver().bulkInsert(QuotesContract.NewsEntry.CONTENT_URI, cvArray);
+        }
+
+        Log.d(LOG_TAG, "NEWS insertion  done. " + insertedNews + "  News Inserted");
+
     }
 
     /**
