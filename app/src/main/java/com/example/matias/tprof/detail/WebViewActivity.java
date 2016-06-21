@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.example.matias.tprof.R;
 
@@ -20,6 +21,7 @@ public class WebViewActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         WebView myWebView = (WebView) findViewById(R.id.webview);
+        myWebView.setWebViewClient(new WebViewClient());
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.loadUrl(intent.getStringExtra(Intent.EXTRA_TEXT));
     }

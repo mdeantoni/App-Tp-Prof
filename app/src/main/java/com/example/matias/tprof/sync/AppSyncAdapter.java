@@ -131,8 +131,10 @@ public class AppSyncAdapter extends AbstractThreadedSyncAdapter {
     public void getQuotesFromJson(String syncData) throws JSONException {
         JSONObject syncDataObject = new JSONObject(syncData);
         JSONObject dataObject = syncDataObject.getJSONObject("Data");
-        JSONArray stocksArray = dataObject.getJSONArray("Stocks");
-        JSONArray bondsArray = dataObject.getJSONArray("Bonds");
+        JSONObject quotesObject = dataObject.getJSONObject("Quotes");
+        JSONArray newsArray = dataObject.getJSONArray("News");
+        JSONArray stocksArray = quotesObject.getJSONArray("Stocks");
+        JSONArray bondsArray = quotesObject.getJSONArray("Bonds");
         this.getStockQuotesFromJson(stocksArray);
         this.getBondQuotesFromJson(bondsArray);
     }

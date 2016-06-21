@@ -51,7 +51,7 @@ public class FetchNewsTask extends AsyncTask<String,Void,Void> {
             //"http://192.168.0.17:50914/api/sync";
             final String NEWS_URL =
                     "http://10.0.2.2:50914/api/news";
-            //"http://192.168.0.17:50914/api/historicalquotes?";
+            //"http://192.168.0.17:50914/api/news";
             final String QUERY_PARAM = "tickerSymbol";
 
             Uri builtUri = Uri.parse(NEWS_URL).buildUpon()

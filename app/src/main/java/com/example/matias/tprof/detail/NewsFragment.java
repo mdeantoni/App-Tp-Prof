@@ -71,7 +71,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
                 if (cursor != null) {
                     String url = cursor.getString(COL_URL);
                     Intent webViewIntent = new Intent(getActivity(), WebViewActivity.class);
-                    webViewIntent.putExtra(Intent.EXTRA_TEXT, "http://www.lanacion.com.ar");
+                    webViewIntent.putExtra(Intent.EXTRA_TEXT, url);
                     startActivity(webViewIntent);
                 }
             }
