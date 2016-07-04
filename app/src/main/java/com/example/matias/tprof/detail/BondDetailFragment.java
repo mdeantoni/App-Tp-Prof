@@ -1,6 +1,8 @@
 package com.example.matias.tprof.detail;
 
 
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -9,12 +11,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.matias.tprof.R;
 import com.example.matias.tprof.data.QuotesContract;
@@ -33,6 +40,8 @@ import java.util.Date;
  * A simple {@link Fragment} subclass.
  */
 public class BondDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    public final String LOG_TAG = BondDetailFragment.class.getSimpleName();
 
     static final String DETAIL_URI = "BOND_DETAIL_URI";
     static final String BOND_ID = "BOND_ID";
@@ -98,6 +107,14 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
     private Uri mUri;
     private int bondId;
     private String tickerSymbol;
+    private int m_Bonds = 0;
+
+
+    private final String TRADE_TYPE = "Bono";
+    private final String BUY_TRADE_TYPE = "Compra";
+    private final String SELL_TRADE_TYPE = "Venta";
+    private String LastTradeDate;
+    private Double LastTradePRice;
 
 
     public BondDetailFragment() {
@@ -125,6 +142,9 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_bond_detail, container, false);
 
+        Button buttonBuy = (Button) rootView.findViewById(R.id.button_buy_bond);
+        Button buttonSell = (Button) rootView.findViewById(R.id.button_sell_bond);
+
         LineChart lineChart = (LineChart) rootView.findViewById(R.id.bond_detail_chart);
         lineChart.getAxisRight().setEnabled(true);
         lineChart.getAxisRight().setDrawGridLines(false);
@@ -138,6 +158,122 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
         lineChart.setAutoScaleMinMaxEnabled(true);
         lineChart.setDescription("");
         lineChart.setTouchEnabled(false);
+
+        buttonBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Compra de Bonos:");
+                builder.setMessage("Cantidad a adquirir:");
+
+                final EditText input = new EditText(getActivity());
+
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                builder.setView(input);
+                builder.setPositiveButton("COMPRAR", null);
+                builder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                final AlertDialog dialog = builder.create();
+
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+
+                        Button b = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        b.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View view) {
+                                m_Bonds = Integer.parseInt(input.getText().toString());
+                                if (m_Bonds == 0) {
+                                    input.setError("La cantidad debe ser mayor a cero.");
+                                } else {
+                                    ContentValues newsQuoteValue = new ContentValues();
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_DATE, LastTradeDate);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_OPERATION, BUY_TRADE_TYPE);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_PRICE, LastTradePRice);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Bonds);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
+
+                                    getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
+                                    Log.d(LOG_TAG, "Bond buy inserted succesfully " + newsQuoteValue.toString());
+
+                                    Toast toast = Toast.makeText(getActivity(), "Operación Realizada", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+                    }
+                });
+                dialog.show();
+            }
+        });
+
+        buttonSell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Venta de Bonos:");
+                builder.setMessage("Cantidad a vender:");
+
+                final EditText input = new EditText(getActivity());
+
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                builder.setView(input);
+                builder.setPositiveButton("VENDER", null);
+                builder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                final AlertDialog dialog = builder.create();
+
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+
+                        Button b = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        b.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View view) {
+                                m_Bonds = Integer.parseInt(input.getText().toString());
+                                if (m_Bonds == 0) {
+                                    input.setError("La cantidad debe ser mayor a cero.");
+                                } else {
+                                    ContentValues newsQuoteValue = new ContentValues();
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_DATE, LastTradeDate);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_OPERATION, SELL_TRADE_TYPE);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_PRICE, LastTradePRice);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Bonds);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
+
+                                    getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
+                                    Log.d(LOG_TAG, "Bond sell inserted succesfully " + newsQuoteValue.toString());
+
+                                    Toast toast = Toast.makeText(getActivity(), "Operación Realizada", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+                    }
+                });
+                dialog.show();
+            }
+        });
 
         return rootView;
     }
@@ -216,6 +352,9 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                     } else {
                         change.setTextColor(Color.RED);
                     }
+
+                    LastTradeDate = cursor.getString(BondDetailFragment.COL_LAST_TRADE_DATE);
+                    LastTradePRice = cursor.getDouble(BondDetailFragment.COL_LAST_PRICE);
 
                     toolbar.setTitle(cursor.getString(BondDetailFragment.COL_FULLNAME));
                     quote.setText(cursor.getString(BondDetailFragment.COL_SYMBOL));

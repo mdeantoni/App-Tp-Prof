@@ -31,7 +31,9 @@ public class QuotesContract {
     public static final String PATH_HISTORICAL_QUOTES = "historical_quotes";
     public static final String PATH_SUGGESTIONS = "suggestions";
     public static final String PATH_SEARCH_RESULTS = "search_results";
+    public static final String PATH_HOLDINGS = "holdings";
     public static final String PATH_NEWS = "news";
+    public static final String PATH_TRADE = "trades";
 
     public static final class StockEntry implements BaseColumns {
 
@@ -275,6 +277,49 @@ public class QuotesContract {
         public static final String COLUMN_TAGS = "TAGS";
 
         public static Uri buildNewsUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class TradesEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_TRADE).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TRADE;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TRADE;
+
+        public static final String TABLE_NAME = "Trades";
+        public static final String COLUMN_TYPE = "Operation_Type";
+        public static final String COLUMN_QUANTITY = "Quantity";
+        public static final String COLUMN_OPERATION = "Operation";
+        public static final String COLUMN_SYMBOL = "Ticker_Symbol";
+        public static final String COLUMN_DATE = "Trade_Date";
+        public static final String COLUMN_PRICE = "Trade_Price";
+
+        public static Uri buildTradeUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class HoldingsViewEntry {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_HOLDINGS).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_HOLDINGS;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_HOLDINGS;
+
+        public static final String VIEW_NAME = "Holdings";
+        public static final String COLUMN_TYPE = "Type";
+        public static final String COLUMN_QUANTITY = "Quantity";
+        public static final String COLUMN_SYMBOL = "Ticker_Symbol";
+
+        public static Uri buildHoldingUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }

@@ -3,15 +3,19 @@
     <string name="action_settings">Settings</string>
     <string name="search_title">Buscar</string>
     <string name="search_hint">Buscar</string>
-
+    <string name="action_portfolio">Cartera</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
     <string name="sync_account_type">tprof.example.com</string>
     <string name="content_authority">com.example.matias.tprof</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_activity_search_results">SearchResultsActivity</string>
     <string name="title_activity_web_view">WebViewActivity</string>
+    <string name="title_activity_portfolio">Portfolio</string>
+
+
 
 </resources>

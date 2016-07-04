@@ -1,5 +1,7 @@
 package com.example.matias.tprof.detail;
 
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -8,13 +10,18 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.matias.tprof.R;
 import com.example.matias.tprof.StockQuotesFragment;
@@ -35,6 +42,8 @@ import java.util.Date;
  */
 public class StockDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    public final String LOG_TAG = StockDetailFragment.class.getSimpleName();
+
     static final String DETAIL_URI = "STOCK_DETAIL_URI";
     static final String STOCK_ID = "STOCK_ID";
     static final String SYMBOL = "SYMBOL";
@@ -48,6 +57,13 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
     private Uri mUri;
     private int stockId;
     private String tickerSymbol;
+    private int m_Stocks = 0;
+
+    private final String TRADE_TYPE = "Accion";
+    private final String BUY_TRADE_TYPE = "Compra";
+    private final String SELL_TRADE_TYPE = "Venta";
+    private String LastTradeDate;
+    private Double LastTradePRice;
 
     // This has to change when details table and columns are implemented.
 
@@ -149,6 +165,8 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
         Button buttonMonth = (Button) rootView.findViewById(R.id.button_stock_detail_month);
         Button button6Month = (Button) rootView.findViewById(R.id.button_stock_detail_sixmonth);
         Button buttonYear = (Button) rootView.findViewById(R.id.button_stock_detail_year);
+        Button buttonBuy = (Button) rootView.findViewById(R.id.button_buy_stock);
+        Button buttonSell = (Button) rootView.findViewById(R.id.button_sell_stock);
 
         final LineChart lineChart = (LineChart) rootView.findViewById(R.id.stock_detail_chart);
         lineChart.getAxisRight().setEnabled(true);
@@ -165,6 +183,122 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
         //lineChart.setAutoScaleMinMaxEnabled(true);
         lineChart.setDescription("");
         lineChart.setTouchEnabled(false);
+
+        buttonBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Compra de Acciones:");
+                builder.setMessage("Cantidad a adquirir:");
+
+                final EditText input = new EditText(getActivity());
+
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                builder.setView(input);
+                builder.setPositiveButton("COMPRAR", null);
+                builder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                final AlertDialog dialog = builder.create();
+
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+
+                        Button b = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        b.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View view) {
+                                m_Stocks = Integer.parseInt(input.getText().toString());
+                                if (m_Stocks == 0) {
+                                    input.setError("La cantidad debe ser mayor a cero.");
+                                } else {
+                                    ContentValues newsQuoteValue = new ContentValues();
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_DATE, LastTradeDate);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_OPERATION, BUY_TRADE_TYPE);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_PRICE, LastTradePRice);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Stocks);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
+
+                                    getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
+                                    Log.d(LOG_TAG, "Stock buy inserted succesfully " + newsQuoteValue.toString());
+
+                                    Toast toast = Toast.makeText(getActivity(), "Operación Realizada", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+                    }
+                });
+                dialog.show();
+            }
+        });
+
+        buttonSell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Venta de Acciones:");
+                builder.setMessage("Cantidad a vender:");
+
+                final EditText input = new EditText(getActivity());
+
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                builder.setView(input);
+                builder.setPositiveButton("VENDER", null);
+                builder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                final AlertDialog dialog = builder.create();
+
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+
+                        Button b = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        b.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View view) {
+                                m_Stocks = Integer.parseInt(input.getText().toString());
+                                if (m_Stocks == 0) {
+                                    input.setError("La cantidad debe ser mayor a cero.");
+                                } else {
+                                    ContentValues newsQuoteValue = new ContentValues();
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_DATE, LastTradeDate);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_OPERATION, SELL_TRADE_TYPE);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_PRICE, LastTradePRice);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Stocks);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
+                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
+
+                                    getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
+                                    Log.d(LOG_TAG, "Stock sell inserted succesfully " + newsQuoteValue.toString());
+
+                                    Toast toast = Toast.makeText(getActivity(), "Operación Realizada", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+                    }
+                });
+                dialog.show();
+            }
+        });
 
 
         buttonDay.setOnClickListener(new View.OnClickListener() {
@@ -305,6 +439,9 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                         } else {
                             change.setTextColor(Color.RED);
                         }
+
+                        LastTradeDate = cursor.getString(StockDetailFragment.COL_LAST_TRADE_DATE);
+                        LastTradePRice = cursor.getDouble(StockDetailFragment.COL_LAST_PRICE);
 
                         toolbar.setTitle(cursor.getString(StockDetailFragment.COL_FULLNAME));
                         quote.setText(cursor.getString(StockDetailFragment.COL_SYMBOL));

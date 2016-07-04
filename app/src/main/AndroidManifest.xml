@@ -97,6 +97,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.matias.tprof.detail.DetailActivity" />
         </activity>
+        <activity android:name=".portfolio.PortfolioActivity"
+            android:label="@string/title_activity_portfolio"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

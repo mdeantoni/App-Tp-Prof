@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.matias.tprof.detail.DetailActivity;
+import com.example.matias.tprof.portfolio.PortfolioActivity;
 import com.example.matias.tprof.sync.AppSyncAdapter;
 import com.example.matias.tprof.task.FetchHistoricalQuotesTask;
 import com.example.matias.tprof.task.FetchNewsTask;
@@ -94,6 +95,11 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if (id == R.id.action_portfolio) {
+            Intent portfolioIntent = new Intent(this, PortfolioActivity.class);
+            startActivity(portfolioIntent);
         }
 
         return super.onOptionsItemSelected(item);

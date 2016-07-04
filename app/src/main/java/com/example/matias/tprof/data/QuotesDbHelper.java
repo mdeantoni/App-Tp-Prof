@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 23;
+    private static final int DATABASE_VERSION = 25;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -182,6 +182,28 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 QuotesContract.NewsEntry.COLUMN_URL + " TEXT NOT NULL " +
                 " );";
 
+
+        final String SQL_CREATE_TRADES_TABLE = "CREATE TABLE " + QuotesContract.TradesEntry.TABLE_NAME + " (" +
+                QuotesContract.TradesEntry._ID + " INTEGER PRIMARY KEY," +
+                QuotesContract.TradesEntry.COLUMN_DATE +" DATETIME NOT NULL, " +
+                QuotesContract.TradesEntry.COLUMN_OPERATION + " TEXT NOT NULL, " +
+                QuotesContract.TradesEntry.COLUMN_SYMBOL + " TEXT NOT NULL, " +
+                QuotesContract.TradesEntry.COLUMN_QUANTITY + " INT NOT NULL, " +
+                QuotesContract.TradesEntry.COLUMN_TYPE + " TEXT NOT NULL, " +
+                QuotesContract.TradesEntry.COLUMN_PRICE + " DECIMAL(6,2) NOT NULL " +
+                " );";
+
+        final String SQL_CREATE_HOLDINGS_VIEW = "CREATE VIEW " + QuotesContract.HoldingsViewEntry.VIEW_NAME + " AS " +
+                "SELECT " + QuotesContract.TradesEntry.COLUMN_SYMBOL + " as " + QuotesContract.HoldingsViewEntry.COLUMN_SYMBOL + " , " +
+                "SUM( CASE WHEN " + QuotesContract.TradesEntry.COLUMN_OPERATION + " =  'Compra' THEN "
+                + QuotesContract.TradesEntry.COLUMN_QUANTITY + " ELSE -1 * " + QuotesContract.TradesEntry.COLUMN_QUANTITY + " END) AS " + QuotesContract.HoldingsViewEntry.COLUMN_QUANTITY + " , " +
+                QuotesContract.TradesEntry.COLUMN_TYPE + " AS " + QuotesContract.HoldingsViewEntry.COLUMN_TYPE + " " +
+                "FROM " + QuotesContract.TradesEntry.TABLE_NAME + " " +
+                "GROUP BY " + QuotesContract.TradesEntry.COLUMN_SYMBOL + " , " + QuotesContract.TradesEntry.COLUMN_TYPE + " " +
+                "HAVING SUM( CASE WHEN " + QuotesContract.TradesEntry.COLUMN_OPERATION + " =  'Compra' THEN "
+                + QuotesContract.TradesEntry.COLUMN_QUANTITY + " ELSE -1 * " + QuotesContract.TradesEntry.COLUMN_QUANTITY + " END) > 0";
+
+
         sqLiteDatabase.execSQL(SQL_CREATE_STOCKS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_BONDS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_STOCK_QUOTES_TABLE);
@@ -192,6 +214,8 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_CREATE_SUGGESTIONS_VIEW);
         sqLiteDatabase.execSQL(SQL_CREATE_SEARCH_RESULTS_VIEW);
         sqLiteDatabase.execSQL(SQL_CREATE_NEWS_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_TRADES_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_HOLDINGS_VIEW);
     }
 
     @Override
@@ -206,6 +230,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + QuotesContract.SuggestionViewEntry.VIEW_NAME);
         sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + QuotesContract.SearchResultsEntry.VIEW_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.NewsEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.TradesEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }
