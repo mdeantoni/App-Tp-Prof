@@ -79,14 +79,16 @@
             android:layout_height="wrap_content"
             android:text="Vender"
             android:id="@+id/button_sell_bond"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:enabled="false" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Comprar"
             android:id="@+id/button_buy_bond"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:enabled="true" />
     </LinearLayout>
 
     <LinearLayout

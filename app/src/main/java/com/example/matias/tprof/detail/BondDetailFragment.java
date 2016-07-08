@@ -49,6 +49,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
 
     private static final int BOND_DETAIL_LOADER = 4;
     private static final int BOND_INTRADAY_LOADER = 6;
+    private static final int BOND_HOLDINGS_LOADER = 9;
 
     private static final String[] BOND_QUOTE_COLUMNS = {
             QuotesContract.BondEntry.TABLE_NAME + "." + QuotesContract.BondEntry._ID,
@@ -79,6 +80,11 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
             QuotesContract.BondIntradayPriceEntry.COLUMN_TRADE_PRICE,
     };
 
+    private static final String[] BOND_HOLDINGS_COLUMNS = {
+            QuotesContract.HoldingsViewEntry.COLUMN_SYMBOL,
+            QuotesContract.HoldingsViewEntry.COLUMN_QUANTITY,
+    };
+
     static final int COL_BOND_ID = 0;
     static final int COL_FULLNAME = 1;
     static final int COL_SYMBOL = 2;
@@ -104,10 +110,15 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
     static final int COL_INT_TRADE_TIME = 2;
     static final int COL_INT_TRADE_PRICE = 3;
 
+    static final int HOLD_COL_SYMBOL = 0;
+    static final int HOLDING_COL_QTY = 1;
+
     private Uri mUri;
     private int bondId;
     private String tickerSymbol;
     private int m_Bonds = 0;
+    private Button buttonSell;
+    private int mHolding;
 
 
     private final String TRADE_TYPE = "Bono";
@@ -126,6 +137,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
     public void onActivityCreated(Bundle savedInstanceState) {
         getLoaderManager().initLoader(BOND_DETAIL_LOADER, null, this);
         getLoaderManager().initLoader(BOND_INTRADAY_LOADER, null, this);
+        getLoaderManager().initLoader(BOND_HOLDINGS_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -143,7 +155,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
         View rootView = inflater.inflate(R.layout.fragment_bond_detail, container, false);
 
         Button buttonBuy = (Button) rootView.findViewById(R.id.button_buy_bond);
-        Button buttonSell = (Button) rootView.findViewById(R.id.button_sell_bond);
+        buttonSell = (Button) rootView.findViewById(R.id.button_sell_bond);
 
         LineChart lineChart = (LineChart) rootView.findViewById(R.id.bond_detail_chart);
         lineChart.getAxisRight().setEnabled(true);
@@ -208,6 +220,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                                     Toast toast = Toast.makeText(getActivity(), "Operación Realizada", Toast.LENGTH_SHORT);
                                     toast.show();
                                     dialog.dismiss();
+                                    getLoaderManager().restartLoader(BOND_HOLDINGS_LOADER, null, BondDetailFragment.this);
                                 }
                             }
                         });
@@ -251,6 +264,8 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                                 m_Bonds = Integer.parseInt(input.getText().toString());
                                 if (m_Bonds == 0) {
                                     input.setError("La cantidad debe ser mayor a cero.");
+                                } else if (m_Bonds > mHolding) {
+                                    input.setError("La cantidad debe ser menor a la tenencia actual.");
                                 } else {
                                     ContentValues newsQuoteValue = new ContentValues();
                                     newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_DATE, LastTradeDate);
@@ -266,6 +281,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                                     Toast toast = Toast.makeText(getActivity(), "Operación Realizada", Toast.LENGTH_SHORT);
                                     toast.show();
                                     dialog.dismiss();
+                                    getLoaderManager().restartLoader(BOND_HOLDINGS_LOADER, null, BondDetailFragment.this);
                                 }
                             }
                         });
@@ -304,6 +320,18 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                     new String[]{Integer.toString(bondId)},
                     null
             );
+        }
+
+        if (id == BondDetailFragment.BOND_HOLDINGS_LOADER) {
+            return new CursorLoader(
+                    getActivity(),
+                    QuotesContract.HoldingsViewEntry.CONTENT_URI,
+                    BOND_HOLDINGS_COLUMNS,
+                    QuotesContract.HoldingsViewEntry.COLUMN_SYMBOL + " = ?",
+                    new String[]{this.tickerSymbol},
+                    null
+            );
+
         }
         return null;
     }
@@ -411,6 +439,15 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                 lineChart.setData(data);
                 lineChart.invalidate();
                 break;
+
+            case BOND_HOLDINGS_LOADER:
+                if (cursor != null && cursor.moveToFirst()) {
+                    buttonSell.setEnabled(true);
+                    mHolding = cursor.getInt(BondDetailFragment.HOLDING_COL_QTY);
+                }else{
+                    buttonSell.setEnabled(false);
+                    mHolding = 0;
+                }
 
             default:
                 break;
