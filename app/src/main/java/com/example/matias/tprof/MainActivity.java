@@ -1,46 +1,46 @@
 package com.example.matias.tprof;
 
 import android.app.SearchManager;
-import android.app.SearchableInfo;
-import android.content.ComponentName;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.matias.tprof.data.QuotesContract;
 import com.example.matias.tprof.detail.DetailActivity;
 import com.example.matias.tprof.portfolio.PortfolioActivity;
 import com.example.matias.tprof.sync.AppSyncAdapter;
 import com.example.matias.tprof.task.FetchHistoricalQuotesTask;
-import com.example.matias.tprof.task.FetchNewsTask;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements BondQuotesFragment.OnBondQuoteSelectedListener,
-                                                               StockQuotesFragment.OnStockQuoteSelectedListener {
+                                                               StockQuotesFragment.OnStockQuoteSelectedListener,
+                                                               android.app.LoaderManager.LoaderCallbacks<Cursor> {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private static boolean appIsSynced = false; //ESTO ESTA MAL Y HAY QUE CAMBIARLO SI O SI!!!!!
+    private boolean hasHoldings;
+    private static final int TOTAL_HOLDINGS_LOADER = 1;
+
+    private static final String[] TOTAL_HOLDINGS_COLUMNS = {
+        " COUNT(*) "
+    };
+
+    static final int HOLDING_TOTAL = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -98,8 +98,13 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
         }
 
         if (id == R.id.action_portfolio) {
-            Intent portfolioIntent = new Intent(this, PortfolioActivity.class);
-            startActivity(portfolioIntent);
+            if(hasHoldings) {
+                Intent portfolioIntent = new Intent(this, PortfolioActivity.class);
+                startActivity(portfolioIntent);
+            }else{
+                Toast toast = Toast.makeText(this, "La cartera se encuentra vacía.", Toast.LENGTH_SHORT);
+                toast.show();
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -140,4 +145,36 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
         }
     }
 
+    @Override
+    protected  void onResume(){
+        getLoaderManager().restartLoader(TOTAL_HOLDINGS_LOADER, null, this);
+        super.onResume();
+    }
+
+    @Override
+    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(
+                this,
+                QuotesContract.HoldingsViewEntry.CONTENT_URI,
+                TOTAL_HOLDINGS_COLUMNS,
+                null,
+                null,
+                null
+        );
+    }
+
+    @Override
+    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor cursor) {
+        if (cursor != null && cursor.moveToFirst()) {
+            if(cursor.getInt(HOLDING_TOTAL) > 0)
+                hasHoldings = true;
+            else
+                hasHoldings = false;
+        }
+    }
+
+    @Override
+    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+
+    }
 }

@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 25;
+    private static final int DATABASE_VERSION = 26;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -231,6 +231,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + QuotesContract.SearchResultsEntry.VIEW_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.NewsEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.TradesEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + QuotesContract.HoldingsViewEntry.VIEW_NAME);
         onCreate(sqLiteDatabase);
     }
 }
