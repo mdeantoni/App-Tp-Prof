@@ -39,6 +39,7 @@ public class QuotesProvider extends ContentProvider {
     static final int NEWS = 550;
     static final int TRADES = 580;
     static final int HOLDINGS = 590;
+    static final int VALUED_HOLDINGS = 610;
 
     private static final SQLiteQueryBuilder sStockQuotesQueryBuilder;
     private static final SQLiteQueryBuilder sBondQuotesQueryBuilder;
@@ -88,6 +89,7 @@ public class QuotesProvider extends ContentProvider {
         matcher.addURI(authority, QuotesContract.PATH_NEWS, NEWS);
         matcher.addURI(authority, QuotesContract.PATH_TRADE, TRADES);
         matcher.addURI(authority, QuotesContract.PATH_HOLDINGS, HOLDINGS);
+        matcher.addURI(authority, QuotesContract.PATH_VALUED_HOLDINGS, VALUED_HOLDINGS);
         return matcher;
     }
 
@@ -324,6 +326,18 @@ public class QuotesProvider extends ContentProvider {
                 );
                 break;
             }
+            case VALUED_HOLDINGS: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        QuotesContract.ValuedHoldingsViewEntry.VIEW_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -368,6 +382,8 @@ public class QuotesProvider extends ContentProvider {
                 return QuotesContract.TradesEntry.CONTENT_TYPE;
             case HOLDINGS:
                 return QuotesContract.HoldingsViewEntry.CONTENT_TYPE;
+            case VALUED_HOLDINGS:
+                return QuotesContract.ValuedHoldingsViewEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

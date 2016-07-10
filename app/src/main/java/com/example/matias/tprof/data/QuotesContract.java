@@ -32,6 +32,7 @@ public class QuotesContract {
     public static final String PATH_SUGGESTIONS = "suggestions";
     public static final String PATH_SEARCH_RESULTS = "search_results";
     public static final String PATH_HOLDINGS = "holdings";
+    public static final String PATH_VALUED_HOLDINGS = "valued_holdings";
     public static final String PATH_NEWS = "news";
     public static final String PATH_TRADE = "trades";
 
@@ -320,6 +321,28 @@ public class QuotesContract {
         public static final String COLUMN_SYMBOL = "Ticker_Symbol";
 
         public static Uri buildHoldingUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class ValuedHoldingsViewEntry {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_VALUED_HOLDINGS).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_VALUED_HOLDINGS;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_VALUED_HOLDINGS;
+
+        public static final String VIEW_NAME = "ValuedHoldings";
+        public static final String COLUMN_TYPE = "Type";
+        public static final String COLUMN_QUANTITY = "Quantity";
+        public static final String COLUMN_SYMBOL = "Ticker_Symbol";
+        public static final String COLUMN_TOTAL_VALUE = "TotalValue";
+        public static final String COLUMN_CURRENT_PRICE = "CurrentPrice";
+
+        public static Uri buildValuedHoldingUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }

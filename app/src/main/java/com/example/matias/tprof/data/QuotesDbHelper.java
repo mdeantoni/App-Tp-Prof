@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 26;
+    private static final int DATABASE_VERSION = 27;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -203,6 +203,18 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 "HAVING SUM( CASE WHEN " + QuotesContract.TradesEntry.COLUMN_OPERATION + " =  'Compra' THEN "
                 + QuotesContract.TradesEntry.COLUMN_QUANTITY + " ELSE -1 * " + QuotesContract.TradesEntry.COLUMN_QUANTITY + " END) > 0";
 
+        final String SQL_CREATE_VALUED_HOLDINGS_VIEW = "CREATE VIEW " + QuotesContract.ValuedHoldingsViewEntry.VIEW_NAME + " AS " +
+                "SELECT " + QuotesContract.HoldingsViewEntry.VIEW_NAME + "." + QuotesContract.HoldingsViewEntry.COLUMN_SYMBOL + " AS " + QuotesContract.ValuedHoldingsViewEntry.COLUMN_SYMBOL + " , " +
+                QuotesContract.HoldingsViewEntry.VIEW_NAME + "." + QuotesContract.HoldingsViewEntry.COLUMN_TYPE + " AS " + QuotesContract.ValuedHoldingsViewEntry.COLUMN_TYPE + " , " +
+                QuotesContract.HoldingsViewEntry.VIEW_NAME + "." + QuotesContract.HoldingsViewEntry.COLUMN_QUANTITY + " AS " + QuotesContract.ValuedHoldingsViewEntry.COLUMN_QUANTITY + " , " +
+                QuotesContract.SearchResultsEntry.VIEW_NAME + "." + QuotesContract.SearchResultsEntry.COLUMN_LAST_TRADE_PRICE + " AS " + QuotesContract.ValuedHoldingsViewEntry.COLUMN_CURRENT_PRICE + " , " +
+                QuotesContract.SearchResultsEntry.VIEW_NAME + "." + QuotesContract.SearchResultsEntry.COLUMN_LAST_TRADE_PRICE + " * " +
+                QuotesContract.HoldingsViewEntry.VIEW_NAME + "." + QuotesContract.HoldingsViewEntry.COLUMN_QUANTITY + " AS " + QuotesContract.ValuedHoldingsViewEntry.COLUMN_TOTAL_VALUE + "  " +
+                " FROM " + QuotesContract.HoldingsViewEntry.VIEW_NAME + " INNER JOIN "+ QuotesContract.SearchResultsEntry.VIEW_NAME + " ON " +
+                QuotesContract.HoldingsViewEntry.VIEW_NAME + "." + QuotesContract.HoldingsViewEntry.COLUMN_SYMBOL +
+                "=" + QuotesContract.SearchResultsEntry.VIEW_NAME + "." + QuotesContract.SearchResultsEntry.COLUMN_SYMBOL;
+
+
 
         sqLiteDatabase.execSQL(SQL_CREATE_STOCKS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_BONDS_TABLE);
@@ -216,6 +228,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_CREATE_NEWS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_TRADES_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_HOLDINGS_VIEW);
+        sqLiteDatabase.execSQL(SQL_CREATE_VALUED_HOLDINGS_VIEW);
     }
 
     @Override
@@ -232,6 +245,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.NewsEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.TradesEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + QuotesContract.HoldingsViewEntry.VIEW_NAME);
+        sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + QuotesContract.ValuedHoldingsViewEntry.VIEW_NAME);
         onCreate(sqLiteDatabase);
     }
 }

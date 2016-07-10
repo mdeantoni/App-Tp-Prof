@@ -21,11 +21,14 @@ tools:context="com.example.matias.tprof.portfolio.PortfolioActivity">
 
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="HOLA!"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <fragment android:name="com.example.matias.tprof.portfolio.PortfolioFragment"
+        android:id="@+id/headlines_fragment"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:layout="@layout/fragment_portfolio" />
 
 
 </android.support.design.widget.CoordinatorLayout>
