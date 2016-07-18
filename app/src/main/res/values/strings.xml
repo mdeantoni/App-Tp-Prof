@@ -16,6 +16,7 @@
     <string name="title_activity_web_view">WebViewActivity</string>
     <string name="title_activity_portfolio">Portfolio</string>
     <string name="title_activity_prueba">Prueba</string>
+    <string name="title_activity_testactivity">TESTACTIVITY</string>
 
 
 </resources>

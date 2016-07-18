@@ -1,14 +1,20 @@
 package com.example.matias.tprof.detail;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.matias.tprof.R;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -45,6 +51,57 @@ public class CommentsFragment extends Fragment {
         // Get a reference to the ListView, and attach this adapter to it.
         ListView listView = (ListView) rootView.findViewById(R.id.listview_comments);
         listView.setAdapter(commentsAdaptert);
+
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab.attachToListView(listView);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Nuevo comentario:");
+                final EditText input = new EditText(getActivity());
+                input.setSingleLine(false);
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                input.setMaxLines(10);
+
+                builder.setView(input);
+                builder.setPositiveButton("ACEPTAR", null);
+                builder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                final AlertDialog dialog = builder.create();
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+
+                        Button b = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        b.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View view) {
+                                String textinput = input.getText().toString();
+                                if (textinput.isEmpty()) {
+                                    input.setError("Un comentario no puede estar vacio.");
+                                } else if (textinput.length() > 400) {
+                                    input.setError("El comentario no puede superar los 400 caracteres.");
+                                } else {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+                    }
+                });
+                dialog.show();
+            }
+        });
+
 
         // Inflate the layout for this fragment
         return rootView;
