@@ -56,6 +56,8 @@ public class DetailActivity extends AppCompatActivity {
             fragment.setArguments(arguments);
             Fragment newsFragment = new NewsFragment();
             newsFragment.setArguments(arguments);
+            Fragment commentsFragment = new CommentsFragment();
+            commentsFragment.setArguments(arguments);
 
           //  getSupportFragmentManager().beginTransaction()
            //         .add(R.id.detail_fragment_container, fragment)
@@ -63,6 +65,7 @@ public class DetailActivity extends AppCompatActivity {
 
             adapter.addFragment(fragment, "Detalle");
             adapter.addFragment(newsFragment, "Noticias");
+            adapter.addFragment(commentsFragment, "Comentarios");
             viewPager.setAdapter(adapter);
 
             tabLayout = (TabLayout) findViewById(R.id.detail_tabs);
