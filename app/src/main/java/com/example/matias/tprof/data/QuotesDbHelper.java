@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 27;
+    private static final int DATABASE_VERSION = 28;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -214,6 +214,14 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 QuotesContract.HoldingsViewEntry.VIEW_NAME + "." + QuotesContract.HoldingsViewEntry.COLUMN_SYMBOL +
                 "=" + QuotesContract.SearchResultsEntry.VIEW_NAME + "." + QuotesContract.SearchResultsEntry.COLUMN_SYMBOL;
 
+        final String SQL_CREATE_COMMENTS_TABLE = "CREATE TABLE " + QuotesContract.CommentsEntry.TABLE_NAME + " (" +
+                QuotesContract.CommentsEntry._ID + " INTEGER PRIMARY KEY," +
+                QuotesContract.CommentsEntry.COLUMN_DATE +" DATETIME NOT NULL, " +
+                QuotesContract.CommentsEntry.COLUMN_USERNAME + " TEXT NOT NULL, " +
+                QuotesContract.CommentsEntry.COLUMN_SYMBOL + " TEXT NOT NULL, " +
+                QuotesContract.CommentsEntry.COLUMN_COMMENT + " TEXT NOT NULL " +
+                " );";
+
 
 
         sqLiteDatabase.execSQL(SQL_CREATE_STOCKS_TABLE);
@@ -229,6 +237,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_CREATE_TRADES_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_HOLDINGS_VIEW);
         sqLiteDatabase.execSQL(SQL_CREATE_VALUED_HOLDINGS_VIEW);
+        sqLiteDatabase.execSQL(SQL_CREATE_COMMENTS_TABLE);
     }
 
     @Override
@@ -246,6 +255,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.TradesEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + QuotesContract.HoldingsViewEntry.VIEW_NAME);
         sqLiteDatabase.execSQL("DROP VIEW IF EXISTS " + QuotesContract.ValuedHoldingsViewEntry.VIEW_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QuotesContract.CommentsEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

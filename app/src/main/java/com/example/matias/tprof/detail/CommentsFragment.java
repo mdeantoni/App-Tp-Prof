@@ -1,32 +1,67 @@
 package com.example.matias.tprof.detail;
 
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.matias.tprof.R;
+import com.example.matias.tprof.data.QuotesContract;
 import com.melnykov.fab.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CommentsFragment extends Fragment {
+public class CommentsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    public final String LOG_TAG = CommentsFragment.class.getSimpleName();
 
     private CommentsAdapter commentsAdaptert;
+    private String tickerSymbol;
+
+    private static final int COMMENTS_LOADER = 1;
+
+    private static final String[] COMMENTS_COLUMNS = {
+            QuotesContract.CommentsEntry.COLUMN_SYMBOL,
+            QuotesContract.CommentsEntry.COLUMN_DATE,
+            QuotesContract.CommentsEntry.COLUMN_USERNAME,
+            QuotesContract.CommentsEntry.COLUMN_COMMENT,
+    };
+
+
+    static final int COL_SYMBOL = 0;
+    static final int COL_DATE = 1;
+    static final int COL_USERNAME = 2;
+    static final int COL_COMMENET = 3;
+
 
     public CommentsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(COMMENTS_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
     }
 
 
@@ -34,6 +69,11 @@ public class CommentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_comments, container, false);
+
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            tickerSymbol = arguments.getString(StockDetailFragment.SYMBOL);
+        }
 
 
         ArrayList<Comment> comments = new ArrayList<Comment>();
@@ -92,7 +132,23 @@ public class CommentsFragment extends Fragment {
                                 } else if (textinput.length() > 400) {
                                     input.setError("El comentario no puede superar los 400 caracteres.");
                                 } else {
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    Date date = new Date();
+
+                                    ContentValues newsQuoteValue = new ContentValues();
+                                    newsQuoteValue.put(QuotesContract.CommentsEntry.COLUMN_DATE, dateFormat.format(date));
+                                    newsQuoteValue.put(QuotesContract.CommentsEntry.COLUMN_COMMENT, textinput);
+                                    newsQuoteValue.put(QuotesContract.CommentsEntry.COLUMN_SYMBOL, tickerSymbol);
+                                    newsQuoteValue.put(QuotesContract.CommentsEntry.COLUMN_USERNAME, "Some USer");
+
+                                    getContext().getContentResolver().insert(QuotesContract.CommentsEntry.CONTENT_URI, newsQuoteValue);
+                                    Log.d(LOG_TAG, "Comment inserted succesfully " + newsQuoteValue.toString());
+
+                                    Toast toast = Toast.makeText(getActivity(), "Comentario agregado", Toast.LENGTH_SHORT);
+                                    toast.show();
                                     dialog.dismiss();
+
+                                    getLoaderManager().restartLoader(COMMENTS_LOADER, null, CommentsFragment.this);
                                 }
                             }
                         });
@@ -107,4 +163,25 @@ public class CommentsFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(
+                getActivity(),
+                QuotesContract.CommentsEntry.CONTENT_URI,
+                COMMENTS_COLUMNS,
+                QuotesContract.CommentsEntry.COLUMN_SYMBOL + " = ?",
+                new String[]{this.tickerSymbol},
+                null
+        );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
 }

@@ -35,6 +35,7 @@ public class QuotesContract {
     public static final String PATH_VALUED_HOLDINGS = "valued_holdings";
     public static final String PATH_NEWS = "news";
     public static final String PATH_TRADE = "trades";
+    public static final String PATH_COMMENTS = "comments";
 
     public static final class StockEntry implements BaseColumns {
 
@@ -343,6 +344,27 @@ public class QuotesContract {
         public static final String COLUMN_CURRENT_PRICE = "CurrentPrice";
 
         public static Uri buildValuedHoldingUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class CommentsEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_COMMENTS).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_COMMENTS;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_COMMENTS;
+
+        public static final String TABLE_NAME = "Comments";
+        public static final String COLUMN_USERNAME = "Username";
+        public static final String COLUMN_COMMENT = "Comment";
+        public static final String COLUMN_DATE = "Date";
+        public static final String COLUMN_SYMBOL = "Symbol";
+
+        public static Uri buildCommentUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }

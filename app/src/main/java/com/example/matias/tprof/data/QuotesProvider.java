@@ -40,6 +40,7 @@ public class QuotesProvider extends ContentProvider {
     static final int TRADES = 580;
     static final int HOLDINGS = 590;
     static final int VALUED_HOLDINGS = 610;
+    static final int COMMENT = 630;
 
     private static final SQLiteQueryBuilder sStockQuotesQueryBuilder;
     private static final SQLiteQueryBuilder sBondQuotesQueryBuilder;
@@ -90,6 +91,7 @@ public class QuotesProvider extends ContentProvider {
         matcher.addURI(authority, QuotesContract.PATH_TRADE, TRADES);
         matcher.addURI(authority, QuotesContract.PATH_HOLDINGS, HOLDINGS);
         matcher.addURI(authority, QuotesContract.PATH_VALUED_HOLDINGS, VALUED_HOLDINGS);
+        matcher.addURI(authority, QuotesContract.PATH_COMMENTS, COMMENT);
         return matcher;
     }
 
@@ -338,6 +340,18 @@ public class QuotesProvider extends ContentProvider {
                 );
                 break;
             }
+            case COMMENT: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        QuotesContract.CommentsEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -384,6 +398,8 @@ public class QuotesProvider extends ContentProvider {
                 return QuotesContract.HoldingsViewEntry.CONTENT_TYPE;
             case VALUED_HOLDINGS:
                 return QuotesContract.ValuedHoldingsViewEntry.CONTENT_TYPE;
+            case COMMENT:
+                return QuotesContract.CommentsEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -469,6 +485,14 @@ public class QuotesProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
+            case COMMENT: {
+                long _id = db.insert(QuotesContract.CommentsEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = QuotesContract.CommentsEntry.buildCommentUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -519,6 +543,10 @@ public class QuotesProvider extends ContentProvider {
             case TRADES:
                 rowsDeleted = db.delete(
                         QuotesContract.TradesEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case COMMENT:
+                rowsDeleted = db.delete(
+                        QuotesContract.CommentsEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -571,6 +599,10 @@ public class QuotesProvider extends ContentProvider {
                 break;
             case TRADES:
                 rowsUpdated = db.update(QuotesContract.TradesEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+                break;
+            case COMMENT:
+                rowsUpdated = db.update(QuotesContract.CommentsEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             default:
@@ -713,6 +745,21 @@ public class QuotesProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values) {
                         long _id = db.insert(QuotesContract.TradesEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            case COMMENT:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(QuotesContract.CommentsEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }
