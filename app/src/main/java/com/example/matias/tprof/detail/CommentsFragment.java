@@ -3,8 +3,10 @@ package com.example.matias.tprof.detail;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -138,11 +140,14 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                     Date date = new Date();
 
+                                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                                    String username = preferences.getString(getString(R.string.pref_username_key) , getString(R.string.pref_default_username));
+
                                     ContentValues newsQuoteValue = new ContentValues();
                                     newsQuoteValue.put(QuotesContract.CommentsEntry.COLUMN_DATE, dateFormat.format(date));
                                     newsQuoteValue.put(QuotesContract.CommentsEntry.COLUMN_COMMENT, textinput);
                                     newsQuoteValue.put(QuotesContract.CommentsEntry.COLUMN_SYMBOL, tickerSymbol);
-                                    newsQuoteValue.put(QuotesContract.CommentsEntry.COLUMN_USERNAME, "Some USer");
+                                    newsQuoteValue.put(QuotesContract.CommentsEntry.COLUMN_USERNAME, username);
 
                                     getContext().getContentResolver().insert(QuotesContract.CommentsEntry.CONTENT_URI, newsQuoteValue);
                                     Log.d(LOG_TAG, "Comment inserted succesfully " + newsQuoteValue.toString());

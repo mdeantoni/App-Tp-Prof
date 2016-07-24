@@ -8,9 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
@@ -21,15 +18,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.matias.tprof.R;
 import com.example.matias.tprof.StockQuotesAdapter;
 import com.example.matias.tprof.data.QuotesContract;
 import com.example.matias.tprof.detail.DetailActivity;
+import com.example.matias.tprof.portfolio.PortfolioActivity;
+import com.example.matias.tprof.settings.SettingsActivity;
 import com.example.matias.tprof.task.FetchHistoricalQuotesTask;
 import com.example.matias.tprof.task.FetchNewsTask;
 
-public class SearchResultsActivity extends AppCompatActivity {
+public class SearchResultsActivity  extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
+
+    private boolean hasHoldings;
+    private static final int TOTAL_HOLDINGS_SEARCH_LOADER = 1;
+
+    private static final String[] TOTAL_HOLDINGS_COLUMNS = {
+            " COUNT(*) "
+    };
+    static final int HOLDING_TOTAL = 0;
 
     private static final String[] SEARCH_RESULT_COLUMNS = {
             QuotesContract.SearchResultsEntry.COLUMN_Id,
@@ -74,6 +82,31 @@ public class SearchResultsActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         handleIntent(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+        }
+
+        if (id == R.id.action_portfolio) {
+            if(hasHoldings) {
+                Intent portfolioIntent = new Intent(this, PortfolioActivity.class);
+                startActivity(portfolioIntent);
+            }else{
+                Toast toast = Toast.makeText(this, "La cartera se encuentra vacía.", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -200,5 +233,38 @@ public class SearchResultsActivity extends AppCompatActivity {
                 startActivity(bondQuoteIntent);
             }
         }
+    }
+
+    @Override
+    protected  void onResume(){
+        getLoaderManager().restartLoader(TOTAL_HOLDINGS_SEARCH_LOADER, null, this);
+        super.onResume();
+    }
+
+    @Override
+    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new android.content.CursorLoader(
+                this,
+                QuotesContract.HoldingsViewEntry.CONTENT_URI,
+                TOTAL_HOLDINGS_COLUMNS,
+                null,
+                null,
+                null
+        );
+    }
+
+    @Override
+    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor cursor) {
+        if (cursor != null && cursor.moveToFirst()) {
+            if(cursor.getInt(HOLDING_TOTAL) > 0)
+                hasHoldings = true;
+            else
+                hasHoldings = false;
+        }
+    }
+
+    @Override
+    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+
     }
 }

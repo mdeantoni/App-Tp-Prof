@@ -102,6 +102,15 @@
             android:label="@string/title_activity_portfolio"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="@string/title_activity_settings">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.matias.tprof.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

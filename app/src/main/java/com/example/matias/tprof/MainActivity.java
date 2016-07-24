@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.matias.tprof.data.QuotesContract;
 import com.example.matias.tprof.detail.DetailActivity;
 import com.example.matias.tprof.portfolio.PortfolioActivity;
+import com.example.matias.tprof.settings.SettingsActivity;
 import com.example.matias.tprof.sync.AppSyncAdapter;
 import com.example.matias.tprof.task.FetchHistoricalQuotesTask;
 
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            startActivity(new Intent(this, SettingsActivity.class));
         }
 
         if (id == R.id.action_portfolio) {
