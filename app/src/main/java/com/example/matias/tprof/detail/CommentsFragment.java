@@ -41,6 +41,7 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
     private static final int COMMENTS_LOADER = 1;
 
     private static final String[] COMMENTS_COLUMNS = {
+            QuotesContract.CommentsEntry.TABLE_NAME + "." + QuotesContract.CommentsEntry._ID,
             QuotesContract.CommentsEntry.COLUMN_SYMBOL,
             QuotesContract.CommentsEntry.COLUMN_DATE,
             QuotesContract.CommentsEntry.COLUMN_USERNAME,
@@ -48,10 +49,12 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
     };
 
 
-    static final int COL_SYMBOL = 0;
-    static final int COL_DATE = 1;
-    static final int COL_USERNAME = 2;
-    static final int COL_COMMENET = 3;
+
+    static final int COL_ID = 0;
+    static final int COL_SYMBOL = 1;
+    static final int COL_DATE = 2;
+    static final int COL_USERNAME = 3;
+    static final int COL_COMMENET = 4;
 
 
     public CommentsFragment() {
@@ -87,7 +90,7 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
                 "con el contenido que se me ocurre en el momento basicamente nada, prueba prueba prueba prueba prueba ahhh holaaaaaaaaaa, tengo hambre, creo que voy a pedir empanadas."));
         comments.add(new Comment("10/12 12:45", "Matias", "Esto es un comentario de prueba corto"));
 
-        commentsAdaptert = new CommentsAdapter(getActivity(), comments);
+        commentsAdaptert = new CommentsAdapter(getActivity(), null, 0);
         // Get a reference to the ListView, and attach this adapter to it.
         ListView listView = (ListView) rootView.findViewById(R.id.listview_comments);
         listView.setAdapter(commentsAdaptert);
@@ -171,13 +174,13 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
                 COMMENTS_COLUMNS,
                 QuotesContract.CommentsEntry.COLUMN_SYMBOL + " = ?",
                 new String[]{this.tickerSymbol},
-                null
+                QuotesContract.CommentsEntry.COLUMN_DATE + " DESC"
         );
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        commentsAdaptert.swapCursor(data);
     }
 
     @Override
