@@ -36,7 +36,7 @@ public class CommentsAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         Date quoteDate = null;
-        SimpleDateFormat inputFormat =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat inputFormat =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm dd/MM");
 
         TextView tvComment = (TextView) view.findViewById(R.id.textview_comment_comments);

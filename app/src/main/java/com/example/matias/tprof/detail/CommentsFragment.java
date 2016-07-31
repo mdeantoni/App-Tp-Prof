@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.example.matias.tprof.R;
 import com.example.matias.tprof.data.QuotesContract;
+import com.example.matias.tprof.task.CreateCommentTask;
+import com.example.matias.tprof.task.RefreshCommentsTask;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
@@ -39,6 +41,7 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
 
     private CommentsAdapter commentsAdaptert;
     private String tickerSymbol;
+    private int oldestIdentifier;
 
     private static final int COMMENTS_LOADER = 1;
 
@@ -48,6 +51,7 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
             QuotesContract.CommentsEntry.COLUMN_DATE,
             QuotesContract.CommentsEntry.COLUMN_USERNAME,
             QuotesContract.CommentsEntry.COLUMN_COMMENT,
+            QuotesContract.CommentsEntry.COLUMN_IDENTIFIER,
     };
 
 
@@ -57,6 +61,7 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
     static final int COL_DATE = 2;
     static final int COL_USERNAME = 3;
     static final int COL_COMMENET = 4;
+    static final int COL_IDENTIFIER = 5;
 
 
     public CommentsFragment() {
@@ -65,6 +70,9 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        RefreshCommentsTask task = new RefreshCommentsTask(getActivity());
+        task.execute(tickerSymbol);
+
         getLoaderManager().initLoader(COMMENTS_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
@@ -141,22 +149,14 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
                                     Date date = new Date();
 
                                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                                    String username = preferences.getString(getString(R.string.pref_username_key) , getString(R.string.pref_default_username));
+                                    String username = preferences.getString(getString(R.string.pref_username_key), getString(R.string.pref_default_username));
 
-                                    ContentValues newsQuoteValue = new ContentValues();
-                                    newsQuoteValue.put(QuotesContract.CommentsEntry.COLUMN_DATE, dateFormat.format(date));
-                                    newsQuoteValue.put(QuotesContract.CommentsEntry.COLUMN_COMMENT, textinput);
-                                    newsQuoteValue.put(QuotesContract.CommentsEntry.COLUMN_SYMBOL, tickerSymbol);
-                                    newsQuoteValue.put(QuotesContract.CommentsEntry.COLUMN_USERNAME, username);
-
-                                    getContext().getContentResolver().insert(QuotesContract.CommentsEntry.CONTENT_URI, newsQuoteValue);
-                                    Log.d(LOG_TAG, "Comment inserted succesfully " + newsQuoteValue.toString());
+                                    CreateCommentTask task = new CreateCommentTask(getActivity());
+                                    task.execute(tickerSymbol, textinput, username, dateFormat.format(date), Integer.toString(oldestIdentifier));
 
                                     Toast toast = Toast.makeText(getActivity(), "Comentario agregado", Toast.LENGTH_SHORT);
                                     toast.show();
                                     dialog.dismiss();
-
-                                    getLoaderManager().restartLoader(COMMENTS_LOADER, null, CommentsFragment.this);
                                 }
                             }
                         });
@@ -184,8 +184,13 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        commentsAdaptert.swapCursor(data);
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        if(cursor.moveToFirst()){
+            oldestIdentifier = cursor.getInt(CommentsFragment.COL_IDENTIFIER);
+        }
+
+        commentsAdaptert.swapCursor(cursor);
     }
 
     @Override

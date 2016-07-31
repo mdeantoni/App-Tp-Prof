@@ -363,6 +363,7 @@ public class QuotesContract {
         public static final String COLUMN_COMMENT = "Comment";
         public static final String COLUMN_DATE = "Date";
         public static final String COLUMN_SYMBOL = "Symbol";
+        public static final String COLUMN_IDENTIFIER = "Identifier";
 
         public static Uri buildCommentUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

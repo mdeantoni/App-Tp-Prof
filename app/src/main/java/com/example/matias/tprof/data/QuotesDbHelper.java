@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 28;
+    private static final int DATABASE_VERSION = 34;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -216,6 +216,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_COMMENTS_TABLE = "CREATE TABLE " + QuotesContract.CommentsEntry.TABLE_NAME + " (" +
                 QuotesContract.CommentsEntry._ID + " INTEGER PRIMARY KEY," +
+                QuotesContract.CommentsEntry.COLUMN_IDENTIFIER + " INTEGER NOT NULL," +
                 QuotesContract.CommentsEntry.COLUMN_DATE +" DATETIME NOT NULL, " +
                 QuotesContract.CommentsEntry.COLUMN_USERNAME + " TEXT NOT NULL, " +
                 QuotesContract.CommentsEntry.COLUMN_SYMBOL + " TEXT NOT NULL, " +
