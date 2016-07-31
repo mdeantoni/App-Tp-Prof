@@ -6,6 +6,12 @@
     xmlns:android.support.design="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.matias.tprof.detail.CommentsFragment">
 
+    <com.example.matias.tprof.custom.CustomSwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <ListView
         android:id="@+id/listview_comments"
         android:layout_width="match_parent"
@@ -16,6 +22,8 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="8dp" />
+
+    </com.example.matias.tprof.custom.CustomSwipeRefreshLayout>
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab"

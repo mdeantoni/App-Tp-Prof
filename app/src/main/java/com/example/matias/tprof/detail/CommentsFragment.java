@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
@@ -35,10 +36,10 @@ import java.util.Date;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CommentsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class CommentsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener  {
 
     public final String LOG_TAG = CommentsFragment.class.getSimpleName();
-
+    private SwipeRefreshLayout swipeRefreshLayout;
     private CommentsAdapter commentsAdaptert;
     private String tickerSymbol;
     private int oldestIdentifier;
@@ -70,7 +71,7 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        RefreshCommentsTask task = new RefreshCommentsTask(getActivity());
+        RefreshCommentsTask task = new RefreshCommentsTask(getActivity(),(SwipeRefreshLayout) getActivity().findViewById(R.id.swiperefresh));
         task.execute(tickerSymbol);
 
         getLoaderManager().initLoader(COMMENTS_LOADER, null, this);
@@ -88,6 +89,9 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
             tickerSymbol = arguments.getString(StockDetailFragment.SYMBOL);
         }
 
+
+        swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swiperefresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         ArrayList<Comment> comments = new ArrayList<Comment>();
         comments.add(new Comment("10/12 13:45", "Alguien", "Esto es un comentario de prueba corto"));
@@ -151,7 +155,7 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
                                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                                     String username = preferences.getString(getString(R.string.pref_username_key), getString(R.string.pref_default_username));
 
-                                    CreateCommentTask task = new CreateCommentTask(getActivity());
+                                    CreateCommentTask task = new CreateCommentTask(getActivity(),(SwipeRefreshLayout) getActivity().findViewById(R.id.swiperefresh));
                                     task.execute(tickerSymbol, textinput, username, dateFormat.format(date), Integer.toString(oldestIdentifier));
 
                                     Toast toast = Toast.makeText(getActivity(), "Comentario agregado", Toast.LENGTH_SHORT);
@@ -196,5 +200,11 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    @Override
+    public void onRefresh() {
+        RefreshCommentsTask task = new RefreshCommentsTask(getActivity(),(SwipeRefreshLayout) getActivity().findViewById(R.id.swiperefresh));
+        task.execute(tickerSymbol);
     }
 }

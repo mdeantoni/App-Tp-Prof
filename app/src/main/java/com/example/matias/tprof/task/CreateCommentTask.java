@@ -3,6 +3,7 @@ package com.example.matias.tprof.task;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
 import com.example.matias.tprof.data.QuotesContract;
@@ -30,10 +31,24 @@ public class CreateCommentTask extends AsyncTask<String, Void, Void> {
     public final String LOG_TAG = FetchNewsTask.class.getSimpleName();
 
     private final Context mContext;
+    private SwipeRefreshLayout mRefreshLayout;
     String responseText;
 
-    public CreateCommentTask(Context context) {
+    public CreateCommentTask(Context context, SwipeRefreshLayout refreshLayout) {
         mContext = context;
+        this.mRefreshLayout = refreshLayout;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        mRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        mRefreshLayout.setRefreshing(false);
     }
 
     @Override
