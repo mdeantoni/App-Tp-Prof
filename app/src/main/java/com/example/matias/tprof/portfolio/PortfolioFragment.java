@@ -157,17 +157,3 @@ public class PortfolioFragment extends Fragment  implements LoaderManager.Loader
 
     }
 }
-
-class DecimalFormatter implements ValueFormatter {
-
-    private DecimalFormat mFormat;
-
-    public DecimalFormatter() {
-        mFormat = new DecimalFormat("#.00"); // use one decimal
-    }
-
-    @Override
-    public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-        return "$" + mFormat.format(value); // e.g. append a dollar-sign
-    }
-}
