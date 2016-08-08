@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
+import com.example.matias.tprof.R;
 import com.example.matias.tprof.data.QuotesContract;
 
 import org.json.JSONArray;
@@ -79,9 +80,7 @@ public class RefreshCommentsTask extends AsyncTask<String, Void, Void> {
         String testData = null;
 
         try {
-            final String MESSAGES_URL =
-                    "http://10.0.2.2:50914/api/messages";
-            //"http://192.168.0.17:50914/api/messages";
+            final String MESSAGES_URL = mContext.getString(R.string.connection_string) + "messages";
             final String QUERY_PARAM_TICKER = "tickerSymbol";
             final String QUERY_PARAM_ID = "id";
 

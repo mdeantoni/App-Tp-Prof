@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
+import com.example.matias.tprof.R;
 import com.example.matias.tprof.data.QuotesContract;
 
 import org.json.JSONArray;
@@ -66,7 +67,7 @@ public class CreateCommentTask extends AsyncTask<String, Void, Void> {
 
         OkHttpClient httpClient = new OkHttpClient();
 
-        final String NEWS_URL =  "http://10.0.2.2:50914/api/messages";
+        final String NEWS_URL = mContext.getString(R.string.connection_string) + "messages";
 
         RequestBody formBody = new FormBody.Builder()
                 .add("Username", username)

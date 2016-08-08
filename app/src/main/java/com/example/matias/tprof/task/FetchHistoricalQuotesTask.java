@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.matias.tprof.R;
 import com.example.matias.tprof.data.QuotesContract;
 
 import org.json.JSONArray;
@@ -48,11 +49,8 @@ public class FetchHistoricalQuotesTask extends AsyncTask<String,Void,Void> {
 
 
         try {
-            //"http://10.0.2.2:50914/api/sync";
-            //"http://192.168.0.17:50914/api/sync";
-            final String HISTORICAL_QUOTES_URL =
-                    "http://10.0.2.2:50914/api/historicalquotes?";
-            //"http://192.168.0.17:50914/api/historicalquotes?";
+
+            final String HISTORICAL_QUOTES_URL = mContext.getString(R.string.connection_string) + "historicalquotes?";
             final String QUERY_PARAM = "tickerSymbol";
 
             Uri builtUri = Uri.parse(HISTORICAL_QUOTES_URL).buildUpon()

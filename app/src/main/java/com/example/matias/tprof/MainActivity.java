@@ -140,10 +140,10 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
     @Override
     protected void onStart() {
         super.onStart();
-        if(!appIsSynced) {
-            AppSyncAdapter.syncImmediately(this);
-            appIsSynced = true;
-        }
+       // if(!appIsSynced) {
+        //    AppSyncAdapter.syncImmediately(this);
+        //    appIsSynced = true;
+       // }
     }
 
     @Override
