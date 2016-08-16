@@ -75,6 +75,7 @@ public class MainTask extends AsyncTask<Void, Void, Void>  {
 
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setConnectTimeout(3000);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
