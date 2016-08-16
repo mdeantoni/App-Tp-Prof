@@ -164,6 +164,8 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getAxisLeft().setDrawAxisLine(false);
         lineChart.getAxisLeft().setStartAtZero(false);
+        lineChart.getAxisRight().setStartAtZero(false);
+        lineChart.getAxisLeft().setStartAtZero(false);
         lineChart.getXAxis().setDrawGridLines(false);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         lineChart.getLegend().setEnabled(false);
@@ -429,6 +431,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                 }
                 LineDataSet dataset = new LineDataSet(entries, "Precio");
                 LineData data = new LineData(labels, dataset);
+                dataset.setDrawCubic(true);
                 dataset.setDrawFilled(true);
                 dataset.setColor(Color.GRAY);
                 dataset.setFillAlpha(30);

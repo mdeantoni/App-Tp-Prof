@@ -525,6 +525,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                 LineDataSet dataset = new LineDataSet(entries, "Precio");
                 intradayData = new LineData(labels, dataset);
                 dataset.setDrawFilled(true);
+                dataset.setDrawCubic(true);
                 dataset.setColor(Color.GRAY);
                 dataset.setFillAlpha(30);
                 dataset.setFillColor(Color.GRAY);
@@ -559,6 +560,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                 }
                 LineDataSet historicalDataSet = new LineDataSet(historicalEntries, "Precio");
                 historicalData = new LineData(historicalLabels, historicalDataSet);
+                historicalDataSet.setDrawCubic(true);
                 historicalDataSet.setDrawFilled(true);
                 historicalDataSet.setColor(Color.GRAY);
                 historicalDataSet.setFillAlpha(30);

@@ -42,8 +42,10 @@ public class NewsAdapter extends CursorAdapter {
             icon = R.mipmap.ln_news;
         }else if(source.equals("YHOO")){
             icon = R.mipmap.yhoo_news;
-        }else{
+        }else if(source.equals("CRO")){
             icon = R.mipmap.cro_news;
+        }else{
+            icon = R.mipmap.clarin_news;
         }
 
         try {
