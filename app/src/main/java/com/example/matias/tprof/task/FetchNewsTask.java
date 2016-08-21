@@ -83,8 +83,10 @@ public class FetchNewsTask extends AsyncTask<String,Void,Void> {
                 return null;
             }
             testData = buffer.toString();
-        } catch (IOException e) {
+            getNewsFromJson(testData, tickerSymbol);
+        } catch (Exception e) {
             Log.e(LOG_TAG, "Error ", e);
+            e.printStackTrace();
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
         } finally {
@@ -100,12 +102,6 @@ public class FetchNewsTask extends AsyncTask<String,Void,Void> {
             }
         }
 
-        try { //OJO CON ESTO QUE EN EL EJEMPLO ESTA AL REVES EL ORDEN CON EL CIERRE DE CONNECTION
-            getNewsFromJson(testData, tickerSymbol);
-        } catch (JSONException e) {
-            Log.e("Some log", e.getMessage(), e);
-            e.printStackTrace();
-        }
         Log.d(LOG_TAG, "Finished querying news data");
         return null;
     }

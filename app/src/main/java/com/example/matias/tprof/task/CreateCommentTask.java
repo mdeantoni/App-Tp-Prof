@@ -88,17 +88,17 @@ public class CreateCommentTask extends AsyncTask<String, Void, Void> {
             response = httpClient.newCall(request)
                                  .execute();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         try {
             responseText = response.body().string();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         try {
             getCommentsFromJson(responseText);
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

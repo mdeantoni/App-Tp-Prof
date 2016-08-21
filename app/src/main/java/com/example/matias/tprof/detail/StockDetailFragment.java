@@ -508,20 +508,23 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                 SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm");
 
-                while (cursor.moveToNext()) {
-                    Date quoteDate = null;
+                if(cursor.moveToFirst()){
+                    do{
+                        Date quoteDate = null;
 
-                    Log.d("INTRADAY PRICE", "Price " + cursor.getString(COL_INT_TRADE_PRICE) + " "
-                            + "Datetime " + cursor.getString(COL_INT_TRADE_TIME));
-                    try {
-                        quoteDate = inputFormat.parse(cursor.getString(COL_INT_TRADE_TIME));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                        Log.d("INTRADAY PRICE", "Price " + cursor.getString(COL_INT_TRADE_PRICE) + " "
+                                + "Datetime " + cursor.getString(COL_INT_TRADE_TIME));
+                        try {
+                            quoteDate = inputFormat.parse(cursor.getString(COL_INT_TRADE_TIME));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
 
-                    entries.add(new Entry(cursor.getFloat(COL_INT_TRADE_PRICE), cursor.getPosition()));
-                    labels.add(outputFormat.format(quoteDate));
+                        entries.add(new Entry(cursor.getFloat(COL_INT_TRADE_PRICE), cursor.getPosition()));
+                        labels.add(outputFormat.format(quoteDate));
+                    }while (cursor.moveToNext());
                 }
+
                 LineDataSet dataset = new LineDataSet(entries, "Precio");
                 intradayData = new LineData(labels, dataset);
                 dataset.setDrawFilled(true);
@@ -544,20 +547,23 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                 SimpleDateFormat inputFormatHistorical = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 SimpleDateFormat outputFormatHistorical = new SimpleDateFormat("dd-MM");
 
-                while (cursor.moveToNext()) {
-                    Date quoteDate = null;
+                if(cursor.moveToFirst()){
+                    do{
+                        Date quoteDate = null;
 
-                    Log.d("HistoricalQuote ", "Close Price " + cursor.getString(HIST_COL_CLOSE_PRICE) + " "
-                            + "Date " + cursor.getString(HIST_COL_DATE));
-                    try {
-                        quoteDate = inputFormatHistorical.parse(cursor.getString(HIST_COL_DATE));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                        Log.d("HistoricalQuote ", "Close Price " + cursor.getString(HIST_COL_CLOSE_PRICE) + " "
+                                + "Date " + cursor.getString(HIST_COL_DATE));
+                        try {
+                            quoteDate = inputFormatHistorical.parse(cursor.getString(HIST_COL_DATE));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
 
-                    historicalEntries.add(new Entry(cursor.getFloat(COL_INT_TRADE_PRICE), cursor.getPosition()));
-                    historicalLabels.add(outputFormatHistorical.format(quoteDate));
+                        historicalEntries.add(new Entry(cursor.getFloat(COL_INT_TRADE_PRICE), cursor.getPosition()));
+                        historicalLabels.add(outputFormatHistorical.format(quoteDate));
+                    }while (cursor.moveToNext());
                 }
+
                 LineDataSet historicalDataSet = new LineDataSet(historicalEntries, "Precio");
                 historicalData = new LineData(historicalLabels, historicalDataSet);
                 historicalDataSet.setDrawCubic(true);

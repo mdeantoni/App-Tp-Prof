@@ -13,12 +13,10 @@
     <string name="connection_string">http://10.0.2.2:50914/api/</string>
     <string name="sync_account_type">tprof.example.com</string>
     <string name="content_authority">com.example.matias.tprof</string>
-    <string name="title_activity_detail">DetailActivity</string>
-    <string name="title_activity_search_results">SearchResultsActivity</string>
-    <string name="title_activity_web_view">WebViewActivity</string>
+    <string name="title_activity_detail"></string>
+    <string name="title_activity_search_results"></string>
+    <string name="title_activity_web_view"></string>
     <string name="title_activity_portfolio">Portfolio</string>
-    <string name="title_activity_prueba">Prueba</string>
-    <string name="title_activity_testactivity">TESTACTIVITY</string>
     <string name="title_activity_settings">Preferencias</string>
 
     <!-- Strings related to Settings -->

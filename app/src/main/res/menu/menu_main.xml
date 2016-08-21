@@ -2,10 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
 
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-
     <item android:id="@+id/search"
         android:title="@string/search_title"
         android:icon="@drawable/ic_search_white_24dp"
@@ -16,6 +12,11 @@
         android:title="@string/action_portfolio"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_card_travel_white_24dp"/>
+
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:icon="@drawable/ic_settings_white_24dp"
+        app:showAsAction="ifRoom" />
 
 
 </menu>

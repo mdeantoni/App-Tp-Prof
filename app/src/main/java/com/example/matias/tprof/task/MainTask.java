@@ -104,7 +104,8 @@ public class MainTask extends AsyncTask<Void, Void, Void>  {
                 return null;
             }
             testData = buffer.toString();
-        } catch (IOException e) {
+            getQuotesFromJson(testData);
+        } catch (Exception e) {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping
             // to parse it.
@@ -122,12 +123,6 @@ public class MainTask extends AsyncTask<Void, Void, Void>  {
             }
         }
 
-        try { //OJO CON ESTO QUE EN EL EJEMPLO ESTA AL REVES EL ORDEN CON EL CIERRE DE CONNECTION
-            getQuotesFromJson(testData);
-        } catch (JSONException e) {
-            Log.e("Some log", e.getMessage(), e);
-            e.printStackTrace();
-        }
         Log.d(LOG_TAG, "Finished Sync");
         return null;
     }

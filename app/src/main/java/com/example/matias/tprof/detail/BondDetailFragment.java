@@ -415,20 +415,23 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                 SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm");
 
-                while (cursor.moveToNext()) {
-                    Date quoteDate = null;
+                if (cursor.moveToFirst()) {
+                    do {
+                        Date quoteDate = null;
 
-                    Log.d("INTRADAY PRICE", "Price " + cursor.getString(COL_INT_TRADE_PRICE) + " "
-                            + "Datetime " + cursor.getString(COL_INT_TRADE_TIME));
-                    try {
-                        quoteDate = inputFormat.parse(cursor.getString(COL_INT_TRADE_TIME));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                        Log.d("INTRADAY PRICE", "Price " + cursor.getString(COL_INT_TRADE_PRICE) + " "
+                                + "Datetime " + cursor.getString(COL_INT_TRADE_TIME));
+                        try {
+                            quoteDate = inputFormat.parse(cursor.getString(COL_INT_TRADE_TIME));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
 
-                    entries.add(new Entry(cursor.getFloat(COL_INT_TRADE_PRICE), cursor.getPosition()));
-                    labels.add(outputFormat.format(quoteDate));
+                        entries.add(new Entry(cursor.getFloat(COL_INT_TRADE_PRICE), cursor.getPosition()));
+                        labels.add(outputFormat.format(quoteDate));
+                    } while (cursor.moveToNext());
                 }
+
                 LineDataSet dataset = new LineDataSet(entries, "Precio");
                 LineData data = new LineData(labels, dataset);
                 dataset.setDrawCubic(true);

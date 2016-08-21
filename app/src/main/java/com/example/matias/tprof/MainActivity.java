@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private static boolean appIsSynced = false; //ESTO ESTA MAL Y HAY QUE CAMBIARLO SI O SI!!!!!
     private boolean hasHoldings;
     private static final int TOTAL_HOLDINGS_LOADER = 1;
 
@@ -118,8 +117,6 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
                 .putExtra(Intent.EXTRA_TEXT, "BONO")
                 .putExtra("com.example.matias.tprof.Identifier",bondId)
                 .putExtra("com.example.matias.tprof.Symbol", symbol);
-        //FetchNewsTask getNewsTask = new FetchNewsTask(this);
-        //getNewsTask.execute(symbol);
         startActivity(bondQuoteIntent);
     }
 
@@ -131,20 +128,10 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
                 .putExtra("com.example.matias.tprof.Identifier",stockId)
                 .putExtra("com.example.matias.tprof.Symbol", symbol);
         FetchHistoricalQuotesTask getHistoricalTask = new FetchHistoricalQuotesTask(this);
-        //FetchNewsTask getNewsTask = new FetchNewsTask(this);
         getHistoricalTask.execute(symbol);
-        //getNewsTask.execute(symbol);
         startActivity(stockQuoteIntent);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-       // if(!appIsSynced) {
-        //    AppSyncAdapter.syncImmediately(this);
-        //    appIsSynced = true;
-       // }
-    }
 
     @Override
     protected  void onResume(){

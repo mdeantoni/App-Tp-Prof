@@ -118,7 +118,8 @@ public class RefreshCommentsTask extends AsyncTask<String, Void, Void> {
                 return null;
             }
             testData = buffer.toString();
-        } catch (IOException e) {
+            getCommentsFromJson  (testData);
+        } catch (Exception e) {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
@@ -135,12 +136,6 @@ public class RefreshCommentsTask extends AsyncTask<String, Void, Void> {
             }
         }
 
-        try {
-            getCommentsFromJson(testData);
-        } catch (JSONException e) {
-            Log.e("Some log", e.getMessage(), e);
-            e.printStackTrace();
-        }
         Log.d(LOG_TAG, "Finished querying news data");
         return null;
     }
