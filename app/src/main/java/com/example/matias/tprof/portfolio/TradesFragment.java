@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import com.example.matias.tprof.detail.StockDetailFragment;
  * A simple {@link Fragment} subclass.
  */
 public class TradesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+
+    public final String LOG_TAG = TradesFragment.class.getSimpleName();
 
     private TradesAdapter mTradesAdapter;
     private static final int TRADES_LOADER = 40;
@@ -71,6 +74,8 @@ public class TradesFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.d(LOG_TAG, "Trades Loader created.");
+
         String sortOrder = QuotesContract.TradesEntry.COLUMN_DATE + " DESC";
         Uri tradesUri = QuotesContract.TradesEntry.CONTENT_URI;
 
@@ -84,6 +89,7 @@ public class TradesFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        Log.d(LOG_TAG, "Trades Loader load finished.");
         mTradesAdapter.swapCursor(cursor);
     }
 

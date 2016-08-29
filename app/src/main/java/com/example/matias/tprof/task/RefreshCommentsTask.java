@@ -57,6 +57,8 @@ public class RefreshCommentsTask extends AsyncTask<String, Void, Void> {
 
     @Override
     protected Void doInBackground(String... params) {
+        Log.d(LOG_TAG, "Starting Task");
+
         if (params.length == 0) {
             return null;
         }
@@ -120,7 +122,7 @@ public class RefreshCommentsTask extends AsyncTask<String, Void, Void> {
             testData = buffer.toString();
             getCommentsFromJson  (testData);
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Error ", e);
+            Log.e(LOG_TAG, "Error running task ", e);
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
         } finally {
@@ -136,7 +138,7 @@ public class RefreshCommentsTask extends AsyncTask<String, Void, Void> {
             }
         }
 
-        Log.d(LOG_TAG, "Finished querying news data");
+        Log.d(LOG_TAG, "Finished executing task.");
         return null;
     }
 
@@ -172,6 +174,6 @@ public class RefreshCommentsTask extends AsyncTask<String, Void, Void> {
             insertedComments = mContext.getContentResolver().bulkInsert(QuotesContract.CommentsEntry.CONTENT_URI, cvArray);
         }
 
-        Log.d(LOG_TAG, "Comment insertion done." + insertedComments + " Inserted");
+        Log.d(LOG_TAG, "Insertion of data done." + insertedComments + " new entries inserted");
     }
 }

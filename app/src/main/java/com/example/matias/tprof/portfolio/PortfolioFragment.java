@@ -2,11 +2,13 @@ package com.example.matias.tprof.portfolio;
 
 
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import com.example.matias.tprof.R;
 import com.example.matias.tprof.data.QuotesContract;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -34,6 +37,22 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class PortfolioFragment extends Fragment  implements LoaderManager.LoaderCallbacks<Cursor>  {
+
+    public static final int[] MATERIAL_COLORS = {
+            Color.rgb(244, 67, 54), //Red
+            Color.rgb(63, 81, 181), //Indigo
+            Color.rgb(156, 39, 176), //Purple
+            Color.rgb(3, 169, 244), //Light Blue
+            Color.rgb(0, 150, 136), //Teal
+            Color.rgb(139, 195, 74), //Light Green
+            Color.rgb(255, 235, 59), //Yellow
+            Color.rgb(255, 152, 0), //Orange
+            Color.rgb(121, 85, 72), //Brown
+            Color.rgb(96, 125, 139) //Blue Grey
+    };
+
+    public final String LOG_TAG = PortfolioFragment.class.getSimpleName();
+
 
     private static final int VALUED_HOLDINGS_LOADER = 20;
     private float totalHoldings;
@@ -73,6 +92,8 @@ public class PortfolioFragment extends Fragment  implements LoaderManager.Loader
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.d(LOG_TAG, "Portfolio Loader created.");
+
         return new CursorLoader(
                 getActivity(),
                 QuotesContract.ValuedHoldingsViewEntry.CONTENT_URI,
@@ -85,6 +106,8 @@ public class PortfolioFragment extends Fragment  implements LoaderManager.Loader
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        Log.d(LOG_TAG, "Portfolio Loader load finished.");
+
         PieChart pieChart = (PieChart) getView().findViewById(R.id.portfolio_chart);
         ArrayList<Entry> entries = new ArrayList<>();
         ArrayList<String> labels = new ArrayList<String>();
@@ -130,14 +153,19 @@ public class PortfolioFragment extends Fragment  implements LoaderManager.Loader
         }
 
         PieDataSet dataset = new PieDataSet(entries, "");
-        dataset.setColors(ColorTemplate.PASTEL_COLORS);
+        dataset.setColors(PortfolioFragment.MATERIAL_COLORS);
+        pieChart.setCenterText("Composición");
+        pieChart.setCenterTextSize(20);
+        pieChart.getLegend().setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+        pieChart.getLegend().setWordWrapEnabled(true);
+        pieChart.getLegend().setForm(Legend.LegendForm.CIRCLE);
         PieData data = new PieData(labels, dataset); // initialize Piedata
         data.setValueTextSize(12f);
         data.setValueFormatter(new PercentFormatter());
         pieChart.setUsePercentValues(true);
         pieChart.setDrawSliceText(false);
-        pieChart.setHoleRadius(20f);
-        pieChart.setTransparentCircleRadius(20f);
+        pieChart.setHoleRadius(50f);
+        pieChart.setTransparentCircleRadius(55f);
         pieChart.setData(data); //set data into chart
         pieChart.setDescription(" ");  // set the description
         pieChart.setTouchEnabled(false);

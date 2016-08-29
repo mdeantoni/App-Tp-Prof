@@ -53,7 +53,8 @@ public class MainTask extends AsyncTask<Void, Void, Void>  {
 
     @Override
     protected Void doInBackground(Void... params) {
-        Log.d(LOG_TAG, "Starting Sync");
+
+        Log.d(LOG_TAG, "Starting Task");
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
         HttpURLConnection urlConnection = null;
@@ -106,7 +107,7 @@ public class MainTask extends AsyncTask<Void, Void, Void>  {
             testData = buffer.toString();
             getQuotesFromJson(testData);
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Error ", e);
+            Log.e(LOG_TAG, "Error running task ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping
             // to parse it.
             return null;
@@ -118,12 +119,12 @@ public class MainTask extends AsyncTask<Void, Void, Void>  {
                 try {
                     reader.close();
                 } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
+                    Log.e(LOG_TAG, "Error closing stream ", e);
                 }
             }
         }
 
-        Log.d(LOG_TAG, "Finished Sync");
+        Log.d(LOG_TAG, "Finished execution of task.");
         return null;
     }
 

@@ -23,7 +23,9 @@ import java.util.Vector;
 
 /**
  * Created by Mati on 11/28/2015.
+ * Replaced with Main Task.
  */
+@Deprecated
 public class FetchStockDataTask extends AsyncTask<String, Void, Void> {
 
     //private ArrayAdapter<String> mQuotesAdapter;

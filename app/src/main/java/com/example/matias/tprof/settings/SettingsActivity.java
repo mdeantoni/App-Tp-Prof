@@ -137,7 +137,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         addPreferencesFromResource(R.xml.pref_general);
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_username_key)));
         setupActionBar();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     /**

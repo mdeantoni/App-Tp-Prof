@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import java.util.List;
 
 
 public class NewsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+
+    public final String LOG_TAG = NewsFragment.class.getSimpleName();
 
     private NewsAdapter mNewsAdapter;
     private static final int NEWS_LOADER = 20;
@@ -88,6 +91,8 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.d(LOG_TAG, "News Loader created.");
+
         String sortOrder = QuotesContract.NewsEntry.COLUMN_DATE + " DESC";
         Uri newsURI = QuotesContract.NewsEntry.CONTENT_URI;
 
@@ -101,6 +106,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        Log.d(LOG_TAG, "News Loader load finished.");
         mNewsAdapter.swapCursor(cursor);
     }
 

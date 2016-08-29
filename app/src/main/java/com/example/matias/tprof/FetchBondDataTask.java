@@ -22,8 +22,10 @@ import java.net.URL;
 import java.util.Vector;
 
 /**
+ * Replaced for main task.
  * Created by Mati on 12/8/2015.
  */
+@Deprecated
 public class FetchBondDataTask extends AsyncTask<String, Void, Void> {
 
     private final Context mContext;

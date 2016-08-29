@@ -433,6 +433,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         switch (loader.getId()) {
             case STOCK_DETAIL_LOADER:
+                Log.d(LOG_TAG, "Stock Detail Loader Load finished.");
                 if (cursor != null && cursor.moveToFirst()) {
                     Date quoteDate = null;
                     SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -500,7 +501,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                 }
                 break;
             case STOCK_INTRADAY_LOADER:
-
+                Log.d(LOG_TAG, "Stock Intraday Prices Loader Load finished.");
                 LineChart lineChart = (LineChart) getView().findViewById(R.id.stock_detail_chart);
                 ArrayList<Entry> entries = new ArrayList<>();
                 ArrayList<String> labels = new ArrayList<String>();
@@ -541,7 +542,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                 break;
 
             case STOCK_HISTORIC_LOADER:
-
+                Log.d(LOG_TAG, "Stock Historic Prices Loader Load finished.");
                 ArrayList<Entry> historicalEntries = new ArrayList<>();
                 ArrayList<String> historicalLabels = new ArrayList<String>();
                 SimpleDateFormat inputFormatHistorical = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -577,6 +578,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                 break;
 
             case STOCK_HOLDINGS_LOADER:
+                Log.d(LOG_TAG, "Stock Holdings Loader Load finished.");
                 if (cursor != null && cursor.moveToFirst()) {
                     buttonSell.setEnabled(true);
                     mHolding = cursor.getInt(StockDetailFragment.HOLDING_COL_QTY);

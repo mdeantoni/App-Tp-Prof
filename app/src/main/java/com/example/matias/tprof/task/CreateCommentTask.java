@@ -29,7 +29,8 @@ import okhttp3.Response;
 public class CreateCommentTask extends AsyncTask<String, Void, Void> {
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    public final String LOG_TAG = FetchNewsTask.class.getSimpleName();
+
+    public final String LOG_TAG = CreateCommentTask.class.getSimpleName();
 
     private final Context mContext;
     private SwipeRefreshLayout mRefreshLayout;
@@ -54,6 +55,8 @@ public class CreateCommentTask extends AsyncTask<String, Void, Void> {
 
     @Override
     protected Void doInBackground(String... params) {
+        Log.d(LOG_TAG, "Starting Task");
+
         if (params.length == 0) {
             return null;
         }
@@ -89,16 +92,19 @@ public class CreateCommentTask extends AsyncTask<String, Void, Void> {
                                  .execute();
 
         } catch (Exception e) {
+            Log.e(LOG_TAG, "Error executing task ", e);
             e.printStackTrace();
         }
         try {
             responseText = response.body().string();
         } catch (Exception e) {
+            Log.e(LOG_TAG, "Error parsing response as string. ", e);
             e.printStackTrace();
         }
         try {
             getCommentsFromJson(responseText);
         } catch (Exception e) {
+            Log.e(LOG_TAG, "Error parsing response. ", e);
             e.printStackTrace();
         }
 
@@ -139,6 +145,6 @@ public class CreateCommentTask extends AsyncTask<String, Void, Void> {
             insertedComments = mContext.getContentResolver().bulkInsert(QuotesContract.CommentsEntry.CONTENT_URI, cvArray);
         }
 
-        Log.d(LOG_TAG, "Comment insertion done." + insertedComments + " Inserted");
+        Log.d(LOG_TAG, "Comment insertion done. " + insertedComments + " new entries inserted.");
     }
 }

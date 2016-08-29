@@ -27,7 +27,6 @@ import com.example.matias.tprof.detail.DetailActivity;
 import com.example.matias.tprof.portfolio.PortfolioActivity;
 import com.example.matias.tprof.settings.SettingsActivity;
 import com.example.matias.tprof.task.FetchHistoricalQuotesTask;
-import com.example.matias.tprof.task.FetchNewsTask;
 
 public class SearchResultsActivity  extends AppCompatActivity implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
 

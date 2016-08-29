@@ -302,6 +302,8 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
             if (null != mUri) {
                 // Now create and return a CursorLoader that will take care of
                 // creating a Cursor for the data being displayed.
+                Log.d(LOG_TAG, "BOND QUOTES Loader created.");
+
                 return new CursorLoader(
                         getActivity(),
                         mUri,
@@ -313,6 +315,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
             }
         }
         if(id == BondDetailFragment.BOND_INTRADAY_LOADER){
+            Log.d(LOG_TAG, "BOND Intraday prices Loader created.");
             return new CursorLoader(
                     getActivity(),
                     QuotesContract.BondIntradayPriceEntry.CONTENT_URI,
@@ -325,6 +328,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
         }
 
         if (id == BondDetailFragment.BOND_HOLDINGS_LOADER) {
+            Log.d(LOG_TAG, "BOND Holdings Loader created.");
             return new CursorLoader(
                     getActivity(),
                     QuotesContract.HoldingsViewEntry.CONTENT_URI,
@@ -342,7 +346,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         switch (loader.getId()) {
             case BOND_DETAIL_LOADER:
-
+                Log.d(LOG_TAG, "BOND Detail Loader Load finished.");
                 if (cursor != null && cursor.moveToFirst()) {
 
                     Date quoteDate = null;
@@ -407,7 +411,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                 break;
 
             case BOND_INTRADAY_LOADER:
-
+                Log.d(LOG_TAG, "BOND Intrday Prices Loader Load finished.");
                 LineChart lineChart = (LineChart) getView().findViewById(R.id.bond_detail_chart);
                 ArrayList<Entry> entries = new ArrayList<>();
                 ArrayList<String> labels = new ArrayList<String>();
@@ -447,6 +451,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                 break;
 
             case BOND_HOLDINGS_LOADER:
+                Log.d(LOG_TAG, "BOND Holdings Loader Load finished.");
                 if (cursor != null && cursor.moveToFirst()) {
                     buttonSell.setEnabled(true);
                     mHolding = cursor.getInt(BondDetailFragment.HOLDING_COL_QTY);

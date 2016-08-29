@@ -38,6 +38,8 @@ public class FetchHistoricalQuotesTask extends AsyncTask<String,Void,Void> {
 
     @Override
     protected Void doInBackground(String... params) {
+        Log.d(LOG_TAG, "Starting Task");
+
         if (params.length == 0) {
             return null;
         }
@@ -88,7 +90,7 @@ public class FetchHistoricalQuotesTask extends AsyncTask<String,Void,Void> {
             getHistoricalQuotesFromJson(testData, tickerSymbol);
 
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Error ", e);
+            Log.e(LOG_TAG, "Error executing task ", e);
             e.printStackTrace();
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
@@ -106,7 +108,7 @@ public class FetchHistoricalQuotesTask extends AsyncTask<String,Void,Void> {
         }
 
 
-        Log.d(LOG_TAG, "Finished querying historical data");
+        Log.d(LOG_TAG, "Finished execution of task.");
         return null;
     }
 
@@ -156,6 +158,6 @@ public class FetchHistoricalQuotesTask extends AsyncTask<String,Void,Void> {
             insertedIntraday = mContext.getContentResolver().bulkInsert(QuotesContract.HistoricalQuoteEntry.CONTENT_URI, cvArray);
         }
 
-        Log.d(LOG_TAG, "Historical prices insertion for " + tickerSymbol  + " done. " +insertedIntraday + " Inserted");
+        Log.d(LOG_TAG, "Historical prices insertion for " + tickerSymbol  + " done. " + insertedIntraday + " new entries inserted.");
     }
 }

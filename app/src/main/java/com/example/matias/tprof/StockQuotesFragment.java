@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.example.matias.tprof.sync.AppSyncAdapter;
 
 public class StockQuotesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
+    public final String LOG_TAG = StockQuotesFragment.class.getSimpleName();
 
         public interface OnStockQuoteSelectedListener {
             public void onStockQuoteSelected(Uri stockDetailUri, int StockId, String symbol);
@@ -111,6 +113,8 @@ public class StockQuotesFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.d(LOG_TAG, "Stock Quotes Loader created.");
+
         String sortOrder = QuotesContract.StockEntry.COLUMN_FULLNAME + " ASC";
         Uri stocksUri = QuotesContract.StockQuotesEntry.CONTENT_URI;
 
@@ -124,6 +128,7 @@ public class StockQuotesFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        Log.d(LOG_TAG, "Stock Quotes Loader load finished.");
         mQuotesAdapter.swapCursor(cursor);
     }
 

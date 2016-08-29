@@ -177,6 +177,8 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.d(LOG_TAG, "Comments Loader created.");
+
         return new CursorLoader(
                 getActivity(),
                 QuotesContract.CommentsEntry.CONTENT_URI,
@@ -189,7 +191,7 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-
+        Log.d(LOG_TAG, "Comments Loader load finished.");
         if(cursor.moveToFirst()){
             oldestIdentifier = cursor.getInt(CommentsFragment.COL_IDENTIFIER);
         }

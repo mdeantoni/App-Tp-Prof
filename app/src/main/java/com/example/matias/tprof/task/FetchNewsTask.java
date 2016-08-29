@@ -24,6 +24,7 @@ import java.util.Vector;
 /**
  * Created by Mati on 6/20/2016.
  */
+@Deprecated
 public class FetchNewsTask extends AsyncTask<String,Void,Void> {
 
 
@@ -37,6 +38,8 @@ public class FetchNewsTask extends AsyncTask<String,Void,Void> {
 
     @Override
     protected Void doInBackground(String... params) {
+
+        Log.d(LOG_TAG, "Starting Task");
         if (params.length == 0) {
             return null;
         }
@@ -85,7 +88,7 @@ public class FetchNewsTask extends AsyncTask<String,Void,Void> {
             testData = buffer.toString();
             getNewsFromJson(testData, tickerSymbol);
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Error ", e);
+            Log.e(LOG_TAG, "Error executing task ", e);
             e.printStackTrace();
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
@@ -102,7 +105,7 @@ public class FetchNewsTask extends AsyncTask<String,Void,Void> {
             }
         }
 
-        Log.d(LOG_TAG, "Finished querying news data");
+        Log.d(LOG_TAG, "Finished task execution.");
         return null;
     }
 
@@ -143,7 +146,7 @@ public class FetchNewsTask extends AsyncTask<String,Void,Void> {
             insertedNews = mContext.getContentResolver().bulkInsert(QuotesContract.NewsEntry.CONTENT_URI, cvArray);
         }
 
-        Log.d(LOG_TAG, "NEWS insertion for " + tickerSymbol + " done. " + insertedNews + " Inserted");
+        Log.d(LOG_TAG, "NEWS insertion for " + tickerSymbol + " done. " + insertedNews + " new entries inserted");
 
     }
 }
