@@ -61,13 +61,7 @@ public class BondQuotesFragment extends Fragment implements LoaderManager.Loader
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        String sortOrder = QuotesContract.BondEntry.COLUMN_FULLNAME + " ASC";
-        Uri bondsUri = QuotesContract.BondQuotesEntry.CONTENT_URI;
-
-        Cursor cur = getActivity().getContentResolver().query(bondsUri,
-                BOND_QUOTE_COLUMNS, null, null, sortOrder);
-
-        mQuotesAdapter = new BondQuotesAdapter(getActivity(), cur, 0);
+        mQuotesAdapter = new BondQuotesAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_bond_quotes, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.listview_bond_quotes);

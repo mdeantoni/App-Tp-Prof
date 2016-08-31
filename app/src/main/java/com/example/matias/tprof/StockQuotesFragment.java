@@ -65,13 +65,8 @@ public class StockQuotesFragment extends Fragment implements LoaderManager.Loade
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        String sortOrder = QuotesContract.StockEntry.COLUMN_FULLNAME + " ASC";
-        Uri stocksUri = QuotesContract.StockQuotesEntry.CONTENT_URI;
 
-        Cursor cur = getActivity().getContentResolver().query(stocksUri,
-                STOCK_QUOTE_COLUMNS, null, null, sortOrder);
-
-        mQuotesAdapter = new StockQuotesAdapter(getActivity(), cur, 0);
+        mQuotesAdapter = new StockQuotesAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_stock_quotes, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.listview_stock_quotes);
