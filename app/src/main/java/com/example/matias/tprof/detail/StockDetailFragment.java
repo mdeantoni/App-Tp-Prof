@@ -68,6 +68,11 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
     private String LastTradeDate;
     private Double LastTradePRice;
 
+    private Button buttonWeek;
+    private Button buttonMonth;
+    private Button button6Month;
+    private Button buttonYear;
+
     // This has to change when details table and columns are implemented.
 
     private static final String[] STOCK_QUOTE_COLUMNS = {
@@ -174,10 +179,10 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
         View rootView = inflater.inflate(R.layout.fragment_stock_detail, container, false);
 
         Button buttonDay = (Button) rootView.findViewById(R.id.button_stock_detail_day);
-        Button buttonWeek = (Button) rootView.findViewById(R.id.button_stock_detail_week);
-        Button buttonMonth = (Button) rootView.findViewById(R.id.button_stock_detail_month);
-        Button button6Month = (Button) rootView.findViewById(R.id.button_stock_detail_sixmonth);
-        Button buttonYear = (Button) rootView.findViewById(R.id.button_stock_detail_year);
+        buttonWeek = (Button) rootView.findViewById(R.id.button_stock_detail_week);
+        buttonMonth = (Button) rootView.findViewById(R.id.button_stock_detail_month);
+        button6Month = (Button) rootView.findViewById(R.id.button_stock_detail_sixmonth);
+        buttonYear = (Button) rootView.findViewById(R.id.button_stock_detail_year);
         Button buttonBuy = (Button) rootView.findViewById(R.id.button_buy_stock);
         buttonSell = (Button) rootView.findViewById(R.id.button_sell_stock);
 
@@ -563,6 +568,11 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                         historicalEntries.add(new Entry(cursor.getFloat(COL_INT_TRADE_PRICE), cursor.getPosition()));
                         historicalLabels.add(outputFormatHistorical.format(quoteDate));
                     }while (cursor.moveToNext());
+
+                    buttonWeek.setEnabled(true);
+                    buttonMonth.setEnabled(true);
+                    button6Month.setEnabled(true);
+                    buttonYear.setEnabled(true);
                 }
 
                 LineDataSet historicalDataSet = new LineDataSet(historicalEntries, "Precio");

@@ -89,7 +89,8 @@
             android:layout_height="wrap_content"
             android:text="1S"
             android:id="@+id/button_stock_detail_week"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:enabled="false" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -97,7 +98,8 @@
             android:layout_height="wrap_content"
             android:text="1M"
             android:id="@+id/button_stock_detail_month"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:enabled="false" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -105,7 +107,8 @@
             android:layout_height="wrap_content"
             android:text="6M"
             android:id="@+id/button_stock_detail_sixmonth"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:enabled="false"/>
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -113,7 +116,8 @@
             android:layout_height="wrap_content"
             android:text="1Y"
             android:id="@+id/button_stock_detail_year"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:enabled="false"/>
 
     </LinearLayout>
 
