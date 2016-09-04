@@ -233,27 +233,35 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
 
                             @Override
                             public void onClick(View view) {
-                                m_Stocks = Integer.parseInt(input.getText().toString());
-                                if (m_Stocks == 0) {
-                                    input.setError("La cantidad debe ser mayor a cero.");
-                                } else {
-                                    ContentValues newsQuoteValue = new ContentValues();
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_DATE, LastTradeDate);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_OPERATION, BUY_TRADE_TYPE);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_PRICE, LastTradePRice);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Stocks);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
+                                String ed_text = input.getText().toString().trim();
 
-                                    getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
-                                    Log.d(LOG_TAG, "Stock buy inserted succesfully " + newsQuoteValue.toString());
+                                if(ed_text.isEmpty() || ed_text.length() == 0 || ed_text.equals("") || ed_text == null)
+                                {
+                                    input.setError("Se debe ingresar un valor.");
+                                }else {
 
-                                    Toast toast = Toast.makeText(getActivity(), "Operación Realizada", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                    dialog.dismiss();
+                                    m_Stocks = Integer.parseInt(input.getText().toString());
+                                    if (m_Stocks == 0) {
+                                        input.setError("La cantidad debe ser mayor a cero.");
+                                    } else {
+                                        ContentValues newsQuoteValue = new ContentValues();
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_DATE, LastTradeDate);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_OPERATION, BUY_TRADE_TYPE);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_PRICE, LastTradePRice);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Stocks);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
 
-                                    getLoaderManager().restartLoader(STOCK_HOLDINGS_LOADER, null, StockDetailFragment.this);
+                                        getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
+                                        Log.d(LOG_TAG, "Stock buy inserted succesfully " + newsQuoteValue.toString());
 
+                                        Toast toast = Toast.makeText(getActivity(), "Operación Realizada", Toast.LENGTH_SHORT);
+                                        toast.show();
+                                        dialog.dismiss();
+
+                                        getLoaderManager().restartLoader(STOCK_HOLDINGS_LOADER, null, StockDetailFragment.this);
+
+                                    }
                                 }
                             }
                         });
@@ -294,30 +302,38 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
 
                             @Override
                             public void onClick(View view) {
-                                m_Stocks = Integer.parseInt(input.getText().toString());
-                                if (m_Stocks == 0) {
-                                    input.setError("La cantidad debe ser mayor a cero.");
-                                } else if (m_Stocks > mHolding) {
-                                    input.setError("La cantidad debe ser menor a la tenencia actual.");
-                                } else {
+                                String ed_text = input.getText().toString().trim();
+
+                                if(ed_text.isEmpty() || ed_text.length() == 0 || ed_text.equals("") || ed_text == null)
+                                {
+                                    input.setError("Se debe ingresar un valor.");
+                                }else {
+
+                                    m_Stocks = Integer.parseInt(input.getText().toString());
+                                    if (m_Stocks == 0) {
+                                        input.setError("La cantidad debe ser mayor a cero.");
+                                    } else if (m_Stocks > mHolding) {
+                                        input.setError("La cantidad debe ser menor a la tenencia actual.");
+                                    } else {
 
 
-                                    ContentValues newsQuoteValue = new ContentValues();
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_DATE, LastTradeDate);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_OPERATION, SELL_TRADE_TYPE);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_PRICE, LastTradePRice);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Stocks);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
+                                        ContentValues newsQuoteValue = new ContentValues();
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_DATE, LastTradeDate);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_OPERATION, SELL_TRADE_TYPE);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_PRICE, LastTradePRice);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Stocks);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
 
-                                    getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
-                                    Log.d(LOG_TAG, "Stock sell inserted succesfully " + newsQuoteValue.toString());
+                                        getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
+                                        Log.d(LOG_TAG, "Stock sell inserted succesfully " + newsQuoteValue.toString());
 
-                                    Toast toast = Toast.makeText(getActivity(), "Operación Realizada", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                    dialog.dismiss();
+                                        Toast toast = Toast.makeText(getActivity(), "Operación Realizada", Toast.LENGTH_SHORT);
+                                        toast.show();
+                                        dialog.dismiss();
 
-                                    getLoaderManager().restartLoader(STOCK_HOLDINGS_LOADER, null, StockDetailFragment.this);
+                                        getLoaderManager().restartLoader(STOCK_HOLDINGS_LOADER, null, StockDetailFragment.this);
+                                    }
                                 }
                             }
                         });
@@ -338,30 +354,33 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
 
         buttonWeek.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                int count = historicalData.getXValCount();
                 lineChart.setData(historicalData);
                 lineChart.setVisibleXRangeMaximum(5);
                 lineChart.setVisibleXRangeMinimum(5);
-                lineChart.moveViewToX(0);
+                lineChart.moveViewToX(count - 5);
                 lineChart.invalidate();
             }
         });
 
         buttonMonth.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                int count = historicalData.getXValCount();
                 lineChart.setData(historicalData);
                 lineChart.setVisibleXRangeMaximum(20);
                 lineChart.setVisibleXRangeMinimum(20);
-                lineChart.moveViewToX(0);
+                lineChart.moveViewToX(count - 20);
                 lineChart.invalidate();
             }
         });
 
         button6Month.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                int count = historicalData.getXValCount();
                 lineChart.setData(historicalData);
                 lineChart.setVisibleXRangeMaximum(120);
                 lineChart.setVisibleXRangeMinimum(120);
-                lineChart.moveViewToX(0);
+                lineChart.moveViewToX(count - 120);
                 lineChart.invalidate();
             }
         });
@@ -551,7 +570,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                 ArrayList<Entry> historicalEntries = new ArrayList<>();
                 ArrayList<String> historicalLabels = new ArrayList<String>();
                 SimpleDateFormat inputFormatHistorical = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                SimpleDateFormat outputFormatHistorical = new SimpleDateFormat("dd-MM");
+                SimpleDateFormat outputFormatHistorical = new SimpleDateFormat("dd/MM");
 
                 if(cursor.moveToFirst()){
                     do{

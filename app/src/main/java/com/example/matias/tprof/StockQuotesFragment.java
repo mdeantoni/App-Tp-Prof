@@ -129,6 +129,6 @@ public class StockQuotesFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mQuotesAdapter.swapCursor(null);
+       mQuotesAdapter.swapCursor(null);
     }
 }

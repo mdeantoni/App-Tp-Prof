@@ -204,25 +204,33 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
 
                             @Override
                             public void onClick(View view) {
-                                m_Bonds = Integer.parseInt(input.getText().toString());
-                                if (m_Bonds == 0) {
-                                    input.setError("La cantidad debe ser mayor a cero.");
-                                } else {
-                                    ContentValues newsQuoteValue = new ContentValues();
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_DATE, LastTradeDate);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_OPERATION, BUY_TRADE_TYPE);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_PRICE, LastTradePRice);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Bonds);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
 
-                                    getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
-                                    Log.d(LOG_TAG, "Bond buy inserted succesfully " + newsQuoteValue.toString());
+                                String ed_text = input.getText().toString().trim();
 
-                                    Toast toast = Toast.makeText(getActivity(), "Operación Realizada", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                    dialog.dismiss();
-                                    getLoaderManager().restartLoader(BOND_HOLDINGS_LOADER, null, BondDetailFragment.this);
+                                if(ed_text.isEmpty() || ed_text.length() == 0 || ed_text.equals("") || ed_text == null)
+                                {
+                                    input.setError("Se debe ingresar un valor.");
+                                }else {
+                                    m_Bonds = Integer.parseInt(input.getText().toString());
+                                    if (m_Bonds == 0) {
+                                        input.setError("La cantidad debe ser mayor a cero.");
+                                    } else {
+                                        ContentValues newsQuoteValue = new ContentValues();
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_DATE, LastTradeDate);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_OPERATION, BUY_TRADE_TYPE);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_PRICE, LastTradePRice);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Bonds);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
+
+                                        getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
+                                        Log.d(LOG_TAG, "Bond buy inserted succesfully " + newsQuoteValue.toString());
+
+                                        Toast toast = Toast.makeText(getActivity(), "Operación Realizada", Toast.LENGTH_SHORT);
+                                        toast.show();
+                                        dialog.dismiss();
+                                        getLoaderManager().restartLoader(BOND_HOLDINGS_LOADER, null, BondDetailFragment.this);
+                                    }
                                 }
                             }
                         });
@@ -263,27 +271,35 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
 
                             @Override
                             public void onClick(View view) {
-                                m_Bonds = Integer.parseInt(input.getText().toString());
-                                if (m_Bonds == 0) {
-                                    input.setError("La cantidad debe ser mayor a cero.");
-                                } else if (m_Bonds > mHolding) {
-                                    input.setError("La cantidad debe ser menor a la tenencia actual.");
-                                } else {
-                                    ContentValues newsQuoteValue = new ContentValues();
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_DATE, LastTradeDate);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_OPERATION, SELL_TRADE_TYPE);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_PRICE, LastTradePRice);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Bonds);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
-                                    newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
 
-                                    getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
-                                    Log.d(LOG_TAG, "Bond sell inserted succesfully " + newsQuoteValue.toString());
+                                String ed_text = input.getText().toString().trim();
 
-                                    Toast toast = Toast.makeText(getActivity(), "Operación Realizada", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                    dialog.dismiss();
-                                    getLoaderManager().restartLoader(BOND_HOLDINGS_LOADER, null, BondDetailFragment.this);
+                                if(ed_text.isEmpty() || ed_text.length() == 0 || ed_text.equals("") || ed_text == null)
+                                {
+                                    input.setError("Se debe ingresar un valor.");
+                                }else {
+                                    m_Bonds = Integer.parseInt(input.getText().toString());
+                                    if (m_Bonds == 0) {
+                                        input.setError("La cantidad debe ser mayor a cero.");
+                                    } else if (m_Bonds > mHolding) {
+                                        input.setError("La cantidad debe ser menor a la tenencia actual.");
+                                    } else {
+                                        ContentValues newsQuoteValue = new ContentValues();
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_DATE, LastTradeDate);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_OPERATION, SELL_TRADE_TYPE);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_PRICE, LastTradePRice);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Bonds);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
+
+                                        getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
+                                        Log.d(LOG_TAG, "Bond sell inserted succesfully " + newsQuoteValue.toString());
+
+                                        Toast toast = Toast.makeText(getActivity(), "Operación Realizada", Toast.LENGTH_SHORT);
+                                        toast.show();
+                                        dialog.dismiss();
+                                        getLoaderManager().restartLoader(BOND_HOLDINGS_LOADER, null, BondDetailFragment.this);
+                                    }
                                 }
                             }
                         });

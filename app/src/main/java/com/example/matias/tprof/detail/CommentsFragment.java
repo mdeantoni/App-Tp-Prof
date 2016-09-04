@@ -119,7 +119,7 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Nuevo comentario:");
                 final EditText input = new EditText(getActivity());
-                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES| InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                 input.setSingleLine(false);
                 input.setMaxLines(10);
 

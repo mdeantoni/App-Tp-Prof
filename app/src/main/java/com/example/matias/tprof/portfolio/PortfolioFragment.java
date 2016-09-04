@@ -128,8 +128,10 @@ public class PortfolioFragment extends Fragment  implements LoaderManager.Loader
 
             symbolTv.setText(cursor.getString(V_HOLD_COL_SYMBOL));
             holdingTv.setText(cursor.getString(V_HOLDING_COL_QTY));
-            lastPriceTv.setText("$" + String.format("%.2f", cursor.getFloat(V_HOLD_COL_CURRENT_PRICE)) );
-            totalValuedTv.setText("$" + String.format("%.2f", cursor.getFloat(V_HOLDING_TOTAL_VALUE)));
+            lastPriceTv.setText("$" + cursor.getString(V_HOLD_COL_CURRENT_PRICE));
+            totalValuedTv.setText("$" + cursor.getString(V_HOLDING_TOTAL_VALUE));
+            //lastPriceTv.setText("$" + String.format("%.2f", cursor.getFloat(V_HOLD_COL_CURRENT_PRICE)) );
+            //totalValuedTv.setText("$" + String.format("%.2f", cursor.getFloat(V_HOLDING_TOTAL_VALUE)));
 
             symbolTv.setLayoutParams(new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
             symbolTv.setGravity(Gravity.LEFT);
