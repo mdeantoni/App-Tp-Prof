@@ -213,6 +213,7 @@ public class SearchResultsActivity  extends AppCompatActivity implements android
                 FetchHistoricalQuotesTask getHistoricalTask = new FetchHistoricalQuotesTask(this);
                 getHistoricalTask.execute(symbol);
                 startActivity(stockQuoteIntent);
+                finish();
 
             }
 
@@ -226,6 +227,7 @@ public class SearchResultsActivity  extends AppCompatActivity implements android
                         .putExtra("com.example.matias.tprof.Identifier",bondId)
                         .putExtra("com.example.matias.tprof.Symbol", symbol);
                 startActivity(bondQuoteIntent);
+                finish();
             }
         }
     }

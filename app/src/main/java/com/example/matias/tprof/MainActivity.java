@@ -20,13 +20,14 @@ import com.example.matias.tprof.data.QuotesContract;
 import com.example.matias.tprof.detail.DetailActivity;
 import com.example.matias.tprof.portfolio.PortfolioActivity;
 import com.example.matias.tprof.settings.SettingsActivity;
-import com.example.matias.tprof.sync.AppSyncAdapter;
 import com.example.matias.tprof.task.FetchHistoricalQuotesTask;
 
 public class MainActivity extends AppCompatActivity implements BondQuotesFragment.OnBondQuoteSelectedListener,
                                                                StockQuotesFragment.OnStockQuoteSelectedListener,
                                                                android.app.LoaderManager.LoaderCallbacks<Cursor> {
 
+    private SearchView searchView;
+    private MenuItem searchMenuItem;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private boolean hasHoldings;
@@ -73,9 +74,9 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
-        MenuItem mMenuItem =  menu.findItem(R.id.search);
-        SearchView searchView = (SearchView)mMenuItem.getActionView();
-        searchView.setSearchableInfo(
+        this.searchMenuItem =  menu.findItem(R.id.search);
+        this.searchView = (SearchView)this.searchMenuItem.getActionView();
+        this.searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
 
 
@@ -135,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements BondQuotesFragmen
 
     @Override
     protected  void onResume(){
+        if(this.searchMenuItem != null) {
+            this.searchMenuItem.collapseActionView();
+        }
         getLoaderManager().restartLoader(TOTAL_HOLDINGS_LOADER, null, this);
         super.onResume();
     }

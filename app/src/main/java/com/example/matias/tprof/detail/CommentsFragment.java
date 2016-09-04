@@ -93,17 +93,6 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
         swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        ArrayList<Comment> comments = new ArrayList<Comment>();
-        comments.add(new Comment("10/12 13:45", "Alguien", "Esto es un comentario de prueba corto"));
-        comments.add(new Comment("10/12 13:45", "Otro Alguien", "Esto es un comentario de prueba corto"));
-        comments.add(new Comment("10/12 13:45", "Prueba", "Esto es un comentario de prueba mas largo, deberia ocupar dos renglones como minimo , asi que lo relleno un poco"));
-        comments.add(new Comment("10/12 13:45", "Alguien", "Esto es un comentario de prueba mas largo, deberia ocupar dos renglones como minimo , asi que lo relleno un poco"));
-        comments.add(new Comment("10/12 13:45", "Alguien", "Esto es un comentario de prueba corto"));
-        comments.add(new Comment("10/12 02:45", "otro", "Esto es un comentario de prueba mas largo, deberia ocupar dos renglones como minimo , asi que lo relleno un poco"));
-        comments.add(new Comment("10/12 13:45", "Otro Alguien", "Esto es un comentario de prueba mucho mas largo, deberia ocupar tres renglones como minimo , asi que lo relleno un poco mucho" +
-                "con el contenido que se me ocurre en el momento basicamente nada, prueba prueba prueba prueba prueba ahhh holaaaaaaaaaa, tengo hambre, creo que voy a pedir empanadas."));
-        comments.add(new Comment("10/12 12:45", "Matias", "Esto es un comentario de prueba corto"));
-
         commentsAdaptert = new CommentsAdapter(getActivity(), null, 0);
         // Get a reference to the ListView, and attach this adapter to it.
         ListView listView = (ListView) rootView.findViewById(R.id.listview_comments);
@@ -201,7 +190,7 @@ public class CommentsFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        commentsAdaptert.swapCursor(null);
     }
 
     @Override
