@@ -20,7 +20,7 @@
             android:layout_marginLeft="2dp"
             android:layout_marginTop="2dp"
             android:textSize="30dp"
-            android:text="$145000" />
+            android:text="Composición" />
 
         <View
             android:layout_width="match_parent"

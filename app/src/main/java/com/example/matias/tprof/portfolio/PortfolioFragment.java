@@ -156,7 +156,8 @@ public class PortfolioFragment extends Fragment  implements LoaderManager.Loader
 
         PieDataSet dataset = new PieDataSet(entries, "");
         dataset.setColors(PortfolioFragment.MATERIAL_COLORS);
-        pieChart.setCenterText("Composición");
+        pieChart.setCenterText("$ "+ String.format("%.2f", totalHoldings));
+        //pieChart.setCenterText("Composición");
         pieChart.setCenterTextSize(20);
         pieChart.getLegend().setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
         pieChart.getLegend().setWordWrapEnabled(true);
@@ -173,8 +174,8 @@ public class PortfolioFragment extends Fragment  implements LoaderManager.Loader
         pieChart.setTouchEnabled(false);
         pieChart.getLegend().setTextSize(12f);
 
-        TextView totalHoldingsTV = (TextView) getView().findViewById(R.id.portfolio_total);
-        totalHoldingsTV.setText("$ "+ String.format("%.2f", totalHoldings));
+        //TextView totalHoldingsTV = (TextView) getView().findViewById(R.id.portfolio_total);
+        //totalHoldingsTV.setText("$ "+ String.format("%.2f", totalHoldings));
 
         TableLayout tableLayout = (TableLayout) getView().findViewById(R.id.detail_table);
         for (TableRow row: detailRows) {

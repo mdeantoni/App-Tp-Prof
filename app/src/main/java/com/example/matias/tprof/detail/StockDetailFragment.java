@@ -516,7 +516,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                     openPriceTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_OPEN));
                     changeTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_LAST_CHANGE));
                     changePercentTv.setText(cursor.getString(StockDetailFragment.COL_LAST_CHANGE_PERCENTAGE));
-                    marketCapTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_MKT_CAP));
+                    marketCapTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_MKT_CAP).replace("B","MM"));
                     priceBookTv.setText(cursor.getString(StockDetailFragment.COL_PRICE_BOOK));
                     priceSalesTv.setText(cursor.getString(StockDetailFragment.COL_PRICE_SALES));
                     priceEarningsTv.setText(cursor.getString(StockDetailFragment.COL_PRICE_EARNINGS));

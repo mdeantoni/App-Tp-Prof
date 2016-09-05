@@ -156,19 +156,21 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Maximo"
+                android:text="Máximo"
                 android:id="@+id/textView" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="13.21123123"
-                android:id="@+id/stock_detail_max_day" />
+                android:id="@+id/stock_detail_max_day"
+                android:textAlignment="gravity"
+                android:gravity="right" />
 
             <Space
                 android:layout_width="0px"
@@ -177,19 +179,21 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Minimo"
+                android:text="Mínimo"
                 android:id="@+id/textView3" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="11.71212"
-                android:id="@+id/stock_detail_min_day" />
+                android:id="@+id/stock_detail_min_day"
+                android:gravity="right"
+                android:textAlignment="gravity" />
         </LinearLayout>
 
         <LinearLayout
@@ -201,7 +205,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="12"
                 android:layout_height="1dp"
                 android:background="#888888" />
             <Space
@@ -211,7 +215,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="12"
                 android:layout_height="1dp"
                 android:background="#888888" />
 
@@ -224,19 +228,21 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Cierre"
+                android:text="Cierre Ant."
                 android:id="@+id/textView5" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="10.5"
-                android:id="@+id/stock_detail_last_close" />
+                android:id="@+id/stock_detail_last_close"
+                android:gravity="right"
+                android:textAlignment="gravity" />
 
             <Space
                 android:layout_width="0px"
@@ -245,7 +251,7 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Apertura"
@@ -253,11 +259,13 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="12.9"
-                android:id="@+id/stock_detail_open_price" />
+                android:id="@+id/stock_detail_open_price"
+                android:textAlignment="gravity"
+                android:gravity="right" />
         </LinearLayout>
 
         <LinearLayout
@@ -269,7 +277,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="12"
                 android:layout_height="1dp"
                 android:background="#888888" />
             <Space
@@ -279,7 +287,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="12"
                 android:layout_height="1dp"
                 android:background="#888888" />
 
@@ -292,19 +300,21 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Maximo Año"
+                android:text="Máx. Año"
                 android:id="@+id/textView9" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="10.5"
-                android:id="@+id/stock_detail_max_year" />
+                android:id="@+id/stock_detail_max_year"
+                android:gravity="right"
+                android:textAlignment="gravity"/>
 
             <Space
                 android:layout_width="0px"
@@ -313,19 +323,21 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Minimo Año"
+                android:text="Mín. Año"
                 android:id="@+id/textView11" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="12.9"
-                android:id="@+id/stock_detail_low_year" />
+                android:id="@+id/stock_detail_low_year"
+                android:gravity="right"
+                android:textAlignment="gravity"/>
         </LinearLayout>
 
         <LinearLayout
@@ -337,7 +349,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="12"
                 android:layout_height="1dp"
                 android:background="#888888" />
             <Space
@@ -347,7 +359,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="12"
                 android:layout_height="1dp"
                 android:background="#888888" />
 
@@ -360,7 +372,7 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Volumen "
@@ -368,11 +380,13 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="10510"
-                android:id="@+id/stock_detail_volume" />
+                android:id="@+id/stock_detail_volume"
+                android:gravity="right"
+                android:textAlignment="gravity"/>
 
             <Space
                 android:layout_width="0px"
@@ -381,19 +395,21 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Volumen Promedio"
+                android:text="Vol. Prom."
                 android:id="@+id/textView15" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="400000"
-                android:id="@+id/stock_detail_avg_volume" />
+                android:id="@+id/stock_detail_avg_volume"
+                android:gravity="right"
+                android:textAlignment="gravity"/>
         </LinearLayout>
 
         <LinearLayout
@@ -405,7 +421,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="12"
                 android:layout_height="1dp"
                 android:background="#888888" />
             <Space
@@ -415,7 +431,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="12"
                 android:layout_height="1dp"
                 android:background="#888888" />
 
@@ -428,19 +444,21 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Variaciion %"
+                android:text="Variación %"
                 android:id="@+id/textView17" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="10.5"
-                android:id="@+id/stock_detail_change_percentage" />
+                android:id="@+id/stock_detail_change_percentage"
+                android:gravity="right"
+                android:textAlignment="gravity"/>
 
             <Space
                 android:layout_width="0px"
@@ -449,19 +467,21 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Variacion"
+                android:text="Variación"
                 android:id="@+id/textView19" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="12.9"
-                android:id="@+id/stock_detail_change" />
+                android:id="@+id/stock_detail_change"
+                android:gravity="right"
+                android:textAlignment="gravity"/>
         </LinearLayout>
 
         <LinearLayout
@@ -473,7 +493,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="12"
                 android:layout_height="1dp"
                 android:background="#888888" />
             <Space
@@ -483,7 +503,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="12"
                 android:layout_height="1dp"
                 android:background="#888888" />
 
@@ -496,19 +516,21 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Capitalizacion de Mercado"
+                android:text="Cap. Merc."
                 android:id="@+id/textView21" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="10.5"
-                android:id="@+id/stock_detail_market_cap" />
+                android:text="$100.54MM"
+                android:id="@+id/stock_detail_market_cap"
+                android:gravity="right"
+                android:textAlignment="gravity"/>
 
             <Space
                 android:layout_width="0px"
@@ -517,19 +539,21 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Precio / Ganancias"
+                android:text="P/G"
                 android:id="@+id/textView23" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="12.9"
-                android:id="@+id/stock_detail_price_earnings" />
+                android:id="@+id/stock_detail_price_earnings"
+                android:gravity="right"
+                android:textAlignment="gravity"/>
         </LinearLayout>
 
         <LinearLayout
@@ -541,7 +565,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="12"
                 android:layout_height="1dp"
                 android:background="#888888" />
             <Space
@@ -551,7 +575,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="12"
                 android:layout_height="1dp"
                 android:background="#888888" />
 
@@ -564,19 +588,21 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Precio / Valor Libro"
+                android:text="P/VL"
                 android:id="@+id/textView25" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="10.5"
-                android:id="@+id/stock_detail_price_book" />
+                android:id="@+id/stock_detail_price_book"
+                android:gravity="right"
+                android:textAlignment="gravity"/>
 
             <Space
                 android:layout_width="0px"
@@ -585,19 +611,21 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Precio / Ventas"
+                android:text="P/V"
                 android:id="@+id/textView27" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="12.9"
-                android:id="@+id/stock_detail_price_sales" />
+                android:id="@+id/stock_detail_price_sales"
+                android:gravity="right"
+                android:textAlignment="gravity"/>
         </LinearLayout>
 
         <LinearLayout
@@ -609,7 +637,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="12"
                 android:layout_height="1dp"
                 android:background="#888888" />
             <Space
@@ -619,7 +647,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="12"
                 android:layout_height="1dp"
                 android:background="#888888" />
 
