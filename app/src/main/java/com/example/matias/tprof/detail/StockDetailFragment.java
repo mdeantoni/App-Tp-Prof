@@ -505,21 +505,21 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                     toolbar.setTitle(cursor.getString(StockDetailFragment.COL_FULLNAME));
                     quote.setText(cursor.getString(StockDetailFragment.COL_SYMBOL));
                     change.setText(changeText);
-                    price.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_LAST_PRICE));
-                    dayMinTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_DAYS_LOW));
-                    dayMaxTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_DAYS_HIGH));
-                    yearMinTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_YEAR_LOW));
-                    yearMaxTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_YEAR_HIGH));
-                    volumeTv.setText(cursor.getString(StockDetailFragment.COL_VOLUME));
-                    avgVolumeTv.setText(cursor.getString(StockDetailFragment.COL_AVG_VOLUME));
-                    lastCloseTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_PREVIOUS_CLOSE));
-                    openPriceTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_OPEN));
-                    changeTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_LAST_CHANGE));
-                    changePercentTv.setText(cursor.getString(StockDetailFragment.COL_LAST_CHANGE_PERCENTAGE));
-                    marketCapTv.setText(cursor.getString(StockDetailFragment.COL_CURRENCY) + cursor.getString(StockDetailFragment.COL_MKT_CAP).replace("B","MM"));
-                    priceBookTv.setText(cursor.getString(StockDetailFragment.COL_PRICE_BOOK));
-                    priceSalesTv.setText(cursor.getString(StockDetailFragment.COL_PRICE_SALES));
-                    priceEarningsTv.setText(cursor.getString(StockDetailFragment.COL_PRICE_EARNINGS));
+                    price.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY), cursor.getString(StockDetailFragment.COL_LAST_PRICE)));
+                    dayMinTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY) , cursor.getString(StockDetailFragment.COL_DAYS_LOW)));
+                    dayMaxTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY) , cursor.getString(StockDetailFragment.COL_DAYS_HIGH)));
+                    yearMinTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY) , cursor.getString(StockDetailFragment.COL_YEAR_LOW)));
+                    yearMaxTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY) , cursor.getString(StockDetailFragment.COL_YEAR_HIGH)));
+                    volumeTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_VOLUME)));
+                    avgVolumeTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_AVG_VOLUME)));
+                    lastCloseTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY) , cursor.getString(StockDetailFragment.COL_PREVIOUS_CLOSE)));
+                    openPriceTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY) , cursor.getString(StockDetailFragment.COL_OPEN)));
+                    changeTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY) , cursor.getString(StockDetailFragment.COL_LAST_CHANGE)));
+                    changePercentTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_LAST_CHANGE_PERCENTAGE)));
+                    marketCapTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY), cursor.getString(StockDetailFragment.COL_MKT_CAP).replace("B","MM")));
+                    priceBookTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_PRICE_BOOK)));
+                    priceSalesTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_PRICE_SALES)));
+                    priceEarningsTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_PRICE_EARNINGS)));
 
                     datetv.setText(outputFormat.format(quoteDate));
                 }
@@ -624,4 +624,19 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
     }
+
+    private String formattedValue(String value) {
+        if (value == null || value.isEmpty()|| value.equals("null"))
+            return "N/A";
+        else
+            return value;
+    }
+
+    private String formattedValue(String prefix, String value) {
+        if (value == null || value.isEmpty() || value.equals("null"))
+            return "N/A";
+        else
+            return prefix + value;
+    }
+
 }
