@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.matias.tprof.R;
 import com.example.matias.tprof.data.QuotesContract;
+import com.example.matias.tprof.numbers.NumberFormat;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -409,20 +410,20 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                     toolbar.setTitle(cursor.getString(BondDetailFragment.COL_FULLNAME));
                     quote.setText(cursor.getString(BondDetailFragment.COL_SYMBOL));
                     change.setText(changeText);
-                    price.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_LAST_PRICE));
+                    price.setText(NumberFormat.formattedValue(cursor.getString(BondDetailFragment.COL_CURRENCY), cursor.getString(BondDetailFragment.COL_LAST_PRICE)));
                     datetv.setText(outputFormat.format(quoteDate));
-                    dayMinTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_DAYS_LOW));
-                    dayMaxTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_DAYS_HIGH));
-                    yearMinTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_YEAR_LOW));
-                    yearMaxTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_YEAR_HIGH));
-                    volumeTv.setText( cursor.getString(BondDetailFragment.COL_VOLUME));
-                    avgVolumeTv.setText(cursor.getString(BondDetailFragment.COL_AVG_VOLUME));
-                    lastCloseTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_PREVIOUS_CLOSE));
-                    openPriceTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_OPEN));
-                    changeTv.setText(cursor.getString(BondDetailFragment.COL_CURRENCY) + cursor.getString(BondDetailFragment.COL_LAST_CHANGE));
-                    bondIIRTv.setText( cursor.getString(BondDetailFragment.COL_IIR));
-                    bondParityTv.setText(cursor.getString(BondDetailFragment.COL_PARITY));
-                    changePercentTv.setText(cursor.getString(BondDetailFragment.COL_LAST_CHANGE_PERCENTAGE));
+                    dayMinTv.setText(NumberFormat.formattedValue(cursor.getString(BondDetailFragment.COL_CURRENCY) ,cursor.getString(BondDetailFragment.COL_DAYS_LOW)));
+                    dayMaxTv.setText(NumberFormat.formattedValue(cursor.getString(BondDetailFragment.COL_CURRENCY) ,cursor.getString(BondDetailFragment.COL_DAYS_HIGH)));
+                    yearMinTv.setText(NumberFormat.formattedValue(cursor.getString(BondDetailFragment.COL_CURRENCY) , cursor.getString(BondDetailFragment.COL_YEAR_LOW)));
+                    yearMaxTv.setText(NumberFormat.formattedValue(cursor.getString(BondDetailFragment.COL_CURRENCY) , cursor.getString(BondDetailFragment.COL_YEAR_HIGH)));
+                    volumeTv.setText( NumberFormat.formattedValue(cursor.getString(BondDetailFragment.COL_VOLUME)));
+                    avgVolumeTv.setText(NumberFormat.formattedValue(cursor.getString(BondDetailFragment.COL_AVG_VOLUME)));
+                    lastCloseTv.setText(NumberFormat.formattedValue(cursor.getString(BondDetailFragment.COL_CURRENCY) , cursor.getString(BondDetailFragment.COL_PREVIOUS_CLOSE)));
+                    openPriceTv.setText(NumberFormat.formattedValue(cursor.getString(BondDetailFragment.COL_CURRENCY) , cursor.getString(BondDetailFragment.COL_OPEN)));
+                    changeTv.setText(NumberFormat.formattedValue(cursor.getString(BondDetailFragment.COL_CURRENCY) , cursor.getString(BondDetailFragment.COL_LAST_CHANGE)));
+                    bondIIRTv.setText(NumberFormat.formattedPercentage(cursor.getString(BondDetailFragment.COL_IIR)));
+                    bondParityTv.setText(NumberFormat.formattedPercentage(cursor.getString(BondDetailFragment.COL_PARITY)));
+                    changePercentTv.setText(NumberFormat.formattedPercentage(cursor.getString(BondDetailFragment.COL_LAST_CHANGE_PERCENTAGE)));
                 }
                 break;
 

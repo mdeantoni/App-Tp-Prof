@@ -61,4 +61,20 @@ public class NumberFormat {
 
     }
 
+    public static String formattedPercentage(String value) {
+        if (value == null || value.isEmpty()|| value.equals("null"))
+            return "N/A";
+        else{
+            try{
+                boolean hasSufix = value.contains("%");
+                String newValue = value.replace("%","").trim();
+                double doubleValue = Double.parseDouble(newValue);
+                return format.format(doubleValue) + "%" ;
+            }catch (Exception e){
+                return value;
+            }
+        }
+
+    }
+
 }
