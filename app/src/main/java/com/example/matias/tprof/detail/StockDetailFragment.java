@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.matias.tprof.R;
 import com.example.matias.tprof.StockQuotesFragment;
 import com.example.matias.tprof.data.QuotesContract;
+import com.example.matias.tprof.numbers.NumberFormat;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -505,21 +506,21 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                     toolbar.setTitle(cursor.getString(StockDetailFragment.COL_FULLNAME));
                     quote.setText(cursor.getString(StockDetailFragment.COL_SYMBOL));
                     change.setText(changeText);
-                    price.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY), cursor.getString(StockDetailFragment.COL_LAST_PRICE)));
-                    dayMinTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY) , cursor.getString(StockDetailFragment.COL_DAYS_LOW)));
-                    dayMaxTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY) , cursor.getString(StockDetailFragment.COL_DAYS_HIGH)));
-                    yearMinTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY) , cursor.getString(StockDetailFragment.COL_YEAR_LOW)));
-                    yearMaxTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY) , cursor.getString(StockDetailFragment.COL_YEAR_HIGH)));
-                    volumeTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_VOLUME)));
-                    avgVolumeTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_AVG_VOLUME)));
-                    lastCloseTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY) , cursor.getString(StockDetailFragment.COL_PREVIOUS_CLOSE)));
-                    openPriceTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY) , cursor.getString(StockDetailFragment.COL_OPEN)));
-                    changeTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY) , cursor.getString(StockDetailFragment.COL_LAST_CHANGE)));
-                    changePercentTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_LAST_CHANGE_PERCENTAGE)));
-                    marketCapTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY), cursor.getString(StockDetailFragment.COL_MKT_CAP).replace("B","MM")));
-                    priceBookTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_PRICE_BOOK)));
-                    priceSalesTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_PRICE_SALES)));
-                    priceEarningsTv.setText(this.formattedValue(cursor.getString(StockDetailFragment.COL_PRICE_EARNINGS)));
+                    price.setText(NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY), cursor.getString(StockDetailFragment.COL_LAST_PRICE)));
+                    dayMinTv.setText(NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY), cursor.getString(StockDetailFragment.COL_DAYS_LOW)));
+                    dayMaxTv.setText(NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY), cursor.getString(StockDetailFragment.COL_DAYS_HIGH)));
+                    yearMinTv.setText(NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY), cursor.getString(StockDetailFragment.COL_YEAR_LOW)));
+                    yearMaxTv.setText(NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY), cursor.getString(StockDetailFragment.COL_YEAR_HIGH)));
+                    volumeTv.setText(NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_VOLUME)));
+                    avgVolumeTv.setText(NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_AVG_VOLUME)));
+                    lastCloseTv.setText(NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY), cursor.getString(StockDetailFragment.COL_PREVIOUS_CLOSE)));
+                    openPriceTv.setText(NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY), cursor.getString(StockDetailFragment.COL_OPEN)));
+                    changeTv.setText(NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_CURRENCY), cursor.getString(StockDetailFragment.COL_LAST_CHANGE)));
+                    changePercentTv.setText(NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_LAST_CHANGE_PERCENTAGE)));
+                    marketCapTv.setText(NumberFormat.formattedMarketCapValue(cursor.getString(StockDetailFragment.COL_CURRENCY), cursor.getString(StockDetailFragment.COL_MKT_CAP)));
+                    priceBookTv.setText(NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_PRICE_BOOK)));
+                    priceSalesTv.setText(NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_PRICE_SALES)));
+                    priceEarningsTv.setText(NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_PRICE_EARNINGS)));
 
                     datetv.setText(outputFormat.format(quoteDate));
                 }
@@ -624,19 +625,4 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
     }
-
-    private String formattedValue(String value) {
-        if (value == null || value.isEmpty()|| value.equals("null"))
-            return "N/A";
-        else
-            return value;
-    }
-
-    private String formattedValue(String prefix, String value) {
-        if (value == null || value.isEmpty() || value.equals("null"))
-            return "N/A";
-        else
-            return prefix + value;
-    }
-
 }
