@@ -118,6 +118,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
     private int bondId;
     private String tickerSymbol;
     private int m_Bonds = 0;
+    private String fullName;
     private Button buttonSell;
     private int mHolding;
 
@@ -223,6 +224,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                                         newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Bonds);
                                         newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
                                         newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_FULLNAME, fullName);
 
                                         getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
                                         Log.d(LOG_TAG, "Bond buy inserted succesfully " + newsQuoteValue.toString());
@@ -292,6 +294,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                                         newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Bonds);
                                         newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
                                         newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_FULLNAME, fullName);
 
                                         getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
                                         Log.d(LOG_TAG, "Bond sell inserted succesfully " + newsQuoteValue.toString());
@@ -407,6 +410,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                     LastTradeDate = cursor.getString(BondDetailFragment.COL_LAST_TRADE_DATE);
                     LastTradePRice = cursor.getDouble(BondDetailFragment.COL_LAST_PRICE);
 
+                    fullName = cursor.getString(StockDetailFragment.COL_FULLNAME);
                     toolbar.setTitle(cursor.getString(BondDetailFragment.COL_FULLNAME));
                     quote.setText(cursor.getString(BondDetailFragment.COL_SYMBOL));
                     change.setText(changeText);

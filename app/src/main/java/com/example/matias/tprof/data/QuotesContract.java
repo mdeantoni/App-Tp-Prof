@@ -300,6 +300,7 @@ public class QuotesContract {
         public static final String COLUMN_SYMBOL = "Ticker_Symbol";
         public static final String COLUMN_DATE = "Trade_Date";
         public static final String COLUMN_PRICE = "Trade_Price";
+        public static final String COLUMN_FULLNAME = "Fullname";
 
         public static Uri buildTradeUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

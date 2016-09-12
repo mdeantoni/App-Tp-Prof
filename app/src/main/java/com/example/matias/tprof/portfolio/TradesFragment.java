@@ -35,7 +35,8 @@ public class TradesFragment extends Fragment implements LoaderManager.LoaderCall
             QuotesContract.TradesEntry.COLUMN_DATE,
             QuotesContract.TradesEntry.COLUMN_SYMBOL,
             QuotesContract.TradesEntry.COLUMN_QUANTITY,
-            QuotesContract.TradesEntry.COLUMN_PRICE
+            QuotesContract.TradesEntry.COLUMN_PRICE,
+            QuotesContract.TradesEntry.COLUMN_FULLNAME
     };
 
     static final int COL_ID = 0;
@@ -45,6 +46,7 @@ public class TradesFragment extends Fragment implements LoaderManager.LoaderCall
     static final int COL_SYMBOL = 4;
     static final int COL_QUANTITY = 5;
     static final int COL_PRICE = 6;
+    static final int COL_FULLNAME = 7;
 
 
     public TradesFragment() {

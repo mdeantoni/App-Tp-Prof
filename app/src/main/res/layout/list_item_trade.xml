@@ -10,15 +10,15 @@
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2">
+        android:layout_weight="7">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/list_item_trade_symbol_textview"
             android:gravity="center_vertical|bottom"
-            android:layout_weight="3"
+            android:layout_weight="10"
             android:paddingLeft="10dp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
@@ -26,29 +26,43 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/list_item_trade_datetime_textview"
-            android:layout_weight="2"
+            android:layout_weight="10"
             android:gravity="top"
             android:paddingLeft="10dp"
             android:text="01/03/16" />
 
     </LinearLayout>
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="+1200"
-        android:id="@+id/list_item_trade_quantity_textview"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:layout_gravity="center_vertical">
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="$350,76"
-        android:id="@+id/list_item_trade_price_textview"
-        android:layout_weight="1" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="10"
+            android:gravity="bottom|right"
+            android:paddingRight="10dp"
+            android:text="+1200"
+            android:id="@+id/list_item_trade_quantity_textview"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_weight="10"
+            android:gravity="right|top"
+            android:paddingRight="10dp"
+            android:text="$350,76"
+            android:id="@+id/list_item_trade_price_textview"
+ />
+    </LinearLayout>
 </LinearLayout>

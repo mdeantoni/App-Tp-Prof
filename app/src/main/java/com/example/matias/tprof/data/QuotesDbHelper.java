@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuotesDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 34;
+    private static final int DATABASE_VERSION = 35;
 
     static final String DATABASE_NAME = "quotes.db";
 
@@ -190,6 +190,7 @@ public class QuotesDbHelper extends SQLiteOpenHelper {
                 QuotesContract.TradesEntry.COLUMN_SYMBOL + " TEXT NOT NULL, " +
                 QuotesContract.TradesEntry.COLUMN_QUANTITY + " INT NOT NULL, " +
                 QuotesContract.TradesEntry.COLUMN_TYPE + " TEXT NOT NULL, " +
+                QuotesContract.TradesEntry.COLUMN_FULLNAME + " TEXT NOT NULL, " +
                 QuotesContract.TradesEntry.COLUMN_PRICE + " DECIMAL(6,2) NOT NULL " +
                 " );";
 

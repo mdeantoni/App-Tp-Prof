@@ -59,6 +59,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
     private Uri mUri;
     private int stockId;
     private String tickerSymbol;
+    private String fullName;
     private int m_Stocks = 0;
     private Button buttonSell;
     private int mHolding;
@@ -252,6 +253,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                                         newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Stocks);
                                         newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
                                         newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_FULLNAME, fullName);
 
                                         getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
                                         Log.d(LOG_TAG, "Stock buy inserted succesfully " + newsQuoteValue.toString());
@@ -325,6 +327,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                                         newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_QUANTITY, m_Stocks);
                                         newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_SYMBOL, tickerSymbol);
                                         newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_TYPE, TRADE_TYPE);
+                                        newsQuoteValue.put(QuotesContract.TradesEntry.COLUMN_FULLNAME, fullName);
 
                                         getContext().getContentResolver().insert(QuotesContract.TradesEntry.CONTENT_URI, newsQuoteValue);
                                         Log.d(LOG_TAG, "Stock sell inserted succesfully " + newsQuoteValue.toString());
@@ -503,6 +506,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                     LastTradeDate = cursor.getString(StockDetailFragment.COL_LAST_TRADE_DATE);
                     LastTradePRice = cursor.getDouble(StockDetailFragment.COL_LAST_PRICE);
 
+                    fullName = cursor.getString(StockDetailFragment.COL_FULLNAME);
                     toolbar.setTitle(cursor.getString(StockDetailFragment.COL_FULLNAME));
                     quote.setText(cursor.getString(StockDetailFragment.COL_SYMBOL));
                     change.setText(changeText);

@@ -68,9 +68,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Cotizacion"
+                    android:text="Precio Act."
                     android:id="@+id/textView6"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:gravity="center_horizontal|right"
                     android:textStyle="bold" />
 
@@ -80,7 +80,7 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Total"
                     android:id="@+id/textView8"
-                    android:layout_weight="1"
+                    android:layout_weight="3"
                     android:gravity="center_horizontal|right"
                     android:textStyle="bold"
                     android:textSize="18sp" />

@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.matias.tprof.R;
 import com.example.matias.tprof.data.QuotesContract;
+import com.example.matias.tprof.numbers.NumberFormat;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
@@ -128,10 +129,15 @@ public class PortfolioFragment extends Fragment  implements LoaderManager.Loader
 
             symbolTv.setText(cursor.getString(V_HOLD_COL_SYMBOL));
             holdingTv.setText(cursor.getString(V_HOLDING_COL_QTY));
-            lastPriceTv.setText("$" + cursor.getString(V_HOLD_COL_CURRENT_PRICE));
-            totalValuedTv.setText("$" + cursor.getString(V_HOLDING_TOTAL_VALUE));
+            lastPriceTv.setText(NumberFormat.formattedValue("$", cursor.getString(V_HOLD_COL_CURRENT_PRICE)));
+            totalValuedTv.setText(NumberFormat.formattedValue("$", cursor.getString(V_HOLDING_TOTAL_VALUE)));
             //lastPriceTv.setText("$" + String.format("%.2f", cursor.getFloat(V_HOLD_COL_CURRENT_PRICE)) );
             //totalValuedTv.setText("$" + String.format("%.2f", cursor.getFloat(V_HOLDING_TOTAL_VALUE)));
+            TableLayout.LayoutParams tableRowParams =
+                    new TableLayout.LayoutParams
+                            (TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT);
+            tableRowParams.setMargins(0,2,0,0);
+            newRow.setLayoutParams(tableRowParams);
 
             symbolTv.setLayoutParams(new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
             symbolTv.setGravity(Gravity.LEFT);
@@ -139,10 +145,10 @@ public class PortfolioFragment extends Fragment  implements LoaderManager.Loader
             holdingTv.setLayoutParams(new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
             holdingTv.setGravity(Gravity.RIGHT);
             holdingTv.setTextAppearance(getActivity(), android.R.style.TextAppearance_Material_Medium);
-            lastPriceTv.setLayoutParams(new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
+            lastPriceTv.setLayoutParams(new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 2f));
             lastPriceTv.setGravity(Gravity.RIGHT);
             lastPriceTv.setTextAppearance(getActivity(), android.R.style.TextAppearance_Material_Medium);
-            totalValuedTv.setLayoutParams(new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
+            totalValuedTv.setLayoutParams(new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 3f));
             totalValuedTv.setGravity(Gravity.RIGHT);
             totalValuedTv.setTextAppearance(getActivity(), android.R.style.TextAppearance_Material_Medium);
 

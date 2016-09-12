@@ -50,11 +50,11 @@ public class TradesAdapter extends CursorAdapter {
 
         TextView priceTv = (TextView) view.findViewById(R.id.list_item_trade_price_textview);
         TextView quantityTv = (TextView) view.findViewById(R.id.list_item_trade_quantity_textview);
-        TextView symbolTv = (TextView) view.findViewById(R.id.list_item_trade_symbol_textview);
+        TextView nameTv = (TextView) view.findViewById(R.id.list_item_trade_symbol_textview);
         TextView dateTv = (TextView) view.findViewById(R.id.list_item_trade_datetime_textview);
 
         quantityTv.setText(operation + cursor.getString(TradesFragment.COL_QUANTITY));
-        symbolTv.setText(cursor.getString(TradesFragment.COL_SYMBOL));
+        nameTv.setText(cursor.getString(TradesFragment.COL_FULLNAME));
         priceTv.setText("$" + cursor.getString(TradesFragment.COL_PRICE));
         dateTv.setText(outputFormat.format(operationDate));
     }
