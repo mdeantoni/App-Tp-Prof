@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.matias.tprof.numbers.NumberFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,8 +35,8 @@ public class StockQuotesAdapter extends CursorAdapter  {
         SimpleDateFormat inputFormat =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm dd/MM");
         String date = cursor.getString(StockQuotesFragment.COL_LAST_TRADE_DATE);
-        String changeText = cursor.getString(StockQuotesFragment.COL_LAST_CHANGE) + " "
-                + "(" + cursor.getString(StockQuotesFragment.COL_LAST_CHANGE_PERCENTAGE) + "%)";
+        String changeText = NumberFormat.formattedValue(cursor.getString(StockQuotesFragment.COL_LAST_CHANGE)) + " "
+                + "(" + NumberFormat.formattedValue(cursor.getString(StockQuotesFragment.COL_LAST_CHANGE_PERCENTAGE)) + "%)";
 
         try {
             quoteDate = inputFormat.parse(date);
@@ -56,7 +58,7 @@ public class StockQuotesAdapter extends CursorAdapter  {
 
         quote.setText(cursor.getString(StockQuotesFragment.COL_FULLNAME));
         change.setText(changeText);
-        price.setText(cursor.getString(StockQuotesFragment.COL_CURRENCY) + " " + cursor.getString(StockQuotesFragment.COL_LAST_PRICE));
+        price.setText(cursor.getString(StockQuotesFragment.COL_CURRENCY) + " " + NumberFormat.formattedValue(cursor.getString(StockQuotesFragment.COL_LAST_PRICE)));
         datetv.setText(outputFormat.format(quoteDate));
     }
 }

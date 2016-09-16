@@ -29,10 +29,15 @@ import com.example.matias.tprof.data.QuotesContract;
 import com.example.matias.tprof.numbers.NumberFormat;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -190,6 +195,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
 
         final LineChart lineChart = (LineChart) rootView.findViewById(R.id.stock_detail_chart);
         lineChart.getAxisRight().setEnabled(true);
+        lineChart.getAxisRight().setValueFormatter(new CustomYAxisValueFormatter());
         lineChart.getAxisLeft().setEnabled(false);
         lineChart.getAxisRight().setDrawGridLines(false);
         lineChart.getAxisRight().setDrawAxisLine(false);
@@ -467,8 +473,8 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                     SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                     SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm dd/MM");
                     String date = cursor.getString(StockDetailFragment.COL_LAST_TRADE_DATE);
-                    String changeText = cursor.getString(StockDetailFragment.COL_LAST_CHANGE) + " "
-                            + "(" + cursor.getString(StockDetailFragment.COL_LAST_CHANGE_PERCENTAGE) + "%)";
+                    String changeText = NumberFormat.formattedValue(cursor.getString(StockDetailFragment.COL_LAST_CHANGE)) + " "
+                            + "(" +NumberFormat.formattedValue( cursor.getString(StockDetailFragment.COL_LAST_CHANGE_PERCENTAGE)) + "%)";
 
                     try {
                         quoteDate = inputFormat.parse(date);
@@ -629,4 +635,24 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
     }
+
+
 }
+
+class CustomYAxisValueFormatter implements YAxisValueFormatter {
+
+    private DecimalFormat mFormat;
+
+    public CustomYAxisValueFormatter() {
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+        decimalFormatSymbols.setDecimalSeparator(',');
+        decimalFormatSymbols.setGroupingSeparator('.');
+        mFormat =new DecimalFormat("###,###,##0.##", decimalFormatSymbols);
+    }
+
+    @Override
+    public String getFormattedValue(float value, YAxis yAxis) {
+        return mFormat.format(value);
+    }
+}
+

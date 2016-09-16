@@ -161,7 +161,9 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
 
         LineChart lineChart = (LineChart) rootView.findViewById(R.id.bond_detail_chart);
         lineChart.getAxisRight().setEnabled(true);
+        lineChart.getAxisRight().setValueFormatter(new CustomYAxisValueFormatter());
         lineChart.getAxisRight().setDrawGridLines(false);
+        lineChart.getAxisRight().setDrawAxisLine(false);
         lineChart.getAxisLeft().setEnabled(false);
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getAxisLeft().setDrawAxisLine(false);
@@ -373,8 +375,8 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                     SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                     SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm dd/MM");
                     String date = cursor.getString(BondDetailFragment.COL_LAST_TRADE_DATE);
-                    String changeText = cursor.getString(BondDetailFragment.COL_LAST_CHANGE) + " "
-                            + "(" + cursor.getString(BondDetailFragment.COL_LAST_CHANGE_PERCENTAGE) + "%)";
+                    String changeText = NumberFormat.formattedValue(cursor.getString(BondDetailFragment.COL_LAST_CHANGE)) + " "
+                            + "(" + NumberFormat.formattedValue(cursor.getString(BondDetailFragment.COL_LAST_CHANGE_PERCENTAGE)) + "%)";
 
                     try {
                         quoteDate = inputFormat.parse(date);

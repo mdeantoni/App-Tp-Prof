@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.matias.tprof.R;
 import com.example.matias.tprof.detail.NewsFragment;
+import com.example.matias.tprof.numbers.NumberFormat;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,7 +56,7 @@ public class TradesAdapter extends CursorAdapter {
 
         quantityTv.setText(operation + cursor.getString(TradesFragment.COL_QUANTITY));
         nameTv.setText(cursor.getString(TradesFragment.COL_FULLNAME));
-        priceTv.setText("$" + cursor.getString(TradesFragment.COL_PRICE));
+        priceTv.setText("$" + NumberFormat.formattedValue(cursor.getString(TradesFragment.COL_PRICE)));
         dateTv.setText(outputFormat.format(operationDate));
     }
 }

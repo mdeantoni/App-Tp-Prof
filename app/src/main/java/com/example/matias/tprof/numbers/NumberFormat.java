@@ -77,4 +77,8 @@ public class NumberFormat {
 
     }
 
+    public static String formattedValue(double value){
+        return format.format(value);
+    }
+
 }

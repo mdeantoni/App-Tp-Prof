@@ -162,7 +162,7 @@ public class PortfolioFragment extends Fragment  implements LoaderManager.Loader
 
         PieDataSet dataset = new PieDataSet(entries, "");
         dataset.setColors(PortfolioFragment.MATERIAL_COLORS);
-        pieChart.setCenterText("$ "+ String.format("%.2f", totalHoldings));
+        pieChart.setCenterText("$ "+ NumberFormat.formattedValue(totalHoldings));
         //pieChart.setCenterText("Composición");
         pieChart.setCenterTextSize(20);
         pieChart.getLegend().setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
