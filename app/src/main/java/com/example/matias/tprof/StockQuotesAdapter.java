@@ -49,7 +49,7 @@ public class StockQuotesAdapter extends CursorAdapter  {
         TextView price = (TextView) view.findViewById(R.id.list_item_lastprice_textview);
         TextView datetv = (TextView) view.findViewById(R.id.list_item_datetime_textview);
 
-        if(cursor.getDouble(StockQuotesFragment.COL_LAST_CHANGE) > 0){
+        if(cursor.getDouble(StockQuotesFragment.COL_LAST_CHANGE) >= 0){
             change.setTextColor(Color.GREEN);
             changeText = "+" + changeText;
         }else{

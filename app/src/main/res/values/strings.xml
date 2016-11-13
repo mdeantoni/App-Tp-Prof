@@ -8,8 +8,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!--  http://10.0.2.2:50914/api/-->
-<!--   http://192.168.0.17:50914/api/-->
+    <!--  http://10.0.2.2:50914/api/  adb-->
+<!--   http://192.168.0.17:50914/api/ celular -->
+    <!--   http://10.0.3.2:50914/api/  genymotion-->
     <string name="connection_string">http://10.0.2.2:50914/api/</string>
     <string name="sync_account_type">tprof.example.com</string>
     <string name="content_authority">com.example.matias.tprof</string>

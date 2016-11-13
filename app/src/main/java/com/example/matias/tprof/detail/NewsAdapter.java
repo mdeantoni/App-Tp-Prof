@@ -34,7 +34,7 @@ public class NewsAdapter extends CursorAdapter {
         Date publicationDate = null;
         int icon;
         SimpleDateFormat inputFormat =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yy");
         String date = cursor.getString(NewsFragment.COL_DATE);
         String source = cursor.getString(NewsFragment.COL_SOURCE).replace("\"", "");
 

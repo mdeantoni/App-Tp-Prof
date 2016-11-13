@@ -95,6 +95,7 @@ public class RefreshCommentsTask extends AsyncTask<String, Void, Void> {
             URL url = new URL(builtUri.toString());
 
             urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setConnectTimeout(3000);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 

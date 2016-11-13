@@ -116,7 +116,7 @@
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="13.21123123"
-                android:id="@+id/bond_detail_min_day"
+                android:id="@+id/bond_detail_max_day"
                 android:gravity="right"
                 android:textAlignment="gravity" />
 
@@ -139,7 +139,7 @@
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="11.71212"
-                android:id="@+id/bond_detail_max_day"
+                android:id="@+id/bond_detail_min_day"
                 android:textAlignment="gravity"
                 android:gravity="right" />
         </LinearLayout>

@@ -502,7 +502,7 @@ public class StockDetailFragment extends Fragment implements LoaderManager.Loade
                     TextView priceSalesTv = (TextView) getView().findViewById(R.id.stock_detail_price_sales);
                     TextView priceEarningsTv = (TextView) getView().findViewById(R.id.stock_detail_price_earnings);
 
-                    if (cursor.getDouble(StockDetailFragment.COL_LAST_CHANGE) > 0) {
+                    if (cursor.getDouble(StockDetailFragment.COL_LAST_CHANGE) >= 0) {
                         change.setTextColor(Color.GREEN);
                         changeText = "+" + changeText;
                     } else {

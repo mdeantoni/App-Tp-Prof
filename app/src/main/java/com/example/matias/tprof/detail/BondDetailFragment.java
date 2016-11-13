@@ -402,7 +402,7 @@ public class BondDetailFragment extends Fragment implements LoaderManager.Loader
                     TextView bondIIRTv = (TextView) getView().findViewById(R.id.bond_detail_iir);
                     TextView bondParityTv = (TextView) getView().findViewById(R.id.bond_detail_parity);
 
-                    if (cursor.getDouble(BondDetailFragment.COL_LAST_CHANGE) > 0) {
+                    if (cursor.getDouble(BondDetailFragment.COL_LAST_CHANGE) >= 0) {
                         change.setTextColor(Color.GREEN);
                         changeText = "+" + changeText;
                     } else {
